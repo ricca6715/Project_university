@@ -103,6 +103,14 @@ public class UserRestController {
 		return userService.getUserByMail(mail);
 	}
 	
+	@GetMapping(
+			value= "/getById/{id}",
+			produces= MediaType.APPLICATION_JSON_VALUE )
+	public User getById(@PathVariable("id") int id){
+		return userService.getById(id);
+	}
+
+	
 
 	@PostMapping(
 			value="/save",
@@ -142,6 +150,8 @@ public class UserRestController {
 		return userService.saveUser(user);
 
 	}
+	
+	
 	
 
 }
