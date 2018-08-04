@@ -29,23 +29,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.support.ServletContextLiveBeansView;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unisalento.se.saw.Iservices.IUserService;
 import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.domain.Usertype;
+import it.unisalento.se.saw.exceptions.UserNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserRestControllerTest {
@@ -78,7 +85,7 @@ private MockMvc mockMvc;
 		user.setSurname("contino");
 		user.setEmail("riccardo@gmail.com");
 		user.setPassword("riccardo");
-		user.setStudycourse(new Studycourse("Ingegneria del software", "test", null, null, null));
+		user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
 		
 		when(userServiceMock.getById(1)).thenReturn(user);
 		
@@ -87,18 +94,200 @@ private MockMvc mockMvc;
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.name", is("riccardo")))
 			.andExpect(jsonPath("$.surname", is("contino")))
-			.andExpect(jsonPath("$.mail", is("riccardo@gmail.com")))
+			.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
 			.andExpect(jsonPath("$.password", is("riccardo")))
-			.andExpect(jsonPath("$.", is("riccardo")));
+			.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
 		
 		verify(userServiceMock, times(1)).getById(1);
 		verifyNoMoreInteractions(userServiceMock);
 	}
 	
+	@Test
+	public void loginTest() throws Exception {
+		User user = new User();
+		
+		user.setName("riccardo");
+		user.setSurname("contino");
+		user.setEmail("riccardo@gmail.com");
+		user.setPassword("riccardo");
+		
+		user.setUsertype(new Usertype("student", null));
+		user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+		when(userServiceMock.getUserByMail_Pwd("riccardo@gmail.com", "riccardo")).thenReturn(user);
+		
+		mockMvc.perform(get("/user/getUserByMail_Pwd/{mail}/{password}", "riccardo@gmail.com", "riccardo"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.name", is("riccardo")))
+		.andExpect(jsonPath("$.surname", is("contino")))
+		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
+		.andExpect(jsonPath("$.password", is("riccardo")))
+		.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+	
+		verify(userServiceMock, times(1)).getUserByMail_Pwd("riccardo@gmail.com", "riccardo");
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
 	
 	
+	@Test
+	public void loginErrorTest() throws Exception {
+		User user = new User();
+		
+		user.setName("test");
+		user.setSurname("contino");
+		user.setEmail("test@gmail.com");
+		user.setPassword("test");
+		
+		user.setUsertype(new Usertype("student", null));
+		user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+		when(userServiceMock.getUserByMail_Pwd(Mockito.anyString(), Mockito.anyString())).thenThrow(new UserNotFoundException());
+		
+		mockMvc.perform(get("/user/getUserByMail_Pwd/{mail}/{password}", "test@gmail.com", "test"))
+		.andExpect(status().isNotFound());
+	
+		verify(userServiceMock, times(1)).getUserByMail_Pwd(user.getEmail(), user.getPassword());
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
+	@Test
+	public void getUsersEnrolledTeachingTest() throws Exception {
+		User user1 = new User();
+		User user2 = new User();
+		
+		
+		user1.setName("riccardo");
+		user1.setSurname("contino");
+		user1.setEmail("riccardo@gmail.com");
+		user1.setPassword("riccardo");
+		
+		user1.setUsertype(new Usertype("student", null));
+		user1.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+		
+		user2.setName("andrea");
+		user2.setSurname("della monaca");
+		user2.setEmail("andrea@libero.it");
+		user2.setPassword("andrea");
+		
+		user2.setUsertype(new Usertype("student", null));
+		user2.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+
+		
+		when(userServiceMock.getUserEnrolledTeaching("Software Engineering")).thenReturn(Arrays.asList(user1, user2));
+		
+		mockMvc.perform(get("/user/getUserEnrolledTeaching/{nameTeaching}", "Software Engineering"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$[0].name", is("riccardo")))
+		.andExpect(jsonPath("$[0].surname", is("contino")))
+		.andExpect(jsonPath("$[0].email", is("riccardo@gmail.com")))
+		.andExpect(jsonPath("$[0].studycourse.name", is("Ingegneria dell'informazione")))
+		.andExpect(jsonPath("$[1].name", is("andrea")))
+		.andExpect(jsonPath("$[1].surname", is("della monaca")))
+		.andExpect(jsonPath("$[1].email", is("andrea@libero.it")))
+		.andExpect(jsonPath("$[1].studycourse.name", is("Ingegneria dell'informazione")));
+	
+		verify(userServiceMock, times(1)).getUserEnrolledTeaching("Software Engineering");
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
+	
+	/*
+	@Test
+	public void saveUserTest() throws Exception {
+		
+		User user = new User();
+		
+		user.setName("antonio");
+		user.setSurname("mariani");
+		user.setEmail("amariani@gmail.com");
+		user.setPassword("antonio");
+		user.setUsertype(new Usertype("student", null));
+		user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+		when(userServiceMock.saveUser(Mockito.any(user.getClass()))).thenReturn(user);
+		
+		mockMvc.perform(
+			post("/user/save")
+			.contentType(APPLICATION_JSON_UTF8)
+			.content(new ObjectMapper().writeValueAsString(user))
+			)
+			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.name", is("antonio")))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.surname", is("mariani")))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.email", is("amariani@gmail.com")))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.password", is("antonio")))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.usertype.typeName", is("student")))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+		
+		verify(userServiceMock, times(1)).saveUser(user);
+		verifyNoMoreInteractions(userServiceMock);
+	}
+	
+	*/
 	
 	
+	@Test
+	public void getProfessorByNameTeachingTest() throws Exception {
+		
+		User user3 = new User();
+
+		user3.setName("luca");
+		user3.setSurname("mainetti");
+		user3.setEmail("luca@gmail.com");
+		user3.setPassword("luca");
+		
+		user3.setUsertype(new Usertype("professor", null));
+		user3.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+
+		
+		when(userServiceMock.getProfessorByNameTeaching("Software Engineering")).thenReturn(user3);
+		
+		mockMvc.perform(get("/user/getProfessorByNameTeaching/{nameTeaching}", "Software Engineering"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is("luca")))
+		.andExpect(jsonPath("$.surname", is("mainetti")))
+		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
+		.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+	
+		verify(userServiceMock, times(1)).getProfessorByNameTeaching("Software Engineering");
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
+	
+	
+	@Test
+	public void getByMailTest() throws Exception {
+		
+		User user3 = new User();
+
+		user3.setName("luca");
+		user3.setSurname("mainetti");
+		user3.setEmail("luca@gmail.com");
+		user3.setPassword("luca");
+		
+		user3.setUsertype(new Usertype("professor", null));
+		user3.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+
+		
+		when(userServiceMock.getUserByMail("luca@gmail.com")).thenReturn(user3);
+		
+		mockMvc.perform(get("/user/userByMail/{mail}/", "luca@gmail.com"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is("luca")))
+		.andExpect(jsonPath("$.surname", is("mainetti")))
+		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
+		.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+	
+		verify(userServiceMock, times(1)).getUserByMail("luca@gmail.com");
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
