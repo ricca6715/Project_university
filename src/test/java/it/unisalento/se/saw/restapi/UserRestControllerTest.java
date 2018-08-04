@@ -44,6 +44,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import it.unisalento.se.saw.Iservices.IUserService;
+import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.User;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,6 +76,9 @@ private MockMvc mockMvc;
 		
 		user.setName("riccardo");
 		user.setSurname("contino");
+		user.setEmail("riccardo@gmail.com");
+		user.setPassword("riccardo");
+		user.setStudycourse(new Studycourse("Ingegneria del software", "test", null, null, null));
 		
 		when(userServiceMock.getById(1)).thenReturn(user);
 		
@@ -82,7 +86,10 @@ private MockMvc mockMvc;
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.name", is("riccardo")))
-			.andExpect(jsonPath("$.surname", is("contino")));
+			.andExpect(jsonPath("$.surname", is("contino")))
+			.andExpect(jsonPath("$.mail", is("riccardo@gmail.com")))
+			.andExpect(jsonPath("$.password", is("riccardo")))
+			.andExpect(jsonPath("$.", is("riccardo")));
 		
 		verify(userServiceMock, times(1)).getById(1);
 		verifyNoMoreInteractions(userServiceMock);
