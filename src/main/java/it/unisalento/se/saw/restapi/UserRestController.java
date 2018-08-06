@@ -48,6 +48,7 @@ public class UserRestController {
 			   produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
 			 public UserModel getUserByMail_Pwd(@PathVariable("mail") String mail, @PathVariable("password") String password) throws UserNotFoundException {
 
+<<<<<<< HEAD
 			  User user =  userService.getUserByMail_Pwd(mail, password);
 			  UserModel userModel = new UserModel();
 			  userModel.setIdUser(user.getIdUser());
@@ -56,7 +57,18 @@ public class UserRestController {
 			  userModel.setPassword(user.getPassword());
 			  userModel.setSurname(user.getSurname());
 			  userModel.setFcmToken(user.getFcmtoken());
+=======
+		User user =  userService.getUserByMail_Pwd(mail, password);
+		UserModel userModel = new UserModel();
+		userModel.setIdUser(user.getIdUser());
+		userModel.setEmail(user.getEmail());
+		userModel.setName(user.getName());
+		userModel.setPassword(user.getPassword());
+		userModel.setSurname(user.getSurname());
+		userModel.setFcmToken(user.getFcmtoken());
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 
+<<<<<<< HEAD
 			  UserTypeModel utm = new UserTypeModel();
 			  utm.setIdUserType(user.getUsertype().getIdUserType());
 			  utm.setTypeName(user.getUsertype().getTypeName());
@@ -70,6 +82,21 @@ public class UserRestController {
 			  }
 			  return userModel;
 			 }
+=======
+		UserTypeModel utm = new UserTypeModel();
+		utm.setIdUserType(user.getUsertype().getIdUserType());
+		utm.setTypeName(user.getUsertype().getTypeName());
+		userModel.setUsertype(utm);
+		if(utm.getTypeName() == "student") {
+			StudyCourseModel scm = new StudyCourseModel();
+			scm.setIdStudyCourse(user.getStudycourse().getIdStudyCourse());
+			scm.setName(user.getStudycourse().getName());
+			scm.setDescription(user.getStudycourse().getDescription());
+			userModel.setStudycourse(scm);
+		}
+		return userModel;
+	}
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 	
 	@GetMapping(
 			value= "/getUserEnrolledTeaching/{nameTeaching}",
@@ -120,7 +147,6 @@ public class UserRestController {
 			produces= MediaType.APPLICATION_JSON_VALUE,
 			consumes= MediaType.APPLICATION_JSON_VALUE)
 	public User saveUser(@RequestBody UserModel userModel) {
-	
 	  
 	  User user = new User();
 	  user.setName(userModel.getName());

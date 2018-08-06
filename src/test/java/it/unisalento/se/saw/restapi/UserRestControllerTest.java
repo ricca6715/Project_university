@@ -34,9 +34,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+<<<<<<< HEAD
+=======
+import org.mockito.InjectMocks;
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+<<<<<<< HEAD
+=======
+import org.mockito.MockitoAnnotations;
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
@@ -55,11 +63,12 @@ import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.domain.Usertype;
 import it.unisalento.se.saw.exceptions.UserNotFoundException;
+import it.unisalento.se.saw.models.TokenFormModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserRestControllerTest {
 	
-private MockMvc mockMvc;
+	private MockMvc mockMvc;
 	
 	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
 			MediaType.APPLICATION_JSON.getType(), 
@@ -75,7 +84,6 @@ private MockMvc mockMvc;
 		mockMvc = MockMvcBuilders.standaloneSetup(new UserRestController(userServiceMock))
 					.setViewResolvers(viewResolver())
 					.build();
-		
 	}
 	
 	@Test
@@ -105,7 +113,7 @@ private MockMvc mockMvc;
 	}
 	
 	@Test
-	public void loginTest() throws Exception {
+	public void StudentloginTest() throws Exception {
 		User user = new User();
 		
 		user.setName("riccardo");
@@ -126,6 +134,31 @@ private MockMvc mockMvc;
 		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
 		.andExpect(jsonPath("$.password", is("riccardo")))
 		.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+	
+		verify(userServiceMock, times(1)).getUserByMail_Pwd("riccardo@gmail.com", "riccardo");
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
+	
+	@Test
+	public void Prof_SecrloginTest() throws Exception {
+		User user = new User();
+		
+		user.setName("riccardo");
+		user.setSurname("contino");
+		user.setEmail("riccardo@gmail.com");
+		user.setPassword("riccardo");
+		user.setUsertype(new Usertype("professor", null));
+		
+		when(userServiceMock.getUserByMail_Pwd("riccardo@gmail.com", "riccardo")).thenReturn(user);
+		
+		mockMvc.perform(get("/user/getUserByMail_Pwd/{mail}/{password}", "riccardo@gmail.com", "riccardo"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.name", is("riccardo")))
+		.andExpect(jsonPath("$.surname", is("contino")))
+		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
+		.andExpect(jsonPath("$.password", is("riccardo")));
 	
 		verify(userServiceMock, times(1)).getUserByMail_Pwd("riccardo@gmail.com", "riccardo");
 		verifyNoMoreInteractions(userServiceMock);
@@ -197,26 +230,25 @@ private MockMvc mockMvc;
 		
 	}
 	
+<<<<<<< HEAD
 	
 
 	
 	
 	
 	
+=======
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 	@Test
 	public void getProfessorByNameTeachingTest() throws Exception {
 		
 		User user3 = new User();
-
 		user3.setName("luca");
 		user3.setSurname("mainetti");
 		user3.setEmail("luca@gmail.com");
 		user3.setPassword("luca");
-		
 		user3.setUsertype(new Usertype("professor", null));
 		user3.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
-		
-
 		
 		when(userServiceMock.getProfessorByNameTeaching("Software Engineering")).thenReturn(user3);
 		
@@ -237,16 +269,12 @@ private MockMvc mockMvc;
 	public void getByMailTest() throws Exception {
 		
 		User user3 = new User();
-
 		user3.setName("luca");
 		user3.setSurname("mainetti");
 		user3.setEmail("luca@gmail.com");
 		user3.setPassword("luca");
-		
 		user3.setUsertype(new Usertype("professor", null));
 		user3.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
-		
-
 		
 		when(userServiceMock.getUserByMail("luca@gmail.com")).thenReturn(user3);
 		
@@ -261,7 +289,43 @@ private MockMvc mockMvc;
 		verifyNoMoreInteractions(userServiceMock);
 		
 	}
+	/*
+	@Test
+	public void setTokenTest() throws Exception {
+		
+		User user = new User();
+		user.setName("luca");
+		user.setSurname("mainetti");
+		user.setEmail("luca@gmail.com");
+		user.setPassword("luca");
+		user.setUsertype(new Usertype("professor", null));
+		
+		when(userServiceMock.getById(1)).thenReturn(user);
+		
+		User usernew = new User();
+		usernew.setName("luca");
+		usernew.setSurname("mainetti");
+		usernew.setEmail("luca@gmail.com");
+		usernew.setPassword("luca");
+		usernew.setUsertype(new Usertype("professor", null));
+		usernew.setFcmtoken("prova");
+		
+		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(usernew);
+		
+		TokenFormModel tfm = new TokenFormModel();
+		tfm.setIdUser(1);
+		tfm.setToken("prova");
+		
+		mockMvc.perform(post("/user/setToken")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(new ObjectMapper().writeValueAsString(tfm)))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is("luca")))
+		.andExpect(jsonPath("$.surname", is("mainetti")))
+		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
+		.andExpect(jsonPath("$.fcmtoken", is("prova")));
 	
+<<<<<<< HEAD
 	@Test
 	 public void saveUserTest() throws Exception {
 	  
@@ -297,6 +361,14 @@ private MockMvc mockMvc;
 	  verifyNoMoreInteractions(userServiceMock);
 	 }
 	
+=======
+		verify(userServiceMock, times(1)).getById(1);
+		verify(userServiceMock, times(1)).saveUser(Matchers.refEq(usernew));
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
+	*/
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
