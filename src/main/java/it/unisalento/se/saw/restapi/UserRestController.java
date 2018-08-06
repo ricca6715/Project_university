@@ -53,7 +53,7 @@
 		  utm.setIdUserType(user.getUsertype().getIdUserType());
 		  utm.setTypeName(user.getUsertype().getTypeName());
 		  userModel.setUsertype(utm);
-		  if(utm.getTypeName() == "student") {
+		  if(utm.getTypeName().equals("student")) {
 			   StudyCourseModel scm = new StudyCourseModel();
 			   scm.setIdStudyCourse(user.getStudycourse().getIdStudyCourse());
 			   scm.setName(user.getStudycourse().getName());
