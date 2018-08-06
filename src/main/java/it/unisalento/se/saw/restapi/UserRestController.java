@@ -48,24 +48,26 @@ public class UserRestController {
 	public UserModel getUserByMail_Pwd(@PathVariable("mail") String mail, @PathVariable("password") String password) throws UserNotFoundException {
 
 		User user =  userService.getUserByMail_Pwd(mail, password);
-		  UserModel userModel = new UserModel();
-		  userModel.setIdUser(user.getIdUser());
-		  userModel.setEmail(user.getEmail());
-		  userModel.setName(user.getName());
-		  userModel.setPassword(user.getPassword());
-		  userModel.setSurname(user.getSurname());
-		  userModel.setFcmToken(user.getFcmtoken());
+		UserModel userModel = new UserModel();
+		userModel.setIdUser(user.getIdUser());
+		userModel.setEmail(user.getEmail());
+		userModel.setName(user.getName());
+		userModel.setPassword(user.getPassword());
+		userModel.setSurname(user.getSurname());
+		userModel.setFcmToken(user.getFcmtoken());
 
-		  StudyCourseModel scm = new StudyCourseModel();
-		  scm.setIdStudyCourse(user.getStudycourse().getIdStudyCourse());
-		  scm.setName(user.getStudycourse().getName());
-		  scm.setDescription(user.getStudycourse().getDescription());
-		  UserTypeModel utm = new UserTypeModel();
-		  utm.setIdUserType(user.getUsertype().getIdUserType());
-		  utm.setTypeName(user.getUsertype().getTypeName());
-		  userModel.setStudycourse(scm);
-		  userModel.setUsertype(utm);
-		  return userModel;
+		UserTypeModel utm = new UserTypeModel();
+		utm.setIdUserType(user.getUsertype().getIdUserType());
+		utm.setTypeName(user.getUsertype().getTypeName());
+		userModel.setUsertype(utm);
+		if(utm.getTypeName() == "student") {
+			StudyCourseModel scm = new StudyCourseModel();
+			scm.setIdStudyCourse(user.getStudycourse().getIdStudyCourse());
+			scm.setName(user.getStudycourse().getName());
+			scm.setDescription(user.getStudycourse().getDescription());
+			userModel.setStudycourse(scm);
+		}
+		return userModel;
 	}
 	
 	@GetMapping(
@@ -117,7 +119,6 @@ public class UserRestController {
 			produces= MediaType.APPLICATION_JSON_VALUE,
 			consumes= MediaType.APPLICATION_JSON_VALUE)
 	public User saveUser(@RequestBody UserModel userModel) {
-	
 	  
 	  User user = new User();
 	  user.setName(userModel.getName());
