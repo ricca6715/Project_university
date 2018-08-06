@@ -60,6 +60,7 @@ import it.unisalento.se.saw.domain.Classroom;
 import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.Teaching;
+import it.unisalento.se.saw.exceptions.LectureNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LectureRestControllerTest {
@@ -218,9 +219,32 @@ public class LectureRestControllerTest {
 		
 	}
 	
+	@Test
+	public void getLectureByIdErrorTest() throws Exception {
+		Lecture l1 = new Lecture();
+		l1.setIdLecture(1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = sdf.parse("2012-12-21");
+		l1.setDate(d);
+		l1.setHour("13-15");
+		l1.setDescription("it was a good lesson");
+		l1.setDuration("3");
+		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
+		
+		when(lectureServiceMock.getLectureById(1)).thenThrow(new LectureNotFoundException());
+		
+		mockMvc.perform(get("/lecture/getLectureById/{id}",1))
+			.andExpect(status().isNotFound());
+		
+		verify(lectureServiceMock, times(1)).getLectureById(1);
+		verifyNoMoreInteractions(lectureServiceMock);
+		
+	}
+	
 	
 	@Test
-	public void getLectureByIdClassroomTest() throws Exception {
+	public void getLecturesByIdClassroomTest() throws Exception {
 		
 		Lecture l1 = new Lecture();
 		l1.setIdLecture(1);
@@ -322,7 +346,7 @@ public class LectureRestControllerTest {
 	
 	
 	@Test
-	public void getDailyLectureByIdProfAndDateTest() throws Exception {
+	public void getDailyLecturesByIdProfAndDateTest() throws Exception {
 		
 		Lecture l1 = new Lecture();
 		l1.setIdLecture(1);

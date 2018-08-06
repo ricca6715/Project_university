@@ -45,7 +45,7 @@ public class TeachingMaterialRestController {
 	
 	@PostMapping(
 			value = "/saveFile",
-			consumes =  MediaType.MULTIPART_FORM_DATA_VALUE			)
+			consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
 	public Teachingmaterial saveFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("lectureid") String lectureid,
 			@RequestParam("userid") String userid) {

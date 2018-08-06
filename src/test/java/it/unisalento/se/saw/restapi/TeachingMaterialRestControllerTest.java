@@ -27,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
@@ -81,6 +83,38 @@ public class TeachingMaterialRestControllerTest {
 	}
 	
 	@Test
+	public void getTeachingMaterialByIdLectureTest() throws Exception {
+		Teachingmaterial tm1 = new Teachingmaterial();
+		tm1.setIdTeachingMaterial(1);
+		tm1.setLink("C:\\Users\\ricca\\Desktop\\ciao.txt");
+		tm1.setName("testMaterial");
+		tm1.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		tm1.setType("link");
+		Teachingmaterial tm2 = new Teachingmaterial();
+		tm2.setIdTeachingMaterial(2);
+		tm2.setLink("C:\\Users\\ricca\\Desktop\\ciao2.txt");
+		tm2.setName("testMaterial2");
+		tm2.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		tm2.setType("link");
+		
+		when(teachingMaterialServiceMock.getTeachingMaterialByIdLecture(1))
+		.thenReturn(Arrays.asList(tm1, tm2));
+		
+		mockMvc.perform(get("/teachingmaterial/getTeachingMaterialByIdLecture/{idLecture}",1))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$[0].name", is("testMaterial")))
+			.andExpect(jsonPath("$[0].type", is("link")))
+			.andExpect(jsonPath("$[0].link", is("C:\\Users\\ricca\\Desktop\\ciao.txt")))
+			.andExpect(jsonPath("$[1].name", is("testMaterial2")))
+			.andExpect(jsonPath("$[1].type", is("link")))
+			.andExpect(jsonPath("$[1].link", is("C:\\Users\\ricca\\Desktop\\ciao2.txt")));
+			
+		verify(teachingMaterialServiceMock, times(1)).getTeachingMaterialByIdLecture(1);
+		verifyNoMoreInteractions(teachingMaterialServiceMock);
+	}
+	
+	@Test
 	public void removeMaterialByIdTest() throws Exception {
 		Teachingmaterial tm = new Teachingmaterial();
 		tm.setIdTeachingMaterial(1);
@@ -99,9 +133,52 @@ public class TeachingMaterialRestControllerTest {
 			
 		verify(teachingMaterialServiceMock, times(1)).getTeachingMaterialById(1);
 		verify(teachingMaterialServiceMock, times(1)).removeMaterial(1);
-		verifyNoMoreInteractions(teachingMaterialServiceMock);
+		verifyNoMoreInteractions(teachingMaterialServiceMock);	
+	}
+	
+	@Test
+	public void removeFileMaterialByIdTest() throws Exception {
+		PrintWriter writer = new PrintWriter("testfile.txt", "UTF-8");
+		writer.println("provaprovaprova");
+		writer.close();
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		tm.setLink("testfile.txt");
+		tm.setName("testMaterial");
+		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		tm.setType("txt");
+		boolean deleted = true;
+		when(teachingMaterialServiceMock.getTeachingMaterialById(1)).thenReturn(tm);
+		when(teachingMaterialServiceMock.removeMaterial(1)).thenReturn(deleted);
 		
+		mockMvc.perform(get("/teachingmaterial/delete/{idTeachingmaterial}",1))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$", is(deleted)));
+			
+		verify(teachingMaterialServiceMock, times(1)).getTeachingMaterialById(1);
+		verify(teachingMaterialServiceMock, times(1)).removeMaterial(1);
+		verifyNoMoreInteractions(teachingMaterialServiceMock);	
+	}
+	
+	@Test
+	public void removeFileMaterialByIdErrorTest() throws Exception {
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		tm.setLink("testfile.txt");
+		tm.setName("testMaterial");
+		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		tm.setType("txt");
+		boolean deleted = false;
+		when(teachingMaterialServiceMock.getTeachingMaterialById(1)).thenReturn(tm);
 		
+		mockMvc.perform(get("/teachingmaterial/delete/{idTeachingmaterial}",1))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$", is(deleted)));
+			
+		verify(teachingMaterialServiceMock, times(1)).getTeachingMaterialById(1);
+		verifyNoMoreInteractions(teachingMaterialServiceMock);	
 	}
 	
 	public ViewResolver viewResolver() {
