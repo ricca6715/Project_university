@@ -142,7 +142,7 @@ public class StudyCourseRestControllerTest {
 	
 	@Test
 	public void getStudycourseByInvalidNameTest() throws Exception {
-Studycourse sc = new Studycourse();
+		Studycourse sc = new Studycourse();
 		
 		sc.setName("Software Engineering");
 		sc.setDescription("Software engineering teaching");
