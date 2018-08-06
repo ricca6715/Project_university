@@ -21,4 +21,7 @@ public interface LectureSatisfactionRepository extends JpaRepository<Lecturesati
 	@Query("select ls from Lecturesatisfaction ls where ls.lecture.idLecture=:idLecture")
 	public List<Lecturesatisfaction> getLectureSatisfactionsByIdLecture(@Param("idLecture") int idLecture );
 
+	@Query("select ls from Lecturesatisfaction ls where ls.user.idUser=:idUser and ls.lecture.idLecture=:idLecture")
+	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(@Param("idUser")int idUser, @Param("idLecture") int idLecture);
+
 }

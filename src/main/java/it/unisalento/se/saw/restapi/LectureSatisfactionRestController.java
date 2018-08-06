@@ -41,6 +41,13 @@ public class LectureSatisfactionRestController {
 		return lsService.getLectureSatisfactionsByIdLecture(idLecture);
 	}
 	
+	@GetMapping(
+			value = "/getLectureSatisfactionByIdUserAndIdLecture/{idUser}/{idLecture}",
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(@PathVariable("idUser") int idUser, @PathVariable("idLecture") int idLecture) {
+		return lsService.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
+	}
+	
 	
 	
 

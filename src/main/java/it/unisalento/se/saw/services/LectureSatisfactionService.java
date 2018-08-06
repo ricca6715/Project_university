@@ -27,5 +27,10 @@ public class LectureSatisfactionService implements ILectureSatisfactionService {
 		return lsRepository.getLectureSatisfactionsByIdLecture(idLecture);
 	}
 
+	@Override
+	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(int idUser, int idLecture) {
+		return lsRepository.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
+	}
+
 
 }
