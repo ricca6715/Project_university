@@ -51,6 +51,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
 import it.unisalento.se.saw.Iservices.IMaterialSatisfactionService;
+import it.unisalento.se.saw.domain.Classroom;
+import it.unisalento.se.saw.domain.Materialsatisfaction;
+import it.unisalento.se.saw.domain.Report;
+import it.unisalento.se.saw.domain.Reportstatus;
+import it.unisalento.se.saw.domain.Teachingmaterial;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MaterialSatisfactionRestControllerTest {
@@ -72,6 +77,50 @@ public class MaterialSatisfactionRestControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(new MaterialSatisfactionRestController(materialSatisfactionServiceMock))
 					.setViewResolvers(viewResolver())
 					.build();
+	}
+	
+	@Test
+	public void getAverageRatingByIdMaterialTest() throws Exception {
+	
+		Double rating = 3.33;
+		
+		when(materialSatisfactionServiceMock.getAverageRatingByIdMaterial(1))
+		.thenReturn(rating);
+		
+		mockMvc.perform(get("/materialsatisfaction/getAverageRatingByIdMaterial/{idMaterial}", 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$", is(3.33)));
+	
+		verify(materialSatisfactionServiceMock, times(1)).getAverageRatingByIdMaterial(1);
+		verifyNoMoreInteractions(materialSatisfactionServiceMock);
+	}
+	
+	@Test
+	public void getMaterialSatisfactionByIdMaterialTest() throws Exception {
+	
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		Materialsatisfaction m1 = new Materialsatisfaction();
+		m1.setIdMaterialSatisfaction(1);
+		m1.setLevel(2);
+		m1.setTeachingmaterial(tm);
+		Materialsatisfaction m2 = new Materialsatisfaction();
+		m2.setIdMaterialSatisfaction(2);
+		m2.setLevel(5);
+		m2.setTeachingmaterial(tm);
+		
+		when(materialSatisfactionServiceMock.getMaterialSatisfactionByIdMaterial(1))
+		.thenReturn(Arrays.asList(m1, m2));
+		
+		mockMvc.perform(get("/materialsatisfaction/getMaterialSatisfactionByIdMaterial/{idMaterial}", 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$[0].level", is(2)))
+		.andExpect(jsonPath("$[1].level", is(5)));
+	
+		verify(materialSatisfactionServiceMock, times(1)).getMaterialSatisfactionByIdMaterial(1);
+		verifyNoMoreInteractions(materialSatisfactionServiceMock);
 	}
 	
 	

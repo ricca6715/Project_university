@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.ITeachingService;
 import it.unisalento.se.saw.domain.Teaching;
+import it.unisalento.se.saw.exceptions.TeachingNotFoundException;
 import it.unisalento.se.saw.repositories.TeachingRepository;
 
 @Service
@@ -17,8 +18,12 @@ public class TeachingService implements ITeachingService {
 	TeachingRepository teachingRepository;
 	
 	@Transactional
-	public Teaching getTeachingByName(String name) {
-		return teachingRepository.getTeachingByName(name);
+	public Teaching getTeachingByName(String name) throws TeachingNotFoundException {
+		Teaching t = teachingRepository.getTeachingByName(name);
+		if (t == null) {
+			throw new TeachingNotFoundException();
+		}
+		return t;
 	}
 	
 	@Transactional

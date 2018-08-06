@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.IReportService;
 import it.unisalento.se.saw.domain.Report;
+import it.unisalento.se.saw.exceptions.ReportNotFoundException;
 import it.unisalento.se.saw.repositories.ReportRepository;
 
 @Service
@@ -31,8 +32,12 @@ public class ReportService implements IReportService {
 	}
 
 	@Transactional
-	public Report getById(int idReport) {
-		return reportRepository.getReportById(idReport);
+	public Report getById(int idReport) throws ReportNotFoundException {
+		Report r = reportRepository.getReportById(idReport);
+		if (r == null) {
+			throw new ReportNotFoundException();
+		}
+		return r;
 	}
 
 

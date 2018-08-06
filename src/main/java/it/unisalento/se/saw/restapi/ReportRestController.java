@@ -21,6 +21,7 @@ import it.unisalento.se.saw.domain.Classroom;
 import it.unisalento.se.saw.domain.Report;
 import it.unisalento.se.saw.domain.Reportstatus;
 import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.exceptions.ReportNotFoundException;
 import it.unisalento.se.saw.models.ReportModel;
 
 @CrossOrigin
@@ -58,7 +59,7 @@ public class ReportRestController {
 	@GetMapping(
 			value = "/getReportById/{idReport}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Report getReportById(@PathVariable("idReport") int idReport) {
+	public Report getReportById(@PathVariable("idReport") int idReport) throws ReportNotFoundException{
 		return reportService.getById(idReport);
 	}
 	

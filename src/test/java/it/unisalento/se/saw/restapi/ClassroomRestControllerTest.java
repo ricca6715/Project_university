@@ -51,6 +51,9 @@ import org.springframework.web.servlet.view.JstlView;
 
 import it.unisalento.se.saw.Iservices.IClassroomService;
 import it.unisalento.se.saw.Iservices.ITeachingService;
+import it.unisalento.se.saw.domain.Classroom;
+import it.unisalento.se.saw.domain.Report;
+import it.unisalento.se.saw.domain.Reportstatus;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClassroomRestControllerTest {
@@ -74,6 +77,35 @@ public class ClassroomRestControllerTest {
 					.setViewResolvers(viewResolver())
 					.build();
 	}
+	
+	@Test
+	public void getAllTest() throws Exception {
+		
+		Classroom cl1 = new Classroom();
+		cl1.setDescription("prova");
+		cl1.setName("y1");
+		Classroom cl2 = new Classroom();
+		cl2.setDescription("prova2");
+		cl2.setName("y2");
+		
+		when(classroomServiceMock.getAll()).thenReturn(Arrays.asList(cl1, cl2));
+		
+		mockMvc.perform(get("/classroom/getAll"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$[0].name", is("y1")))
+		.andExpect(jsonPath("$[0].description", is("prova")))
+		.andExpect(jsonPath("$[1].name", is("y2")))
+		.andExpect(jsonPath("$[1].description", is("prova2")));
+		
+		verify(classroomServiceMock, times(1)).getAll();
+		verifyNoMoreInteractions(classroomServiceMock);
+	}
+	/*
+	@Test
+	public void saveClassroomTest() throws Exception {
+		
+	}*/
 	
 	
 	public ViewResolver viewResolver() {

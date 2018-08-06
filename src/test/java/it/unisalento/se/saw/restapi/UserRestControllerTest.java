@@ -312,43 +312,6 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
 		.andExpect(jsonPath("$.fcmtoken", is("prova")));
 	
-<<<<<<< HEAD
-	@Test
-	 public void saveUserTest() throws Exception {
-	  
-	  
-		
-	  User user = new User();
-	  user.setIdUser(20);
-	  user.setName("antonio");
-	  user.setSurname("mariani");
-	  user.setEmail("amariani@gmail.com");
-	  user.setPassword("antonio");
-	  user.setUsertype(new Usertype("student", null));
-	  user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
-	  
-	  when(userServiceMock.saveUser(Mockito.any(user.getClass()))).thenReturn(user);
-	  
-	  mockMvc.perform(
-	   post("/user/save")
-	   .contentType(APPLICATION_JSON_UTF8)
-	   .content(new ObjectMapper().writeValueAsString(user))
-	   )
-	   .andExpect(status().isOk())
-	   .andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_JSON_UTF8))
-	   .andExpect(MockMvcResultMatchers.jsonPath("$.name", is("antonio")))
-	   .andExpect(MockMvcResultMatchers.jsonPath("$.surname", is("mariani")))
-	   .andExpect(MockMvcResultMatchers.jsonPath("$.email", is("amariani@gmail.com")))
-	   .andExpect(MockMvcResultMatchers.jsonPath("$.password", is("antonio")))
-	   .andExpect(MockMvcResultMatchers.jsonPath("$.usertype.typeName", is("student")))
-	   .andExpect(MockMvcResultMatchers.jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
-	  
-	
-	  verify(userServiceMock, times(1)).saveUser(Matchers.refEq(user));
-	  verifyNoMoreInteractions(userServiceMock);
-	 }
-	
-=======
 		verify(userServiceMock, times(1)).getById(1);
 		verify(userServiceMock, times(1)).saveUser(Matchers.refEq(usernew));
 		verifyNoMoreInteractions(userServiceMock);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.unisalento.se.saw.Iservices.ITeachingService;
 import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.Teaching;
+import it.unisalento.se.saw.exceptions.TeachingNotFoundException;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -39,7 +40,7 @@ public class TeachingRestController {
 	@GetMapping(
 			value = "/getTeachingByName/{name}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public Teaching getTeachingByName(@PathVariable("name") String name) {
+	public Teaching getTeachingByName(@PathVariable("name") String name) throws TeachingNotFoundException {
 		return teachingService.getTeachingByName(name);
 	}
 	

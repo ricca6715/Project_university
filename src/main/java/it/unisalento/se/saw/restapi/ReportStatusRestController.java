@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.IReportStatusService;
 import it.unisalento.se.saw.domain.Reportstatus;
+import it.unisalento.se.saw.exceptions.ReportstatusNotFoundException;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -33,7 +34,7 @@ public class ReportStatusRestController {
 	@GetMapping(
 			value = "/getReportStatusById/{idReportStatus}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public Reportstatus getReportStatusById(@PathVariable("idReportStatus") int idReportStatus) {
+	public Reportstatus getReportStatusById(@PathVariable("idReportStatus") int idReportStatus) throws ReportstatusNotFoundException {
 		return rsService.getReportStatusById(idReportStatus);
 	}
 	

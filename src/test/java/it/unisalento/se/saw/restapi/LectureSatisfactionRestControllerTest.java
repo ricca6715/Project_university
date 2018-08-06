@@ -52,6 +52,10 @@ import org.springframework.web.servlet.view.JstlView;
 
 import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
 import it.unisalento.se.saw.Iservices.ILectureService;
+import it.unisalento.se.saw.domain.Lecture;
+import it.unisalento.se.saw.domain.Lecturesatisfaction;
+import it.unisalento.se.saw.domain.Materialsatisfaction;
+import it.unisalento.se.saw.domain.Teachingmaterial;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LectureSatisfactionRestControllerTest {
@@ -72,6 +76,50 @@ public class LectureSatisfactionRestControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(new LectureSatisfactionRestController(lectureSatServiceMock))
 					.setViewResolvers(viewResolver())
 					.build();
+	}
+	
+	@Test
+	public void getAverageRatingByIdLectureTest() throws Exception {
+	
+		Double rating = 3.33;
+		
+		when(lectureSatServiceMock.getAverageRatingByIdLecture(1))
+		.thenReturn(rating);
+		
+		mockMvc.perform(get("/lecturesatisfaction/getAverageRatingByIdLecture/{idLecture}", 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$", is(3.33)));
+	
+		verify(lectureSatServiceMock, times(1)).getAverageRatingByIdLecture(1);
+		verifyNoMoreInteractions(lectureSatServiceMock);
+	}
+	
+	@Test
+	public void getLectureSatisfactionByIdLectureTest() throws Exception {
+	
+		Lecture l = new Lecture();
+		l.setIdLecture(1);
+		Lecturesatisfaction l1 = new Lecturesatisfaction();
+		l1.setIdlectureSatisfaction(1);
+		l1.setLevel(2);
+		l1.setLecture(l);
+		Lecturesatisfaction l2 = new Lecturesatisfaction();
+		l2.setIdlectureSatisfaction(2);
+		l2.setLevel(5);
+		l2.setLecture(l);
+		
+		when(lectureSatServiceMock.getLectureSatisfactionsByIdLecture(1))
+		.thenReturn(Arrays.asList(l1, l2));
+		
+		mockMvc.perform(get("/lecturesatisfaction/getLectureSatisfactionsByIdLecture/{idLecture}", 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$[0].level", is(2)))
+		.andExpect(jsonPath("$[1].level", is(5)));
+	
+		verify(lectureSatServiceMock, times(1)).getLectureSatisfactionsByIdLecture(1);
+		verifyNoMoreInteractions(lectureSatServiceMock);
 	}
 	
 	

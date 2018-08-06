@@ -52,6 +52,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 import it.unisalento.se.saw.Iservices.IReportService;
 import it.unisalento.se.saw.Iservices.IReportStatusService;
+import it.unisalento.se.saw.domain.Reportstatus;
+import it.unisalento.se.saw.domain.Teaching;
+import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.domain.Usertype;
+import it.unisalento.se.saw.exceptions.ReportstatusNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReportStatusControllerTest {
@@ -73,6 +78,42 @@ public class ReportStatusControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(new ReportStatusRestController(reportStatusServiceMock))
 					.setViewResolvers(viewResolver())
 					.build();
+	}
+	
+	@Test
+	public void getReportStatusByIdTest() throws Exception {
+		
+		Reportstatus rs = new Reportstatus();
+		rs.setIdreportStatus(1);
+		rs.setName("In progress");
+		
+		when(reportStatusServiceMock.getReportStatusById(1)).thenReturn(rs);
+		
+		mockMvc.perform(get("/reportstatus/getReportStatusById/{idReportStatus}", 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.idreportStatus", is(1)))
+		.andExpect(jsonPath("$.name", is("In progress")));
+	
+		verify(reportStatusServiceMock, times(1)).getReportStatusById(1);
+		verifyNoMoreInteractions(reportStatusServiceMock);
+	}
+	
+	@Test
+	public void getReportStatusByIdErrorTest() throws Exception {
+		
+		Reportstatus rs = new Reportstatus();
+		rs.setIdreportStatus(1);
+		rs.setName("Pending");
+		
+		when(reportStatusServiceMock.getReportStatusById(Mockito.any(int.class)))
+		.thenThrow(new ReportstatusNotFoundException());
+		
+		mockMvc.perform(get("/reportstatus/getReportStatusById/{idReportStatus}", 1))
+		.andExpect(status().isNotFound());
+	
+		verify(reportStatusServiceMock, times(1)).getReportStatusById(1);
+		verifyNoMoreInteractions(reportStatusServiceMock);
 	}
 	
 	
