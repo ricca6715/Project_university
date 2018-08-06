@@ -26,10 +26,6 @@ public class ReportStatusRestController {
 		super();
 		this.rsService = rsService;
 	}
-
-	public ReportStatusRestController() {
-		super();
-	}
 	
 	@GetMapping(
 			value = "/getReportStatusById/{idReportStatus}",

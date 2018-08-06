@@ -36,11 +36,6 @@ public class ReportRestController {
 		super();
 		this.reportService = reportService;
 	}
-
-	public ReportRestController() {
-		super();
-	}
-	
 	
 	@GetMapping(
 			value = "/getReportsByIdProfessor/{idProfessor}",

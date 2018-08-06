@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -275,6 +276,58 @@ public class UserRestControllerTest {
 		verify(userServiceMock, times(1)).getUserByMail("luca@gmail.com");
 		verifyNoMoreInteractions(userServiceMock);
 		
+	}
+	
+	@Test
+	public void getUsersByTeachingNameTest() throws Exception {
+		User user1 = new User();
+		User user2 = new User();
+		
+		user1.setName("riccardo");
+		user1.setSurname("contino");
+		user1.setEmail("riccardo@gmail.com");
+		user1.setPassword("riccardo");
+		user1.setUsertype(new Usertype("student", null));
+		user1.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+		user2.setName("andrea");
+		user2.setSurname("della monaca");
+		user2.setEmail("andrea@libero.it");
+		user2.setPassword("andrea");
+		user2.setUsertype(new Usertype("student", null));
+		user2.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		
+		List<User> users = new ArrayList<User>();
+		users.add(user1);
+		users.add(user2);
+		when(userServiceMock.getUserEnrolledTeaching("Software Engineering")).thenReturn(users);
+		
+		User user3 = new User();
+		user3.setName("luca");
+		user3.setSurname("mainetti");
+		user3.setEmail("luca@gmail.com");
+		user3.setPassword("luca");
+		user3.setUsertype(new Usertype("professor", null));
+		
+		when(userServiceMock.getProfessorByNameTeaching("Software Engineering")).thenReturn(user3);
+		
+		mockMvc.perform(get("/user/getUsersByTeachingName/{nameTeaching}", "Software Engineering"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$[0].name", is("riccardo")))
+		.andExpect(jsonPath("$[0].surname", is("contino")))
+		.andExpect(jsonPath("$[0].email", is("riccardo@gmail.com")))
+		.andExpect(jsonPath("$[0].studycourse.name", is("Ingegneria dell'informazione")))
+		.andExpect(jsonPath("$[1].name", is("andrea")))
+		.andExpect(jsonPath("$[1].surname", is("della monaca")))
+		.andExpect(jsonPath("$[1].email", is("andrea@libero.it")))
+		.andExpect(jsonPath("$[1].studycourse.name", is("Ingegneria dell'informazione")))
+		.andExpect(jsonPath("$[2].name", is("luca")))
+		.andExpect(jsonPath("$[2].surname", is("mainetti")))
+		.andExpect(jsonPath("$[2].email", is("luca@gmail.com")));
+	
+		verify(userServiceMock, times(1)).getUserEnrolledTeaching("Software Engineering");
+		verify(userServiceMock, times(1)).getProfessorByNameTeaching("Software Engineering");
+		verifyNoMoreInteractions(userServiceMock);
 	}
 	/*
 	@Test

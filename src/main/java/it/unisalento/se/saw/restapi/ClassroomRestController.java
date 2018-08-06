@@ -27,10 +27,6 @@ public class ClassroomRestController {
 		super();
 		this.classroomService = classroomService;
 	}
-
-	public ClassroomRestController() {
-		super();
-	}
 	
 	@PostMapping(
 			value = "/save",

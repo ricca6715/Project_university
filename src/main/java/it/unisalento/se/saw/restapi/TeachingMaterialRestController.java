@@ -35,10 +35,6 @@ public class TeachingMaterialRestController {
 		super();
 		this.teachingMaterialService = teachingMaterialService;
 	}
-
-	public TeachingMaterialRestController() {
-		super();
-	}
 	
 	@GetMapping(
 			value = "/getTeachingMaterialByIdLecture/{idLecture}",

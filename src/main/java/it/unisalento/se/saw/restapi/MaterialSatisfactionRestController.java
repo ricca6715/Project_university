@@ -22,15 +22,9 @@ public class MaterialSatisfactionRestController {
 	@Autowired
 	IMaterialSatisfactionService msService;
 	
-	
-	
 	public MaterialSatisfactionRestController(IMaterialSatisfactionService msService) {
 		super();
 		this.msService = msService;
-	}
-
-	public MaterialSatisfactionRestController() {
-		super();
 	}
 
 	@GetMapping(

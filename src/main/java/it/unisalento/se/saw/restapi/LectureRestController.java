@@ -27,12 +27,7 @@ public class LectureRestController {
 
 	public LectureRestController(ILectureService lectureService) {
 		this.lectureService = lectureService;
-	}
-	
-	public LectureRestController() {
-		super();
-	}
-	
+	}	
 	
 	@GetMapping(
 			value = "/getLecturesByDate/{date}",

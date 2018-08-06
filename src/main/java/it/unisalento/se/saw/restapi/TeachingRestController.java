@@ -23,14 +23,6 @@ public class TeachingRestController {
 	@Autowired
 	ITeachingService teachingService;
 
-	
-	
-	public TeachingRestController() {
-		super();
-	}
-
-
-
 	public TeachingRestController(ITeachingService teachingService) {
 		
 		this.teachingService = teachingService;

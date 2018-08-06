@@ -27,10 +27,6 @@ public class LectureSatisfactionRestController {
 		this.lsService = lsService;
 	}
 
-	public LectureSatisfactionRestController() {
-		super();
-	}
-
 	@GetMapping(
 			value = "/getAverageRatingByIdLecture/{idLecture}",
 			produces = MediaType.APPLICATION_JSON_VALUE )

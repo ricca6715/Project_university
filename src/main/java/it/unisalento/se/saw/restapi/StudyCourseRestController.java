@@ -22,19 +22,9 @@ public class StudyCourseRestController {
 	@Autowired
 	IStudyCourseService scService;
 	
-	//constructors//////////////////////////////////
-	public StudyCourseRestController() {
-		super();
-	}
-	
 	public StudyCourseRestController(IStudyCourseService scService) {
 		this.scService = scService;
 	}
-	
-
-	//////////////////////////////////////////////
-	
-	
 	
 	@GetMapping(
 			value = "/getStudycourseByName/{name}",

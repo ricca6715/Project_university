@@ -31,16 +31,9 @@
 	 @Autowired
 	 IUserService userService;
 	 
-	 //constructors//////////////////////////////////
-	 public UserRestController() {
-		 super();
-	 }
-	 
 	 public UserRestController(IUserService userService) {
 		 this.userService = userService;
 	 }
-	 //////////////////////////////////////////////
-	 
 	 
 	 @GetMapping(
 	   value = "/getUserByMail_Pwd/{mail}/{password}",

@@ -27,11 +27,6 @@ public class NotificationRestController {
 	@Autowired
 	IUserService userService;
 
-	public NotificationRestController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public NotificationRestController(INotificationService notificationService, IUserService userService) {
 		super();
 		this.notificationService = notificationService;
