@@ -16,4 +16,5 @@ public interface ILectureService {
 	public List<Lecture> getLecturesByClassroom(int idClassroom);
 	public List<Lecture> getLecturesByIdTeaching(int idTeaching);
 	public List<Lecture> getDailyLectureByIdProfAndDate(int idUser, Date date);
+	public List<Lecture> getDailyLectureByIdTeachingAndDate(int idTeaching, Date date);
 }

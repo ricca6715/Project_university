@@ -34,5 +34,9 @@ public interface LectureRepository extends JpaRepository<Lecture, Integer> {
 	@Query("select l from Lecture l "
 			+ "where l.teaching.user.idUser=:idUser and l.date=:date ")
 	public List<Lecture> getDailyLectureByIdProfAndDate(@Param("idUser") int idUser, @Param("date") Date date);
+
+	@Query("select l from Lecture l "
+			+ "where l.teaching.idTeaching=:idTeaching and l.date=:date")
+	public List<Lecture> getDailyLectureByIdTeachingAndDate(@Param("idTeaching") int idTeaching,@Param("date") Date date);
 	
 }

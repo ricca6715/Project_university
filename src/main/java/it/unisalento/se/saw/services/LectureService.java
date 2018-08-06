@@ -65,4 +65,11 @@ public class LectureService implements ILectureService {
 		return lectureRepository.getDailyLectureByIdProfAndDate(idUser, date);
 	}
 
+
+
+	@Override
+	public List<Lecture> getDailyLectureByIdTeachingAndDate(int idTeaching, Date date) {
+		return lectureRepository.getDailyLectureByIdTeachingAndDate(idTeaching, date);
+	}
+
 }

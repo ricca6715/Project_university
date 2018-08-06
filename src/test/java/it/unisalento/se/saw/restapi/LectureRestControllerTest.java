@@ -78,7 +78,7 @@ public class LectureRestControllerTest {
 	@Before
 	public void setUp() {
 		
-		mockMvc = MockMvcBuilders.standaloneSetup(new LectureRestController(lectureServiceMock))
+		mockMvc = MockMvcBuilders.standaloneSetup(new LectureRestController(lectureServiceMock, null))
 					.setViewResolvers(viewResolver())
 					.build();
 	}

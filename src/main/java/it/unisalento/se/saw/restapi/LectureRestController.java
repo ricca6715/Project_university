@@ -1,5 +1,6 @@
 package it.unisalento.se.saw.restapi;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.ILectureService;
+import it.unisalento.se.saw.Iservices.ITeachingService;
 import it.unisalento.se.saw.domain.Lecture;
+import it.unisalento.se.saw.domain.Teaching;
 import it.unisalento.se.saw.exceptions.LectureNotFoundException;
 
 @CrossOrigin
@@ -25,10 +28,18 @@ public class LectureRestController {
 	@Autowired
 	ILectureService lectureService;
 
-	public LectureRestController(ILectureService lectureService) {
-		this.lectureService = lectureService;
-	}	
+	@Autowired
+	ITeachingService teachingService;
 	
+	
+
+	
+	public LectureRestController(ILectureService lectureService, ITeachingService teachingService) {
+		super();
+		this.lectureService = lectureService;
+		this.teachingService = teachingService;
+	}
+
 	@GetMapping(
 			value = "/getLecturesByDate/{date}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
@@ -74,6 +85,22 @@ public class LectureRestController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Lecture> getDailyLectureByIdProfAndDate(@PathVariable("idUser") int idUser, @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") Date date){
 		return lectureService.getDailyLectureByIdProfAndDate(idUser, date);
+	}
+	
+	@GetMapping(
+			value = "/getDailyLectureByIdStudent/{idUser}/{date}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Lecture> getDailyLectureByIdStudent(@PathVariable("idUser") int idUser, @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") Date date) {
+		List<Teaching> teachings = teachingService.getTeachingsByIdStudent(idUser);
+		List<Lecture> lectures = new ArrayList<Lecture>();
+		for(int i=0;i<teachings.size();i++) {
+			List<Lecture> lecturesTeaching = lectureService.getDailyLectureByIdTeachingAndDate(teachings.get(i).getIdTeaching(),date);
+			for (int j=0;j<lecturesTeaching.size();j++) {
+				lectures.add(lecturesTeaching.get(j));
+			}
+			
+		}
+		return lectures;
 	}
 	
 }
