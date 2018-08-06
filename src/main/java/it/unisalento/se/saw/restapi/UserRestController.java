@@ -138,7 +138,7 @@
 		    user.setFcmtoken(userModel.getFcmToken());
 		   return userService.saveUser(user);
 		 }
-	 
+	  
 	 @PostMapping(
 	   value="/setToken",
 	   produces= MediaType.APPLICATION_JSON_VALUE,
