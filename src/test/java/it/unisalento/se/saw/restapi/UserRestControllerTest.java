@@ -34,17 +34,13 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-<<<<<<< HEAD
-=======
+
 import org.mockito.InjectMocks;
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-<<<<<<< HEAD
-=======
+
 import org.mockito.MockitoAnnotations;
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
@@ -229,16 +225,7 @@ public class UserRestControllerTest {
 		verifyNoMoreInteractions(userServiceMock);
 		
 	}
-	
-<<<<<<< HEAD
-	
 
-	
-	
-	
-	
-=======
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 	@Test
 	public void getProfessorByNameTeachingTest() throws Exception {
 		
@@ -368,7 +355,6 @@ public class UserRestControllerTest {
 		
 	}
 	*/
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
