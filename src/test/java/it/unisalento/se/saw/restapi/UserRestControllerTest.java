@@ -34,8 +34,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -195,39 +197,10 @@ private MockMvc mockMvc;
 		
 	}
 	
-	/*
-	@Test
-	public void saveUserTest() throws Exception {
-		
-		User user = new User();
-		
-		user.setName("antonio");
-		user.setSurname("mariani");
-		user.setEmail("amariani@gmail.com");
-		user.setPassword("antonio");
-		user.setUsertype(new Usertype("student", null));
-		user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
-		
-		when(userServiceMock.saveUser(Mockito.any(user.getClass()))).thenReturn(user);
-		
-		mockMvc.perform(
-			post("/user/save")
-			.contentType(APPLICATION_JSON_UTF8)
-			.content(new ObjectMapper().writeValueAsString(user))
-			)
-			.andExpect(status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.name", is("antonio")))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.surname", is("mariani")))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.email", is("amariani@gmail.com")))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.password", is("antonio")))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.usertype.typeName", is("student")))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
-		
-		verify(userServiceMock, times(1)).saveUser(user);
-		verifyNoMoreInteractions(userServiceMock);
-	}
 	
-	*/
+
+	
+	
 	
 	
 	@Test
@@ -288,6 +261,41 @@ private MockMvc mockMvc;
 		verifyNoMoreInteractions(userServiceMock);
 		
 	}
+	
+	@Test
+	 public void saveUserTest() throws Exception {
+	  
+	  
+		
+	  User user = new User();
+	  user.setIdUser(20);
+	  user.setName("antonio");
+	  user.setSurname("mariani");
+	  user.setEmail("amariani@gmail.com");
+	  user.setPassword("antonio");
+	  user.setUsertype(new Usertype("student", null));
+	  user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+	  
+	  when(userServiceMock.saveUser(Mockito.any(user.getClass()))).thenReturn(user);
+	  
+	  mockMvc.perform(
+	   post("/user/save")
+	   .contentType(APPLICATION_JSON_UTF8)
+	   .content(new ObjectMapper().writeValueAsString(user))
+	   )
+	   .andExpect(status().isOk())
+	   .andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_JSON_UTF8))
+	   .andExpect(MockMvcResultMatchers.jsonPath("$.name", is("antonio")))
+	   .andExpect(MockMvcResultMatchers.jsonPath("$.surname", is("mariani")))
+	   .andExpect(MockMvcResultMatchers.jsonPath("$.email", is("amariani@gmail.com")))
+	   .andExpect(MockMvcResultMatchers.jsonPath("$.password", is("antonio")))
+	   .andExpect(MockMvcResultMatchers.jsonPath("$.usertype.typeName", is("student")))
+	   .andExpect(MockMvcResultMatchers.jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+	  
+	
+	  verify(userServiceMock, times(1)).saveUser(Matchers.refEq(user));
+	  verifyNoMoreInteractions(userServiceMock);
+	 }
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

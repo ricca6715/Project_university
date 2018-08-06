@@ -1,5 +1,6 @@
 package it.unisalento.se.saw.restapi;
 
+
 import java.util.List;
 
 
@@ -43,30 +44,32 @@ public class UserRestController {
 	
 	
 	@GetMapping(
-			value = "/getUserByMail_Pwd/{mail}/{password}",
-			produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
-	public UserModel getUserByMail_Pwd(@PathVariable("mail") String mail, @PathVariable("password") String password) throws UserNotFoundException {
+			   value = "/getUserByMail_Pwd/{mail}/{password}",
+			   produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
+			 public UserModel getUserByMail_Pwd(@PathVariable("mail") String mail, @PathVariable("password") String password) throws UserNotFoundException {
 
-		User user =  userService.getUserByMail_Pwd(mail, password);
-		  UserModel userModel = new UserModel();
-		  userModel.setIdUser(user.getIdUser());
-		  userModel.setEmail(user.getEmail());
-		  userModel.setName(user.getName());
-		  userModel.setPassword(user.getPassword());
-		  userModel.setSurname(user.getSurname());
-		  userModel.setFcmToken(user.getFcmtoken());
+			  User user =  userService.getUserByMail_Pwd(mail, password);
+			  UserModel userModel = new UserModel();
+			  userModel.setIdUser(user.getIdUser());
+			  userModel.setEmail(user.getEmail());
+			  userModel.setName(user.getName());
+			  userModel.setPassword(user.getPassword());
+			  userModel.setSurname(user.getSurname());
+			  userModel.setFcmToken(user.getFcmtoken());
 
-		  StudyCourseModel scm = new StudyCourseModel();
-		  scm.setIdStudyCourse(user.getStudycourse().getIdStudyCourse());
-		  scm.setName(user.getStudycourse().getName());
-		  scm.setDescription(user.getStudycourse().getDescription());
-		  UserTypeModel utm = new UserTypeModel();
-		  utm.setIdUserType(user.getUsertype().getIdUserType());
-		  utm.setTypeName(user.getUsertype().getTypeName());
-		  userModel.setStudycourse(scm);
-		  userModel.setUsertype(utm);
-		  return userModel;
-	}
+			  UserTypeModel utm = new UserTypeModel();
+			  utm.setIdUserType(user.getUsertype().getIdUserType());
+			  utm.setTypeName(user.getUsertype().getTypeName());
+			  userModel.setUsertype(utm);
+			  if(utm.getTypeName() == "student") {
+			   StudyCourseModel scm = new StudyCourseModel();
+			   scm.setIdStudyCourse(user.getStudycourse().getIdStudyCourse());
+			   scm.setName(user.getStudycourse().getName());
+			   scm.setDescription(user.getStudycourse().getDescription());
+			   userModel.setStudycourse(scm);
+			  }
+			  return userModel;
+			 }
 	
 	@GetMapping(
 			value= "/getUserEnrolledTeaching/{nameTeaching}",
