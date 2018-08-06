@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.ILectureService;
 import it.unisalento.se.saw.domain.Lecture;
+import it.unisalento.se.saw.exceptions.LectureNotFoundException;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -51,7 +52,7 @@ public class LectureRestController {
 	@GetMapping(
 			value = "/getLectureById/{id}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Lecture getLectureById(@PathVariable("id") int id){
+	public Lecture getLectureById(@PathVariable("id") int id) throws LectureNotFoundException {
 		
 		
 		return lectureService.getLectureById(id);

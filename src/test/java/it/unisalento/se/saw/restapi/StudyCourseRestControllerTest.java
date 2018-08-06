@@ -52,6 +52,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 import it.unisalento.se.saw.Iservices.IReportStatusService;
 import it.unisalento.se.saw.Iservices.IStudyCourseService;
+import it.unisalento.se.saw.domain.Studycourse;
+import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.domain.Usertype;
+import it.unisalento.se.saw.exceptions.StudycourseNotFoundException;
+import it.unisalento.se.saw.exceptions.UserNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudyCourseRestControllerTest {
@@ -73,6 +78,86 @@ public class StudyCourseRestControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(new StudyCourseRestController(studyCourseServiceMock))
 					.setViewResolvers(viewResolver())
 					.build();
+	}
+	
+	
+	@Test
+	public void getStudycourseByNameTest() throws Exception {
+		
+		Studycourse sc = new Studycourse();
+		
+		sc.setName("Software Engineering");
+		sc.setDescription("Software engineering teaching");
+		sc.setIdStudyCourse(1);
+		
+		
+		when(studyCourseServiceMock.getStudycourseByName("Software Engineering")).thenReturn(sc);
+		
+		mockMvc.perform(get("/studycourse/getStudycourseByName/{name}", "Software Engineering"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.name", is("Software Engineering")))
+			.andExpect(jsonPath("$.description", is("Software engineering teaching")))
+			.andExpect(jsonPath("$.idStudyCourse", is(1)));
+			
+		
+		verify(studyCourseServiceMock, times(1)).getStudycourseByName("Software Engineering");
+		verifyNoMoreInteractions(studyCourseServiceMock);
+	}
+	
+	
+	@Test
+	public void getAllTest() throws Exception {
+		
+		Studycourse sc1 = new Studycourse();
+		Studycourse sc2= new Studycourse();
+
+		
+		sc1.setName("Software Engineering");
+		sc1.setDescription("Software engineering teaching");
+		sc1.setIdStudyCourse(1);
+		
+		
+		sc2.setName("Database");
+		sc2.setDescription("Database teaching");
+		sc2.setIdStudyCourse(2);
+		
+		
+		when(studyCourseServiceMock.getAll()).thenReturn(Arrays.asList(sc1, sc2));
+		
+		mockMvc.perform(get("/studycourse/getAll"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$[0].name", is("Software Engineering")))
+			.andExpect(jsonPath("$[0].description", is("Software engineering teaching")))
+			.andExpect(jsonPath("$[0].idStudyCourse", is(1)))
+			.andExpect(jsonPath("$[1].name", is("Database")))
+			.andExpect(jsonPath("$[1].description", is("Database teaching")))
+			.andExpect(jsonPath("$[1].idStudyCourse", is(2)));
+			
+		
+		verify(studyCourseServiceMock, times(1)).getAll();
+		verifyNoMoreInteractions(studyCourseServiceMock);
+	}
+	
+	@Test
+	public void getStudycourseByInvalidNameTest() throws Exception {
+		Studycourse sc = new Studycourse();
+		
+		sc.setName("Software Engineering");
+		sc.setDescription("Software engineering teaching");
+		sc.setIdStudyCourse(1);
+		
+		
+		
+		when(studyCourseServiceMock.getStudycourseByName(Mockito.anyString())).thenThrow(new StudycourseNotFoundException());
+		
+		mockMvc.perform(get("/studycourse/getStudycourseByName/{name}", "Software Engineering"))
+		.andExpect(status().isNotFound());
+	
+		verify(studyCourseServiceMock, times(1)).getStudycourseByName(sc.getName());
+		verifyNoMoreInteractions(studyCourseServiceMock);
+		
 	}
 	
 	

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.IStudyCourseService;
 import it.unisalento.se.saw.domain.Studycourse;
+import it.unisalento.se.saw.exceptions.StudycourseNotFoundException;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -38,7 +39,7 @@ public class StudyCourseRestController {
 	@GetMapping(
 			value = "/getStudycourseByName/{name}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public Studycourse getStudycourseByName(@PathVariable("name") String name) {
+	public Studycourse getStudycourseByName(@PathVariable("name") String name) throws StudycourseNotFoundException {
 		return scService.getStudycourseByName(name);
 	}
 	
@@ -49,6 +50,8 @@ public class StudyCourseRestController {
 	public List<Studycourse> getAll() {
 		return scService.getAll();
 	}
+	
+
 	
 
 }

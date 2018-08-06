@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.ILectureService;
 import it.unisalento.se.saw.domain.Lecture;
+import it.unisalento.se.saw.exceptions.LectureNotFoundException;
 import it.unisalento.se.saw.repositories.LectureRepository;
 
 @Service
@@ -33,8 +34,13 @@ public class LectureService implements ILectureService {
 	}
 	
 	@Transactional(readOnly=true)
-	public Lecture getLectureById(int id) {
-		return lectureRepository.getLectureById(id);
+	public Lecture getLectureById(int id) throws LectureNotFoundException {
+		Lecture l =  lectureRepository.getLectureById(id);
+		if(l == null) {
+			throw new LectureNotFoundException();
+		}
+		
+		return l;
 	}
 
 

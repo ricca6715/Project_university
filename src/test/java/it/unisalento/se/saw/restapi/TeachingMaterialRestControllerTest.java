@@ -52,6 +52,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 import it.unisalento.se.saw.Iservices.IReportStatusService;
 import it.unisalento.se.saw.Iservices.ITeachingMaterialService;
+import it.unisalento.se.saw.domain.Classroom;
+import it.unisalento.se.saw.domain.Lecture;
+import it.unisalento.se.saw.domain.Teaching;
+import it.unisalento.se.saw.domain.Teachingmaterial;
+import it.unisalento.se.saw.domain.User;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TeachingMaterialRestControllerTest {
@@ -75,6 +80,29 @@ public class TeachingMaterialRestControllerTest {
 					.build();
 	}
 	
+	@Test
+	public void removeMaterialByIdTest() throws Exception {
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		tm.setLink("C:\\Users\\ricca\\Desktop\\ciao.txt");
+		tm.setName("testMaterial");
+		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		tm.setType("link");
+		boolean deleted = true;
+		when(teachingMaterialServiceMock.getTeachingMaterialById(1)).thenReturn(tm);
+		when(teachingMaterialServiceMock.removeMaterial(1)).thenReturn(deleted);
+		
+		mockMvc.perform(get("/teachingmaterial/delete/{idTeachingmaterial}",1))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$", is(deleted)));
+			
+		verify(teachingMaterialServiceMock, times(1)).getTeachingMaterialById(1);
+		verify(teachingMaterialServiceMock, times(1)).removeMaterial(1);
+		verifyNoMoreInteractions(teachingMaterialServiceMock);
+		
+		
+	}
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
