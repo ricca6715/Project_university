@@ -8,11 +8,16 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
+import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
+import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.models.LecturesatisfactionModel;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -39,6 +44,27 @@ public class LectureSatisfactionRestController {
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	public List<Lecturesatisfaction> getLectureSatisfactionsByIdLecture(@PathVariable("idLecture") int idLecture) {
 		return lsService.getLectureSatisfactionsByIdLecture(idLecture);
+	}
+	
+	
+	@PostMapping(
+			value = "/save",
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	public Lecturesatisfaction saveSatisfaction(@RequestBody LecturesatisfactionModel lectureSatModel) {
+		Lecturesatisfaction ls = new Lecturesatisfaction();
+		if(lectureSatModel.getIdlectureSatisfaction() != null)
+			ls.setIdlectureSatisfaction(lectureSatModel.getIdlectureSatisfaction());
+		ls.setLevel(lectureSatModel.getLevel());
+		Lecture l = new Lecture();
+		l.setIdLecture(lectureSatModel.getLecture().getIdLecture());
+		ls.setLecture(l);
+		User user = new User();
+		user.setIdUser(lectureSatModel.getUser().getIdUser());
+		ls.setUser(user);
+		
+		
+		return lsService.saveSatisfaction(ls);
 	}
 	
 	

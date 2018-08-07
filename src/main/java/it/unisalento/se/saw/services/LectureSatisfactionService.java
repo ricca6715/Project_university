@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
+import it.unisalento.se.saw.models.LecturesatisfactionModel;
 import it.unisalento.se.saw.repositories.LectureSatisfactionRepository;
 
 @Service
@@ -25,6 +26,12 @@ public class LectureSatisfactionService implements ILectureSatisfactionService {
 	@Override
 	public List<Lecturesatisfaction> getLectureSatisfactionsByIdLecture(int idLecture) {
 		return lsRepository.getLectureSatisfactionsByIdLecture(idLecture);
+	}
+
+	@Override
+	public Lecturesatisfaction saveSatisfaction(Lecturesatisfaction lectureSatisfaction) {
+		
+		return lsRepository.save(lectureSatisfaction);
 	}
 
 

@@ -35,7 +35,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -53,6 +53,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unisalento.se.saw.Iservices.IUserService;
@@ -329,7 +330,7 @@ public class UserRestControllerTest {
 		verify(userServiceMock, times(1)).getProfessorByNameTeaching("Software Engineering");
 		verifyNoMoreInteractions(userServiceMock);
 	}
-	/*
+	
 	@Test
 	public void setTokenTest() throws Exception {
 		
@@ -365,12 +366,50 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
 		.andExpect(jsonPath("$.fcmtoken", is("prova")));
 	
+		
+		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
+
 		verify(userServiceMock, times(1)).getById(1);
-		verify(userServiceMock, times(1)).saveUser(Matchers.refEq(usernew));
+		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
 		verifyNoMoreInteractions(userServiceMock);
 		
 	}
-	*/
+	
+	@Test
+	public void saveUserTest() throws  Exception {
+
+		User user = new User();
+		user.setName("luca");
+		user.setSurname("mainetti");
+		user.setEmail("luca@gmail.com");
+		user.setPassword("luca");
+		user.setUsertype(new Usertype("professor", null));
+		user.setStudycourse(new Studycourse("Computer Engineering","test",null,null,null));
+		
+		
+		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
+		
+		System.out.println(new ObjectMapper().writeValueAsString(user));
+        mockMvc.perform(
+                post("/user/save")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user))
+        )
+        .andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is("luca")))
+		.andExpect(jsonPath("$.surname", is("mainetti")))
+		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
+		.andExpect(jsonPath("$.password", is("luca")));
+	
+		
+		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
+
+		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
+		verifyNoMoreInteractions(userServiceMock);
+		
+		
+	}
+	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
