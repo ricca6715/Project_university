@@ -7,5 +7,7 @@ import it.unisalento.se.saw.domain.Materialsatisfaction;
 public interface IMaterialSatisfactionService {
 	public Double getAverageRatingByIdMaterial(int idMaterial);
 	public List<Materialsatisfaction> getMaterialSatisfactionByIdMaterial(int idMaterial);
+	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(int idUser, int idMaterial);
+	public Materialsatisfaction saveSatisfaction(Materialsatisfaction ms);
 
 }

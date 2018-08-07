@@ -4,17 +4,17 @@ package it.unisalento.se.saw.models;
 
 public class MaterialsatisfactionModel {
 	
-    private int idMaterialSatisfaction;
+    private Integer idMaterialSatisfaction;
     private TeachingMaterialModel teachingmaterial;
     private UserModel user;
     private Integer level;
     
     
     
-	public int getIdMaterialSatisfaction() {
+	public Integer getIdMaterialSatisfaction() {
 		return idMaterialSatisfaction;
 	}
-	public void setIdMaterialSatisfaction(int idMaterialSatisfaction) {
+	public void setIdMaterialSatisfaction(Integer idMaterialSatisfaction) {
 		this.idMaterialSatisfaction = idMaterialSatisfaction;
 	}
 	public TeachingMaterialModel getTeachingmaterial() {

@@ -25,4 +25,16 @@ public class MaterialSatisfactionService implements IMaterialSatisfactionService
 		return msRepository.getMaterialSatisfactionByIdMaterial(idMaterial);
 	}
 
+	@Override
+	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(int idUser, int idMaterial) {
+		// TODO Auto-generated method stub
+		return msRepository.getMaterialSatisfactionByIdUserAndByIdMaterial(idUser, idMaterial);
+	}
+
+	@Override
+	public Materialsatisfaction saveSatisfaction(Materialsatisfaction ms) {
+		// TODO Auto-generated method stub
+		return msRepository.save(ms);
+	}
+
 }

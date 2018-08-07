@@ -7,12 +7,19 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.IMaterialSatisfactionService;
+import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
 import it.unisalento.se.saw.domain.Materialsatisfaction;
+import it.unisalento.se.saw.domain.Teachingmaterial;
+import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.models.LecturesatisfactionModel;
+import it.unisalento.se.saw.models.MaterialsatisfactionModel;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -39,6 +46,32 @@ public class MaterialSatisfactionRestController {
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	public List<Materialsatisfaction> getMaterialSatisfactionByIdMaterial(@PathVariable("idMaterial") int idMaterial) {
 		return msService.getMaterialSatisfactionByIdMaterial(idMaterial);
+	}
+	
+	@GetMapping(
+			value = "/getMaterialSatisfactionByIdUserAndIdMaterial/{idUser}/{idMaterial}",
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(@PathVariable("idUser") int idUser, @PathVariable("idMaterial") int idMaterial) {
+		return msService.getMaterialSatisfactionByIdUserAndIdMaterial(idUser, idMaterial);
+	}
+	
+	@PostMapping(
+			value = "/save",
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	public Materialsatisfaction saveSatisfaction(@RequestBody MaterialsatisfactionModel materialSatModel) {
+		Materialsatisfaction ms = new Materialsatisfaction();
+		if(materialSatModel.getIdMaterialSatisfaction() != null)
+			ms.setIdMaterialSatisfaction(materialSatModel.getIdMaterialSatisfaction());
+		ms.setLevel(materialSatModel.getLevel());
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(materialSatModel.getTeachingmaterial().getIdTeachingMaterial());
+		ms.setTeachingmaterial(tm);
+		User user = new User();
+		user.setIdUser(materialSatModel.getUser().getIdUser());
+		ms.setUser(user);
+		
+		return msService.saveSatisfaction(ms);
 	}
 	
 

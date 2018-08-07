@@ -20,4 +20,8 @@ public interface MaterialSatisfactionRepository extends JpaRepository<Materialsa
 			" where ms.teachingmaterial.idTeachingMaterial=:idTeachingMaterial")
 	public List<Materialsatisfaction> getMaterialSatisfactionByIdMaterial(@Param("idTeachingMaterial") int idTeachingMaterial );
 
+	@Query("select ms from Materialsatisfaction ms" + 
+			" where ms.user.idUser=:idUser and ms.teachingmaterial.idTeachingMaterial=:idTeachingMaterial")
+	public Materialsatisfaction getMaterialSatisfactionByIdUserAndByIdMaterial(@Param("idUser")int idUser, @Param("idTeachingMaterial") int idMaterial);
+
 }
