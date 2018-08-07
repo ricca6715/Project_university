@@ -29,14 +29,14 @@ public class LectureSatisfactionService implements ILectureSatisfactionService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public Lecturesatisfaction saveSatisfaction(Lecturesatisfaction lectureSatisfaction) {
 		
 		return lsRepository.save(lectureSatisfaction);
-=======
+	}
+	
+	@Override
 	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(int idUser, int idLecture) {
 		return lsRepository.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 	}
 
 
