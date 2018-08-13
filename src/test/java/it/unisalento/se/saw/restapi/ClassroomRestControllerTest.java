@@ -1,4 +1,5 @@
 package it.unisalento.se.saw.restapi;
+
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
@@ -27,16 +28,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -49,11 +53,19 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unisalento.se.saw.Iservices.IClassroomService;
 import it.unisalento.se.saw.Iservices.ITeachingService;
 import it.unisalento.se.saw.domain.Classroom;
 import it.unisalento.se.saw.domain.Report;
 import it.unisalento.se.saw.domain.Reportstatus;
+import it.unisalento.se.saw.domain.Studycourse;
+import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.domain.Usertype;
+import it.unisalento.se.saw.models.TokenFormModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClassroomRestControllerTest {
@@ -101,11 +113,38 @@ public class ClassroomRestControllerTest {
 		verify(classroomServiceMock, times(1)).getAll();
 		verifyNoMoreInteractions(classroomServiceMock);
 	}
-	/*
+	
 	@Test
-	public void saveClassroomTest() throws Exception {
+	public void saveTest() throws  Exception {
 		
-	}*/
+		Classroom c = new Classroom("y1","test",(double) 210, (double) 210, null, null, null);
+
+		
+		
+		
+		when(classroomServiceMock.save(Mockito.any(Classroom.class))).thenReturn(c);
+		
+		
+        mockMvc.perform(
+                post("/classroom/save")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(c)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.name", is("y1")))
+		.andExpect(jsonPath("$.description", is("test")))
+		.andExpect(jsonPath("$.latitude", is((double)210)))
+		.andExpect(jsonPath("$.latitude", is((double)210)));
+		
+	
+		
+		ArgumentCaptor<Classroom> uCaptor = ArgumentCaptor.forClass(Classroom.class);
+
+		verify(classroomServiceMock, times(1)).save(uCaptor.capture());
+		verifyNoMoreInteractions(classroomServiceMock);
+		
+		
+	}
 	
 	
 	public ViewResolver viewResolver() {

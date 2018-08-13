@@ -34,6 +34,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -247,7 +248,7 @@ public class ReportRestControllerTest {
 		verifyNoMoreInteractions(reportServiceMock);
 	}
 	
-/*
+
 	@Test
 	public void saveReportTest() throws Exception {
 		
@@ -277,10 +278,14 @@ public class ReportRestControllerTest {
 		.andExpect(jsonPath("$.reportstatus.name", is("In progress")))
 		.andExpect(jsonPath("$.userByProfessorIdProfessor.idUser", is(1)));
 		
-		verify(reportServiceMock, times(1)).saveReport(Matchers.refEq(r1));
+		ArgumentCaptor<Report> uCaptor = ArgumentCaptor.forClass(Report.class);
+
+		verify(reportServiceMock, times(1)).saveReport(uCaptor.capture());
 		verifyNoMoreInteractions(reportServiceMock);
+		
+
 	}
-	*/
+	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
