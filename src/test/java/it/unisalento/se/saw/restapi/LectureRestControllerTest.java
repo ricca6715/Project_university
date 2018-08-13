@@ -56,6 +56,7 @@ import com.mysql.fabric.xmlrpc.base.Array;
 
 import it.unisalento.se.saw.Iservices.IClassroomService;
 import it.unisalento.se.saw.Iservices.ILectureService;
+import it.unisalento.se.saw.Iservices.ITeachingService;
 import it.unisalento.se.saw.domain.Classroom;
 import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Studycourse;
@@ -74,6 +75,8 @@ public class LectureRestControllerTest {
 			);
 	@Mock
 	private ILectureService lectureServiceMock;
+	@Mock
+	private ITeachingService teachingServiceMock;
 	
 	@Before
 	public void setUp() {

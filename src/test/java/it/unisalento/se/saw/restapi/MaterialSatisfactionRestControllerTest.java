@@ -56,6 +56,7 @@ import it.unisalento.se.saw.domain.Materialsatisfaction;
 import it.unisalento.se.saw.domain.Report;
 import it.unisalento.se.saw.domain.Reportstatus;
 import it.unisalento.se.saw.domain.Teachingmaterial;
+import it.unisalento.se.saw.exceptions.MaterialSatisfactionNotFound;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MaterialSatisfactionRestControllerTest {
@@ -123,6 +124,46 @@ public class MaterialSatisfactionRestControllerTest {
 		verifyNoMoreInteractions(materialSatisfactionServiceMock);
 	}
 	
+	@Test
+	public void getMaterialSatisfactionByIdUserAndIdMaterialTest() throws Exception {
+	
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		Materialsatisfaction m1 = new Materialsatisfaction();
+		m1.setIdMaterialSatisfaction(1);
+		m1.setLevel(2);
+		m1.setTeachingmaterial(tm);
+		
+		when(materialSatisfactionServiceMock.getMaterialSatisfactionByIdUserAndIdMaterial(1, 1))
+		.thenReturn(m1);
+		
+		mockMvc.perform(get("/materialsatisfaction/getMaterialSatisfactionByIdUserAndIdMaterial/{idUser}/{idMaterial}", 1, 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.level", is(2)));
+		
+		verify(materialSatisfactionServiceMock, times(1)).getMaterialSatisfactionByIdUserAndIdMaterial(1, 1);
+		verifyNoMoreInteractions(materialSatisfactionServiceMock);
+	}
+	
+	@Test
+	public void getMaterialSatisfactionByIdUserAndIdMaterialErrorTest() throws Exception {
+	/*DA SISTEMARE
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		Materialsatisfaction m1 = new Materialsatisfaction();
+		m1.setLevel(2);
+		m1.setTeachingmaterial(tm);
+		
+		when(materialSatisfactionServiceMock.getMaterialSatisfactionByIdUserAndIdMaterial(1, 1))
+		.thenThrow(new MaterialSatisfactionNotFound());
+		
+		mockMvc.perform(get("/materialsatisfaction/getMaterialSatisfactionByIdUserAndIdMaterial/{idUser}/{idMaterial}", 1, 1))
+		.andExpect(status().isNotFound());
+		
+		verify(materialSatisfactionServiceMock, times(1)).getMaterialSatisfactionByIdUserAndIdMaterial(1, 1);
+		verifyNoMoreInteractions(materialSatisfactionServiceMock);*/
+	}
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
