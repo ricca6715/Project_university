@@ -98,7 +98,6 @@ public class LectureRestController {
 			for (int j=0;j<lecturesTeaching.size();j++) {
 				lectures.add(lecturesTeaching.get(j));
 			}
-			
 		}
 		return lectures;
 	}

@@ -3,6 +3,7 @@ package it.unisalento.se.saw.Iservices;
 import java.util.List;
 
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
+import it.unisalento.se.saw.exceptions.LectureSatisfactionNotFound;
 
 public interface ILectureSatisfactionService {
 	
@@ -11,7 +12,7 @@ public interface ILectureSatisfactionService {
 
 	public Lecturesatisfaction saveSatisfaction(Lecturesatisfaction lectureSatisfaction);
 
-	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(int idUser, int idLecture);
+	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(int idUser, int idLecture) throws LectureSatisfactionNotFound;
 
 
 }
