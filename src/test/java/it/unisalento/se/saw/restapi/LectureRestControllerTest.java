@@ -369,9 +369,7 @@ public class LectureRestControllerTest {
 		l2.setDescription("test lecture");
 		l2.setDuration("3");
 		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
-		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
-		
-		
+		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));	
 		
 		when(lectureServiceMock.getDailyLectureByIdProfAndDate(1,d)).thenReturn(Arrays.asList(l1, l2));
 		
@@ -393,8 +391,63 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			
-		
 		verify(lectureServiceMock, times(1)).getDailyLectureByIdProfAndDate(1, d);
+		verifyNoMoreInteractions(lectureServiceMock);
+	}
+	
+	@Test
+	public void getDailyLecturesByIdStudentAndDateTest() throws Exception {
+		
+		Teaching t1 = new Teaching();
+		t1.setIdTeaching(1);
+		t1.setName("Software Engineering");
+		t1.setCfu(9);
+		
+		Lecture l1 = new Lecture();
+		l1.setIdLecture(1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = sdf.parse("2012-12-21");
+		l1.setDate(d);
+		l1.setHour("13-15");
+		l1.setDescription("it was a good lesson");
+		l1.setDuration("3");
+		l1.setTeaching(t1);
+		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
+		
+		Lecture l2 = new Lecture();
+		l2.setIdLecture(2);
+		l2.setDate(d);
+		l2.setHour("15-15");
+		l2.setDescription("test lecture");
+		l2.setDuration("3");
+		l2.setTeaching(t1);
+		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
+		
+		when(teachingServiceMock.getTeachingsByIdStudent(1)).thenReturn(Arrays.asList(t1));
+		when(lectureServiceMock.getDailyLectureByIdTeachingAndDate(t1.getIdTeaching(), d)).thenReturn(Arrays.asList(l1, l2));
+		
+		mockMvc.perform(get("/getDailyLectureByIdStudent/{idUser}/{date}", 1, "2012-12-21"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
+			.andExpect(jsonPath("$[0].idLecture", is(1)))
+			.andExpect(jsonPath("$[0].hour", is("13-15")))
+			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
+			.andExpect(jsonPath("$[0].duration", is("3")))
+			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
+			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
+			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
+			.andExpect(jsonPath("$[1].idLecture", is(2)))
+			.andExpect(jsonPath("$[1].hour", is("15-15")))
+			.andExpect(jsonPath("$[1].description", is("test lecture")))
+			.andExpect(jsonPath("$[1].duration", is("3")))
+			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
+			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
+			
+		
+		verify(teachingServiceMock, times(1)).getTeachingsByIdStudent(1);
+		verify(lectureServiceMock, times(1)).getDailyLectureByIdTeachingAndDate(t1.getIdTeaching(), d);
+		verifyNoMoreInteractions(teachingServiceMock);
 		verifyNoMoreInteractions(lectureServiceMock);
 	}
 	

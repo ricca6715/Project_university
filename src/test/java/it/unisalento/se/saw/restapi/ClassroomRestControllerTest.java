@@ -118,12 +118,7 @@ public class ClassroomRestControllerTest {
 	public void saveTest() throws  Exception {
 		
 		Classroom c = new Classroom("y1","test",(double) 210, (double) 210, null, null, null);
-
-		
-		
-		
 		when(classroomServiceMock.save(Mockito.any(Classroom.class))).thenReturn(c);
-		
 		
         mockMvc.perform(
                 post("/classroom/save")
@@ -136,10 +131,7 @@ public class ClassroomRestControllerTest {
 		.andExpect(jsonPath("$.latitude", is((double)210)))
 		.andExpect(jsonPath("$.latitude", is((double)210)));
 		
-	
-		
 		ArgumentCaptor<Classroom> uCaptor = ArgumentCaptor.forClass(Classroom.class);
-
 		verify(classroomServiceMock, times(1)).save(uCaptor.capture());
 		verifyNoMoreInteractions(classroomServiceMock);
 		

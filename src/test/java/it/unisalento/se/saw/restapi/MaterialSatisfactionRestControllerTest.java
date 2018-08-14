@@ -33,6 +33,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -49,6 +50,8 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
 import it.unisalento.se.saw.Iservices.IMaterialSatisfactionService;
 import it.unisalento.se.saw.domain.Classroom;
@@ -56,6 +59,7 @@ import it.unisalento.se.saw.domain.Materialsatisfaction;
 import it.unisalento.se.saw.domain.Report;
 import it.unisalento.se.saw.domain.Reportstatus;
 import it.unisalento.se.saw.domain.Teachingmaterial;
+import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.exceptions.MaterialSatisfactionNotFound;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -148,7 +152,6 @@ public class MaterialSatisfactionRestControllerTest {
 	
 	@Test
 	public void getMaterialSatisfactionByIdUserAndIdMaterialErrorTest() throws Exception {
-	/*DA SISTEMARE
 		Teachingmaterial tm = new Teachingmaterial();
 		tm.setIdTeachingMaterial(1);
 		Materialsatisfaction m1 = new Materialsatisfaction();
@@ -162,7 +165,63 @@ public class MaterialSatisfactionRestControllerTest {
 		.andExpect(status().isNotFound());
 		
 		verify(materialSatisfactionServiceMock, times(1)).getMaterialSatisfactionByIdUserAndIdMaterial(1, 1);
-		verifyNoMoreInteractions(materialSatisfactionServiceMock);*/
+		verifyNoMoreInteractions(materialSatisfactionServiceMock);
+	}
+	
+	@Test
+	public void saveTest() throws  Exception {
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		Materialsatisfaction m1 = new Materialsatisfaction();
+		m1.setLevel(2);
+		m1.setTeachingmaterial(tm);
+		User u = new User();
+		u.setIdUser(1);
+		m1.setUser(u);
+		
+		when(materialSatisfactionServiceMock.saveSatisfaction(Mockito.any(Materialsatisfaction.class)))
+		.thenReturn(m1);
+		
+		mockMvc.perform(
+                post("/materialsatisfaction/save")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(m1)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.level", is(2)));
+		
+		ArgumentCaptor<Materialsatisfaction> uCaptor = ArgumentCaptor.forClass(Materialsatisfaction.class);
+		verify(materialSatisfactionServiceMock, times(1)).saveSatisfaction(uCaptor.capture());
+		verifyNoMoreInteractions(materialSatisfactionServiceMock);
+	}
+	
+	@Test
+	public void updateTest() throws  Exception {
+		Teachingmaterial tm = new Teachingmaterial();
+		tm.setIdTeachingMaterial(1);
+		Materialsatisfaction m1 = new Materialsatisfaction();
+		m1.setLevel(2);
+		m1.setTeachingmaterial(tm);
+		User u = new User();
+		u.setIdUser(1);
+		m1.setUser(u);
+		m1.setIdMaterialSatisfaction(1);
+		
+		when(materialSatisfactionServiceMock.saveSatisfaction(Mockito.any(Materialsatisfaction.class)))
+		.thenReturn(m1);
+		
+		mockMvc.perform(
+                post("/materialsatisfaction/save")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(m1)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+        .andExpect(jsonPath("$.idMaterialSatisfaction", is(1)))
+		.andExpect(jsonPath("$.level", is(2)));
+		
+		ArgumentCaptor<Materialsatisfaction> uCaptor = ArgumentCaptor.forClass(Materialsatisfaction.class);
+		verify(materialSatisfactionServiceMock, times(1)).saveSatisfaction(uCaptor.capture());
+		verifyNoMoreInteractions(materialSatisfactionServiceMock);
 	}
 	
 	public ViewResolver viewResolver() {

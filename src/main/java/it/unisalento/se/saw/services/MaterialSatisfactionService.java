@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import it.unisalento.se.saw.Iservices.IMaterialSatisfactionService;
 import it.unisalento.se.saw.domain.Materialsatisfaction;
+import it.unisalento.se.saw.exceptions.MaterialSatisfactionNotFound;
 import it.unisalento.se.saw.repositories.MaterialSatisfactionRepository;
 
 @Service
@@ -26,9 +27,13 @@ public class MaterialSatisfactionService implements IMaterialSatisfactionService
 	}
 
 	@Override
-	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(int idUser, int idMaterial) {
+	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(int idUser, int idMaterial) throws MaterialSatisfactionNotFound {
 		// TODO Auto-generated method stub
-		return msRepository.getMaterialSatisfactionByIdUserAndByIdMaterial(idUser, idMaterial);
+		Materialsatisfaction ms = msRepository.getMaterialSatisfactionByIdUserAndByIdMaterial(idUser, idMaterial);
+		if (ms == null) {
+			throw new MaterialSatisfactionNotFound();
+		}
+		return ms;
 	}
 
 	@Override

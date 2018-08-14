@@ -18,6 +18,7 @@ import it.unisalento.se.saw.domain.Lecturesatisfaction;
 import it.unisalento.se.saw.domain.Materialsatisfaction;
 import it.unisalento.se.saw.domain.Teachingmaterial;
 import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.exceptions.MaterialSatisfactionNotFound;
 import it.unisalento.se.saw.models.LecturesatisfactionModel;
 import it.unisalento.se.saw.models.MaterialsatisfactionModel;
 
@@ -51,7 +52,7 @@ public class MaterialSatisfactionRestController {
 	@GetMapping(
 			value = "/getMaterialSatisfactionByIdUserAndIdMaterial/{idUser}/{idMaterial}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(@PathVariable("idUser") int idUser, @PathVariable("idMaterial") int idMaterial) {
+	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(@PathVariable("idUser") int idUser, @PathVariable("idMaterial") int idMaterial) throws MaterialSatisfactionNotFound {
 		return msService.getMaterialSatisfactionByIdUserAndIdMaterial(idUser, idMaterial);
 	}
 	
