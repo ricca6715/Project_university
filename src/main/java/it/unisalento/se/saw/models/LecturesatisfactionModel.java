@@ -8,6 +8,7 @@ public class LecturesatisfactionModel {
     private LectureModel lecture;
     private UserModel user;
     private Integer level;
+	private String note;
     
     
     
@@ -35,7 +36,11 @@ public class LecturesatisfactionModel {
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
-    
-    
+     public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 
 }

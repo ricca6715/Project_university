@@ -96,18 +96,18 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
 		l2.setIdLecture(2);
 		l2.setDate(d);
-		l2.setHour("15-15");
+		l2.setStarttime("15-15");
+		l2.setEndtime("18-15");
 		l2.setDescription("test lecture");
-		l2.setDuration("3");
 		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
@@ -120,16 +120,16 @@ public class LectureRestControllerTest {
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
-			.andExpect(jsonPath("$[0].hour", is("13-15")))
+			.andExpect(jsonPath("$[0].starttime", is("15-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
-			.andExpect(jsonPath("$[0].duration", is("3")))
+			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
-			.andExpect(jsonPath("$[1].hour", is("15-15")))
+			.andExpect(jsonPath("$[1].starttime", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
-			.andExpect(jsonPath("$[1].duration", is("3")))
+			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			
@@ -148,18 +148,18 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
 		l2.setIdLecture(2);
 		l2.setDate(d);
-		l2.setHour("15-15");
+		l2.setStarttime("15-15");
+		l2.setEndtime("18-15");
 		l2.setDescription("test lecture");
-		l2.setDuration("3");
 		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
@@ -172,16 +172,16 @@ public class LectureRestControllerTest {
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
-			.andExpect(jsonPath("$[0].hour", is("13-15")))
+			.andExpect(jsonPath("$[0].starttime", is("15-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
-			.andExpect(jsonPath("$[0].duration", is("3")))
+			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
-			.andExpect(jsonPath("$[1].hour", is("15-15")))
+			.andExpect(jsonPath("$[1].starttime", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
-			.andExpect(jsonPath("$[1].duration", is("3")))
+			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			
@@ -197,9 +197,9 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
@@ -210,9 +210,9 @@ public class LectureRestControllerTest {
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.date", is("2012-12-21")))
 			.andExpect(jsonPath("$.idLecture", is(1)))
-			.andExpect(jsonPath("$.hour", is("13-15")))
+			.andExpect(jsonPath("$.starttime", is("15-15")))
 			.andExpect(jsonPath("$.description", is("it was a good lesson")))
-			.andExpect(jsonPath("$.duration", is("3")))
+			.andExpect(jsonPath("$.endtime", is("18-15")))
 			.andExpect(jsonPath("$.teaching.name", is("Database")))
 			.andExpect(jsonPath("$.classroom.name", is("y1")));
 			
@@ -229,9 +229,9 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
@@ -254,18 +254,18 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
 		l2.setIdLecture(2);
 		l2.setDate(d);
-		l2.setHour("15-15");
+		l2.setStarttime("15-15");
+		l2.setEndtime("18-15");
 		l2.setDescription("test lecture");
-		l2.setDuration("3");
 		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
@@ -278,16 +278,16 @@ public class LectureRestControllerTest {
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
-			.andExpect(jsonPath("$[0].hour", is("13-15")))
+			.andExpect(jsonPath("$[0].starttime", is("15-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
-			.andExpect(jsonPath("$[0].duration", is("3")))
+			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
-			.andExpect(jsonPath("$[1].hour", is("15-15")))
+			.andExpect(jsonPath("$[1].starttime", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
-			.andExpect(jsonPath("$[1].duration", is("3")))
+			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			
@@ -305,18 +305,18 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
 		l2.setIdLecture(2);
 		l2.setDate(d);
-		l2.setHour("15-15");
+		l2.setStarttime("15-15");
+		l2.setEndtime("18-15");
 		l2.setDescription("test lecture");
-		l2.setDuration("3");
 		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
@@ -329,16 +329,16 @@ public class LectureRestControllerTest {
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
-			.andExpect(jsonPath("$[0].hour", is("13-15")))
+			.andExpect(jsonPath("$[0].starttime", is("15-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
-			.andExpect(jsonPath("$[0].duration", is("3")))
+			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
-			.andExpect(jsonPath("$[1].hour", is("15-15")))
+			.andExpect(jsonPath("$[1].starttime", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
-			.andExpect(jsonPath("$[1].duration", is("3")))
+			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			
@@ -356,18 +356,18 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
 		l2.setIdLecture(2);
 		l2.setDate(d);
-		l2.setHour("15-15");
+		l2.setStarttime("15-15");
+		l2.setEndtime("18-15");
 		l2.setDescription("test lecture");
-		l2.setDuration("3");
 		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));	
 		
@@ -378,16 +378,16 @@ public class LectureRestControllerTest {
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
-			.andExpect(jsonPath("$[0].hour", is("13-15")))
+			.andExpect(jsonPath("$[0].starttime", is("15-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
-			.andExpect(jsonPath("$[0].duration", is("3")))
+			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
-			.andExpect(jsonPath("$[1].hour", is("15-15")))
+			.andExpect(jsonPath("$[1].starttime", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
-			.andExpect(jsonPath("$[1].duration", is("3")))
+			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			
@@ -408,18 +408,18 @@ public class LectureRestControllerTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = sdf.parse("2012-12-21");
 		l1.setDate(d);
-		l1.setHour("13-15");
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
 		l1.setDescription("it was a good lesson");
-		l1.setDuration("3");
 		l1.setTeaching(t1);
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
 		l2.setIdLecture(2);
 		l2.setDate(d);
-		l2.setHour("15-15");
+		l2.setStarttime("15-15");
+		l2.setEndtime("18-15");
 		l2.setDescription("test lecture");
-		l2.setDuration("3");
 		l2.setTeaching(t1);
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
@@ -431,16 +431,16 @@ public class LectureRestControllerTest {
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
-			.andExpect(jsonPath("$[0].hour", is("13-15")))
+			.andExpect(jsonPath("$[0].starttime", is("15-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
-			.andExpect(jsonPath("$[0].duration", is("3")))
+			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Software Engineering")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
-			.andExpect(jsonPath("$[1].hour", is("15-15")))
+			.andExpect(jsonPath("$[1].starttime", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
-			.andExpect(jsonPath("$[1].duration", is("3")))
+			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Software Engineering")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			

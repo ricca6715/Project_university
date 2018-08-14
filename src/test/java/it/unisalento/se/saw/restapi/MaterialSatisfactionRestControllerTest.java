@@ -110,10 +110,12 @@ public class MaterialSatisfactionRestControllerTest {
 		m1.setIdMaterialSatisfaction(1);
 		m1.setLevel(2);
 		m1.setTeachingmaterial(tm);
+		m1.setNote("prova");
 		Materialsatisfaction m2 = new Materialsatisfaction();
 		m2.setIdMaterialSatisfaction(2);
 		m2.setLevel(5);
 		m2.setTeachingmaterial(tm);
+		m2.setNote("prova");
 		
 		when(materialSatisfactionServiceMock.getMaterialSatisfactionByIdMaterial(1))
 		.thenReturn(Arrays.asList(m1, m2));
@@ -122,7 +124,9 @@ public class MaterialSatisfactionRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 		.andExpect(jsonPath("$[0].level", is(2)))
-		.andExpect(jsonPath("$[1].level", is(5)));
+		.andExpect(jsonPath("$[0].note", is("prova")))
+		.andExpect(jsonPath("$[1].level", is(5)))
+		.andExpect(jsonPath("$[1].note", is("prova")));
 	
 		verify(materialSatisfactionServiceMock, times(1)).getMaterialSatisfactionByIdMaterial(1);
 		verifyNoMoreInteractions(materialSatisfactionServiceMock);
@@ -137,6 +141,7 @@ public class MaterialSatisfactionRestControllerTest {
 		m1.setIdMaterialSatisfaction(1);
 		m1.setLevel(2);
 		m1.setTeachingmaterial(tm);
+		m1.setNote("prova");
 		
 		when(materialSatisfactionServiceMock.getMaterialSatisfactionByIdUserAndIdMaterial(1, 1))
 		.thenReturn(m1);
@@ -144,7 +149,8 @@ public class MaterialSatisfactionRestControllerTest {
 		mockMvc.perform(get("/materialsatisfaction/getMaterialSatisfactionByIdUserAndIdMaterial/{idUser}/{idMaterial}", 1, 1))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-		.andExpect(jsonPath("$.level", is(2)));
+		.andExpect(jsonPath("$.level", is(2)))
+		.andExpect(jsonPath("$.note", is("prova")));
 		
 		verify(materialSatisfactionServiceMock, times(1)).getMaterialSatisfactionByIdUserAndIdMaterial(1, 1);
 		verifyNoMoreInteractions(materialSatisfactionServiceMock);
@@ -157,6 +163,7 @@ public class MaterialSatisfactionRestControllerTest {
 		Materialsatisfaction m1 = new Materialsatisfaction();
 		m1.setLevel(2);
 		m1.setTeachingmaterial(tm);
+		m1.setNote("prova");
 		
 		when(materialSatisfactionServiceMock.getMaterialSatisfactionByIdUserAndIdMaterial(1, 1))
 		.thenThrow(new MaterialSatisfactionNotFound());
@@ -178,6 +185,7 @@ public class MaterialSatisfactionRestControllerTest {
 		User u = new User();
 		u.setIdUser(1);
 		m1.setUser(u);
+		m1.setNote("prova");
 		
 		when(materialSatisfactionServiceMock.saveSatisfaction(Mockito.any(Materialsatisfaction.class)))
 		.thenReturn(m1);
@@ -188,7 +196,8 @@ public class MaterialSatisfactionRestControllerTest {
                 .content(new ObjectMapper().writeValueAsString(m1)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-		.andExpect(jsonPath("$.level", is(2)));
+		.andExpect(jsonPath("$.level", is(2)))
+		.andExpect(jsonPath("$.note", is("prova")));
 		
 		ArgumentCaptor<Materialsatisfaction> uCaptor = ArgumentCaptor.forClass(Materialsatisfaction.class);
 		verify(materialSatisfactionServiceMock, times(1)).saveSatisfaction(uCaptor.capture());
@@ -206,6 +215,7 @@ public class MaterialSatisfactionRestControllerTest {
 		u.setIdUser(1);
 		m1.setUser(u);
 		m1.setIdMaterialSatisfaction(1);
+		m1.setNote("prova");
 		
 		when(materialSatisfactionServiceMock.saveSatisfaction(Mockito.any(Materialsatisfaction.class)))
 		.thenReturn(m1);
@@ -217,7 +227,8 @@ public class MaterialSatisfactionRestControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON_UTF8))
         .andExpect(jsonPath("$.idMaterialSatisfaction", is(1)))
-		.andExpect(jsonPath("$.level", is(2)));
+		.andExpect(jsonPath("$.level", is(2)))
+		.andExpect(jsonPath("$.note", is("prova")));
 		
 		ArgumentCaptor<Materialsatisfaction> uCaptor = ArgumentCaptor.forClass(Materialsatisfaction.class);
 		verify(materialSatisfactionServiceMock, times(1)).saveSatisfaction(uCaptor.capture());

@@ -8,7 +8,7 @@ public class MaterialsatisfactionModel {
     private TeachingMaterialModel teachingmaterial;
     private UserModel user;
     private Integer level;
-    
+    private String note;
     
     
 	public Integer getIdMaterialSatisfaction() {
@@ -34,6 +34,12 @@ public class MaterialsatisfactionModel {
 	}
 	public void setLevel(Integer level) {
 		this.level = level;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 }

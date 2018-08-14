@@ -70,6 +70,7 @@ public class LectureSatisfactionRestController {
 		User user = new User();
 		user.setIdUser(lectureSatModel.getUser().getIdUser());
 		ls.setUser(user);
+		ls.setNote(lectureSatModel.getNote());
 		return lsService.saveSatisfaction(ls);
 	}
 	

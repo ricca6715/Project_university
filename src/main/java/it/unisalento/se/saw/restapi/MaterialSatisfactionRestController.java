@@ -71,6 +71,7 @@ public class MaterialSatisfactionRestController {
 		User user = new User();
 		user.setIdUser(materialSatModel.getUser().getIdUser());
 		ms.setUser(user);
+		ms.setNote(materialSatModel.getNote());
 		
 		return msService.saveSatisfaction(ms);
 	}
