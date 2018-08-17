@@ -7,13 +7,17 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.ITeachingService;
 import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.Teaching;
+import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.exceptions.TeachingNotFoundException;
+import it.unisalento.se.saw.models.TeachingModel;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -62,6 +66,26 @@ public class TeachingRestController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Teaching> getTeachingsByIdStudent(@PathVariable("id") int idStudent){
 		return teachingService.getTeachingsByIdStudent(idStudent);
+	}
+	
+
+	@PostMapping(
+			   value="/save",
+			   produces= MediaType.APPLICATION_JSON_VALUE,
+			   consumes= MediaType.APPLICATION_JSON_VALUE)
+	public Teaching save(@RequestBody TeachingModel tModel) {
+		Teaching t = new Teaching();
+		User prof = new User();
+		if(tModel.getIdTeaching() != null)
+			t.setIdTeaching(tModel.getIdTeaching());
+		t.setName(tModel.getName());
+		t.setCfu(tModel.getCfu());
+		prof.setIdUser(tModel.getUser().getIdUser());
+		t.setUser(prof);
+		
+		
+		
+		return teachingService.save(t);
 	}
 	
 }
