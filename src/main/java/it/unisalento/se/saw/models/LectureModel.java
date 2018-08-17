@@ -11,7 +11,8 @@ public class LectureModel {
     private ClassroomModel classroom;
     private TeachingModel teaching;
     private Date date;
-    private String hour;
+    private String starttime;
+    private String endtime;
     
     
     
@@ -39,11 +40,17 @@ public class LectureModel {
 	public void setTeaching(TeachingModel teaching) {
 		this.teaching = teaching;
 	}
-	public String getHour() {
-		return hour;
+	public String getStarttime() {
+		return starttime;
 	}
-	public void setHour(String hour) {
-		this.hour = hour;
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+	public String getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
 	}
 
 }

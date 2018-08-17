@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
+import it.unisalento.se.saw.exceptions.LectureSatisfactionNotFound;
 import it.unisalento.se.saw.models.LecturesatisfactionModel;
 import it.unisalento.se.saw.repositories.LectureSatisfactionRepository;
 
@@ -35,8 +36,12 @@ public class LectureSatisfactionService implements ILectureSatisfactionService {
 	}
 	
 	@Override
-	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(int idUser, int idLecture) {
-		return lsRepository.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
+	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(int idUser, int idLecture) throws LectureSatisfactionNotFound {
+		Lecturesatisfaction ls = lsRepository.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
+		if (ls == null) {
+			throw new LectureSatisfactionNotFound();
+		}
+		return ls;
 	}
 
 

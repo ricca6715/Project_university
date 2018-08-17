@@ -17,6 +17,7 @@ import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
 import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
 import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.exceptions.LectureSatisfactionNotFound;
 import it.unisalento.se.saw.models.LecturesatisfactionModel;
 
 @CrossOrigin
@@ -49,7 +50,7 @@ public class LectureSatisfactionRestController {
 	@GetMapping(
 			value = "/getLectureSatisfactionByIdUserAndIdLecture/{idUser}/{idLecture}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(@PathVariable("idUser") int idUser, @PathVariable("idLecture") int idLecture) {
+	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(@PathVariable("idUser") int idUser, @PathVariable("idLecture") int idLecture) throws LectureSatisfactionNotFound {
 		return lsService.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
 	}
 	
@@ -69,8 +70,7 @@ public class LectureSatisfactionRestController {
 		User user = new User();
 		user.setIdUser(lectureSatModel.getUser().getIdUser());
 		ls.setUser(user);
-		
-		
+		ls.setNote(lectureSatModel.getNote());
 		return lsService.saveSatisfaction(ls);
 	}
 	

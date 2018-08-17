@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.ITeachingMaterialService;
 import it.unisalento.se.saw.domain.Teachingmaterial;
+import it.unisalento.se.saw.exceptions.TeachingMaterialNotFound;
 import it.unisalento.se.saw.repositories.TeachingMaterialRepository;
 
 @Service
@@ -36,9 +37,13 @@ public class TeachingMaterialService implements ITeachingMaterialService {
 	}
 
 	@Transactional
-	public Teachingmaterial getTeachingMaterialById(int idTeachingmaterial) {
+	public Teachingmaterial getTeachingMaterialById(int idTeachingmaterial) throws TeachingMaterialNotFound {
 		// TODO Auto-generated method stub
-		return teachingMaterialRepository.getTeachingMaterialById(idTeachingmaterial);
+		Teachingmaterial tm = teachingMaterialRepository.getTeachingMaterialById(idTeachingmaterial);
+		if (tm ==null) {
+			throw new TeachingMaterialNotFound();
+		}
+		return tm;
 	}
 
 }

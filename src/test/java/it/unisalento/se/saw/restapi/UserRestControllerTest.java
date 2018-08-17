@@ -237,7 +237,6 @@ public class UserRestControllerTest {
 		user3.setEmail("luca@gmail.com");
 		user3.setPassword("luca");
 		user3.setUsertype(new Usertype("professor", null));
-		user3.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
 		
 		when(userServiceMock.getProfessorByNameTeaching("Software Engineering")).thenReturn(user3);
 		
@@ -245,8 +244,7 @@ public class UserRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.name", is("luca")))
 		.andExpect(jsonPath("$.surname", is("mainetti")))
-		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
-		.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+		.andExpect(jsonPath("$.email", is("luca@gmail.com")));
 	
 		verify(userServiceMock, times(1)).getProfessorByNameTeaching("Software Engineering");
 		verifyNoMoreInteractions(userServiceMock);
@@ -263,7 +261,6 @@ public class UserRestControllerTest {
 		user3.setEmail("luca@gmail.com");
 		user3.setPassword("luca");
 		user3.setUsertype(new Usertype("professor", null));
-		user3.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
 		
 		when(userServiceMock.getUserByMail("luca@gmail.com")).thenReturn(user3);
 		
@@ -271,8 +268,7 @@ public class UserRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.name", is("luca")))
 		.andExpect(jsonPath("$.surname", is("mainetti")))
-		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
-		.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
+		.andExpect(jsonPath("$.email", is("luca@gmail.com")));
 	
 		verify(userServiceMock, times(1)).getUserByMail("luca@gmail.com");
 		verifyNoMoreInteractions(userServiceMock);
@@ -378,7 +374,7 @@ public class UserRestControllerTest {
 	
 	
 	@Test
-	public void saveUserTest() throws  Exception {
+	public void saveProf_SecrTest() throws  Exception {
 
 		User user = new User();
 		user.setName("luca");
@@ -386,11 +382,12 @@ public class UserRestControllerTest {
 		user.setEmail("luca@gmail.com");
 		user.setPassword("luca");
 		user.setUsertype(new Usertype("professor", null));
+<<<<<<< HEAD
 		
+=======
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 		
 		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
-		
-		System.out.println(new ObjectMapper().writeValueAsString(user));
         mockMvc.perform(
                 post("/user/save")
                         .contentType(APPLICATION_JSON_UTF8)
@@ -401,14 +398,39 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$.surname", is("mainetti")))
 		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
 		.andExpect(jsonPath("$.password", is("luca")));
-	
 		
 		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
-
 		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
 		verifyNoMoreInteractions(userServiceMock);
+	}
+	
+	@Test
+	public void saveStudTest() throws  Exception {
+
+		User user = new User();
+		user.setName("riccardo");
+		user.setSurname("contino");
+		user.setEmail("riccardo@gmail.com");
+		user.setPassword("riccardo");
+		user.setUsertype(new Usertype("student", null));
+		user.setStudycourse(new Studycourse("Software Engineering", "test", null, null, null));
 		
+		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
+        mockMvc.perform(
+                post("/user/save")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user))
+        )
+        .andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is("riccardo")))
+		.andExpect(jsonPath("$.surname", is("contino")))
+		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
+		.andExpect(jsonPath("$.password", is("riccardo")))
+		.andExpect(jsonPath("$.studycourse.name", is("Software Engineering")));
 		
+		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
+		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
+		verifyNoMoreInteractions(userServiceMock);
 	}
 	
 	

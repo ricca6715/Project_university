@@ -34,6 +34,7 @@ import it.unisalento.se.saw.Iservices.ITeachingMaterialService;
 import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Teachingmaterial;
 import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.exceptions.TeachingMaterialNotFound;
 import it.unisalento.se.saw.models.TeachingMaterialModel;
 
 
@@ -116,7 +117,7 @@ public class TeachingMaterialRestController {
 	@GetMapping(
 			value="/delete/{idTeachingmaterial}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean removeMaterialById(@PathVariable("idTeachingmaterial") int idTeachingmaterial) {
+	public boolean removeMaterialById(@PathVariable("idTeachingmaterial") int idTeachingmaterial) throws TeachingMaterialNotFound {
 		Teachingmaterial tm = getTeachingMaterialById(idTeachingmaterial);
 		if(!(tm.getType().equalsIgnoreCase("link"))) {
 			File file = new File(tm.getLink());
@@ -134,7 +135,7 @@ public class TeachingMaterialRestController {
 	@GetMapping(
 			value="/getTeachingMaterialById/{idTeachingmaterial}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Teachingmaterial getTeachingMaterialById(@PathVariable("idTeachingmaterial") int idTeachingmaterial) {
+	public Teachingmaterial getTeachingMaterialById(@PathVariable("idTeachingmaterial") int idTeachingmaterial) throws TeachingMaterialNotFound {
 		return teachingMaterialService.getTeachingMaterialById(idTeachingmaterial);
 	}
 		

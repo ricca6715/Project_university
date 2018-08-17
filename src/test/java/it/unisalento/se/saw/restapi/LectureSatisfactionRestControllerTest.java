@@ -34,6 +34,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -50,12 +51,17 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unisalento.se.saw.Iservices.ILectureSatisfactionService;
 import it.unisalento.se.saw.Iservices.ILectureService;
 import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
 import it.unisalento.se.saw.domain.Materialsatisfaction;
 import it.unisalento.se.saw.domain.Teachingmaterial;
+import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.exceptions.LectureSatisfactionNotFound;
+import it.unisalento.se.saw.exceptions.MaterialSatisfactionNotFound;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LectureSatisfactionRestControllerTest {
@@ -104,10 +110,12 @@ public class LectureSatisfactionRestControllerTest {
 		l1.setIdlectureSatisfaction(1);
 		l1.setLevel(2);
 		l1.setLecture(l);
+		l1.setNote("prova");
 		Lecturesatisfaction l2 = new Lecturesatisfaction();
 		l2.setIdlectureSatisfaction(2);
 		l2.setLevel(5);
 		l2.setLecture(l);
+		l2.setNote("prova");
 		
 		when(lectureSatServiceMock.getLectureSatisfactionsByIdLecture(1))
 		.thenReturn(Arrays.asList(l1, l2));
@@ -116,9 +124,115 @@ public class LectureSatisfactionRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 		.andExpect(jsonPath("$[0].level", is(2)))
-		.andExpect(jsonPath("$[1].level", is(5)));
+		.andExpect(jsonPath("$[0].note", is("prova")))
+		.andExpect(jsonPath("$[1].level", is(5)))
+		.andExpect(jsonPath("$[1].note", is("prova")));
 	
 		verify(lectureSatServiceMock, times(1)).getLectureSatisfactionsByIdLecture(1);
+		verifyNoMoreInteractions(lectureSatServiceMock);
+	}
+	
+	@Test
+	public void getLectureSatisfactionByIdUserAndIdLectureTest() throws Exception {
+	
+		Lecture l = new Lecture();
+		l.setIdLecture(1);
+		Lecturesatisfaction l1 = new Lecturesatisfaction();
+		l1.setIdlectureSatisfaction(1);
+		l1.setLevel(2);
+		l1.setLecture(l);
+		l1.setNote("prova");
+		
+		when(lectureSatServiceMock.getLectureSatisfactionByIdUserAndIdLecture(1, 1)).thenReturn(l1);
+		
+		mockMvc.perform(get("/lecturesatisfaction/getLectureSatisfactionByIdUserAndIdLecture/{idUser}/{idLecture}", 1, 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.level", is(2)))
+		.andExpect(jsonPath("$.note", is("prova")));
+		
+		verify(lectureSatServiceMock, times(1)).getLectureSatisfactionByIdUserAndIdLecture(1, 1);
+		verifyNoMoreInteractions(lectureSatServiceMock);
+	}
+	
+	@Test
+	public void getMaterialSatisfactionByIdUserAndIdMaterialErrorTest() throws Exception {
+		Lecture l = new Lecture();
+		l.setIdLecture(1);
+		Lecturesatisfaction l1 = new Lecturesatisfaction();
+		l1.setIdlectureSatisfaction(1);
+		l1.setLevel(2);
+		l1.setLecture(l);
+		l1.setNote("prova");
+		
+		when(lectureSatServiceMock.getLectureSatisfactionByIdUserAndIdLecture(Mockito.anyInt(), Mockito.anyInt()))
+		.thenThrow(new LectureSatisfactionNotFound());
+		
+		mockMvc.perform(get("/lecturesatisfaction/getLectureSatisfactionByIdUserAndIdLecture/{idUser}/{idLecture}", 1, 1))
+		.andExpect(status().isNotFound());
+		
+		verify(lectureSatServiceMock, times(1)).getLectureSatisfactionByIdUserAndIdLecture(1, 1);
+		verifyNoMoreInteractions(lectureSatServiceMock);
+	}
+	
+	@Test
+	public void saveTest() throws  Exception {
+		Lecture l = new Lecture();
+		l.setIdLecture(1);
+		Lecturesatisfaction l1 = new Lecturesatisfaction();
+		l1.setIdlectureSatisfaction(1);
+		l1.setLevel(2);
+		l1.setLecture(l);
+		User u = new User();
+		u.setIdUser(1);
+		l1.setUser(u);
+		l1.setNote("prova");
+		
+		when(lectureSatServiceMock.saveSatisfaction(Mockito.any(Lecturesatisfaction.class)))
+		.thenReturn(l1);
+		
+		mockMvc.perform(
+                post("/lecturesatisfaction/save")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(l1)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.level", is(2)))
+		.andExpect(jsonPath("$.note", is("prova")));
+		
+		ArgumentCaptor<Lecturesatisfaction> uCaptor = ArgumentCaptor.forClass(Lecturesatisfaction.class);
+		verify(lectureSatServiceMock, times(1)).saveSatisfaction(uCaptor.capture());
+		verifyNoMoreInteractions(lectureSatServiceMock);
+	}
+	
+	@Test
+	public void updateTest() throws  Exception {
+		Lecture l = new Lecture();
+		l.setIdLecture(1);
+		Lecturesatisfaction l1 = new Lecturesatisfaction();
+		l1.setIdlectureSatisfaction(1);
+		l1.setLevel(2);
+		l1.setLecture(l);
+		User u = new User();
+		u.setIdUser(1);
+		l1.setUser(u);
+		l1.setIdlectureSatisfaction(1);
+		l1.setNote("prova");
+		
+		when(lectureSatServiceMock.saveSatisfaction(Mockito.any(Lecturesatisfaction.class)))
+		.thenReturn(l1);
+		
+		mockMvc.perform(
+                post("/lecturesatisfaction/save")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(l1)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.level", is(2)))
+		.andExpect(jsonPath("$.note", is("prova")));
+		
+		ArgumentCaptor<Lecturesatisfaction> uCaptor = ArgumentCaptor.forClass(Lecturesatisfaction.class);
+		verify(lectureSatServiceMock, times(1)).saveSatisfaction(uCaptor.capture());
 		verifyNoMoreInteractions(lectureSatServiceMock);
 	}
 	

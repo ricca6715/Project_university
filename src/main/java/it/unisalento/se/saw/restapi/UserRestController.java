@@ -104,9 +104,7 @@
 	 public User getById(@PathVariable("id") int id){
 		 return userService.getById(id);
 	 }
-	
-	 
-	
+
 	 @PostMapping(
 	   value="/save",
 	   produces= MediaType.APPLICATION_JSON_VALUE,
@@ -118,17 +116,16 @@
 		   user.setSurname(userModel.getSurname());
 		   user.setEmail(userModel.getEmail());
 		   user.setPassword(userModel.getPassword());
-		   Studycourse sc = new Studycourse();
-		   sc.setIdStudyCourse(userModel.getStudycourse().getIdStudyCourse());
-		   sc.setName(userModel.getStudycourse().getName());
 		   Usertype ut = new Usertype();
 		   ut.setIdUserType(userModel.getUsertype().getIdUserType());
 		   ut.setTypeName(userModel.getUsertype().getTypeName());
-		   user.setStudycourse(sc);
 		   user.setUsertype(ut);
-		   System.out.println(userModel.getFcmToken());
-		   if(userModel.getFcmToken() != null)
-		    user.setFcmtoken(userModel.getFcmToken());
+		   if (ut.getTypeName().equals("student")) {
+			   Studycourse sc = new Studycourse();
+			   sc.setIdStudyCourse(userModel.getStudycourse().getIdStudyCourse());
+			   sc.setName(userModel.getStudycourse().getName());
+			   user.setStudycourse(sc);
+		   }
 		   return userService.saveUser(user);
 		 }
 	  
