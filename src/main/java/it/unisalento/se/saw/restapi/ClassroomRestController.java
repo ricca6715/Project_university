@@ -33,6 +33,8 @@ public class ClassroomRestController {
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Classroom saveClassroom(@RequestBody ClassroomModel classroomModel) {
 		Classroom cls = new Classroom();
+		if(classroomModel.getIdClassroom() != null)
+			cls.setIdClassroom(classroomModel.getIdClassroom());
 		cls.setName(classroomModel.getName());
 		cls.setDescription(classroomModel.getDescription());
 		return classroomService.save(cls);

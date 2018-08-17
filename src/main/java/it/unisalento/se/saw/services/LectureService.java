@@ -71,5 +71,10 @@ public class LectureService implements ILectureService {
 	public List<Lecture> getDailyLectureByIdTeachingAndDate(int idTeaching, Date date) {
 		return lectureRepository.getDailyLectureByIdTeachingAndDate(idTeaching, date);
 	}
+	
+	@Transactional
+	public Lecture save(Lecture l) {
+		return lectureRepository.save(l);
+	}
 
 }

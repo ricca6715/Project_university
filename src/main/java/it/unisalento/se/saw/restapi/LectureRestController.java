@@ -11,14 +11,18 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.ILectureService;
 import it.unisalento.se.saw.Iservices.ITeachingService;
+import it.unisalento.se.saw.domain.Classroom;
 import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Teaching;
 import it.unisalento.se.saw.exceptions.LectureNotFoundException;
+import it.unisalento.se.saw.models.LectureModel;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -101,6 +105,24 @@ public class LectureRestController {
 			
 		}
 		return lectures;
+	}
+	
+	
+	@PostMapping(
+			   value="/save",
+			   produces= MediaType.APPLICATION_JSON_VALUE,
+			   consumes= MediaType.APPLICATION_JSON_VALUE)
+	public Lecture save(@RequestBody LectureModel lModel) {
+		Lecture l = new Lecture();
+		Classroom cls = new Classroom();
+		if(lModel.getIdLecture() != null)
+			l.setIdLecture(lModel.getIdLecture());
+		cls.setIdClassroom(lModel.getClassroom().getIdClassroom());
+		l.setClassroom(cls);
+		l.setDate(lModel.getDate());
+		
+		
+		return lectureService.save(l);
 	}
 	
 }

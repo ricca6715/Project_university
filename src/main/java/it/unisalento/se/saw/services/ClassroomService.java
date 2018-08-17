@@ -18,14 +18,13 @@ public class ClassroomService implements IClassroomService {
 
 	@Transactional
 	public Classroom save(Classroom cls) {
-		// TODO Auto-generated method stub
 		return classroomRepository.save(cls);
 	}
 	
 	@Transactional
 	public List<Classroom> getAll() {
-		// TODO Auto-generated method stub
 		return classroomRepository.findAll();
 	}
+	
 
 }
