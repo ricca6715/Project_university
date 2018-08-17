@@ -114,11 +114,17 @@ public class LectureRestController {
 	public Lecture save(@RequestBody LectureModel lModel) {
 		Lecture l = new Lecture();
 		Classroom cls = new Classroom();
+		Teaching t = new Teaching();
 		if(lModel.getIdLecture() != null)
 			l.setIdLecture(lModel.getIdLecture());
 		cls.setIdClassroom(lModel.getClassroom().getIdClassroom());
 		l.setClassroom(cls);
 		l.setDate(lModel.getDate());
+		l.setStarttime(lModel.getStarttime());
+		l.setEndtime(lModel.getEndtime());
+		t.setIdTeaching(lModel.getTeaching().getIdTeaching());
+		l.setTeaching(t);
+
 		
 		
 		return lectureService.save(l);

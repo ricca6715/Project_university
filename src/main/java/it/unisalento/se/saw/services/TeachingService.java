@@ -46,5 +46,10 @@ public class TeachingService implements ITeachingService {
 		// TODO Auto-generated method stub
 		return teachingRepository.getTeachingsByIdStudent(idStudent);
 	}
+	
+	@Transactional
+	public Teaching save(Teaching t) {
+		return teachingRepository.save(t);
+	}
 
 }

@@ -382,10 +382,7 @@ public class UserRestControllerTest {
 		user.setEmail("luca@gmail.com");
 		user.setPassword("luca");
 		user.setUsertype(new Usertype("professor", null));
-<<<<<<< HEAD
-		
-=======
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
+
 		
 		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
         mockMvc.perform(

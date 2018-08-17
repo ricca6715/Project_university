@@ -433,22 +433,15 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
 			.andExpect(jsonPath("$[0].starttime", is("15-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
-<<<<<<< HEAD
-			.andExpect(jsonPath("$[0].duration", is("3")))
-=======
 			.andExpect(jsonPath("$[0].endtime", is("18-15")))
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
+
 			.andExpect(jsonPath("$[0].teaching.name", is("Software Engineering")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].starttime", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
-<<<<<<< HEAD
-			.andExpect(jsonPath("$[1].duration", is("3")))
-=======
 			.andExpect(jsonPath("$[1].endtime", is("18-15")))
->>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 			.andExpect(jsonPath("$[1].teaching.name", is("Software Engineering")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			

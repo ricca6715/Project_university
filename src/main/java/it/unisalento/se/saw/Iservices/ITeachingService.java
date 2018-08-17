@@ -12,4 +12,5 @@ public interface ITeachingService {
 	public List<Teaching> getTeachingByStudyCourse(int id);
 	public List<Teaching> getTeachingsByIdProfessor(int idProfessor);
 	public List<Teaching> getTeachingsByIdStudent(int idStudent);
+	public Teaching save(Teaching t);
 }
