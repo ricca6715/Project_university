@@ -9,4 +9,5 @@ public interface IStudyCourseService {
 
 	public Studycourse getStudycourseByName(String name) throws StudycourseNotFoundException;
 	public List<Studycourse> getAll();
+	public Studycourse save(Studycourse sc);
 }

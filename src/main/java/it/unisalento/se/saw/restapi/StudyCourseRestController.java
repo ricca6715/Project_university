@@ -7,12 +7,15 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.se.saw.Iservices.IStudyCourseService;
 import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.exceptions.StudycourseNotFoundException;
+import it.unisalento.se.saw.models.StudyCourseModel;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -41,6 +44,20 @@ public class StudyCourseRestController {
 		return scService.getAll();
 	}
 	
+	@PostMapping(
+			   value="/save",
+			   produces= MediaType.APPLICATION_JSON_VALUE,
+			   consumes= MediaType.APPLICATION_JSON_VALUE)
+	public Studycourse save(@RequestBody StudyCourseModel scModel) {
+		Studycourse sc = new Studycourse();
+		if(scModel.getIdStudyCourse() != null )
+			sc.setIdStudyCourse(scModel.getIdStudyCourse());
+		sc.setDescription(scModel.getDescription());
+		sc.setName(scModel.getName());
+		
+		
+		return scService.save(sc);
+	}
 
 	
 

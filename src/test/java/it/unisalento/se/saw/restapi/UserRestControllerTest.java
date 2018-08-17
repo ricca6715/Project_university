@@ -375,6 +375,8 @@ public class UserRestControllerTest {
 		
 	}
 	
+	
+	
 	@Test
 	public void saveUserTest() throws  Exception {
 
@@ -384,7 +386,6 @@ public class UserRestControllerTest {
 		user.setEmail("luca@gmail.com");
 		user.setPassword("luca");
 		user.setUsertype(new Usertype("professor", null));
-		user.setStudycourse(new Studycourse("Computer Engineering","test",null,null,null));
 		
 		
 		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
@@ -409,6 +410,9 @@ public class UserRestControllerTest {
 		
 		
 	}
+	
+	
+
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

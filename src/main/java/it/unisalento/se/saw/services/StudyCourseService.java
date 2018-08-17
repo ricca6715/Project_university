@@ -33,4 +33,9 @@ public class StudyCourseService implements IStudyCourseService {
 		return scRepository.findAll();
 	}
 
+	
+	@Transactional
+	public Studycourse save(Studycourse sc) {
+		return scRepository.save(sc);
+	}
 }

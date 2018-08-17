@@ -81,7 +81,7 @@ public class LectureRestControllerTest {
 	@Before
 	public void setUp() {
 		
-		mockMvc = MockMvcBuilders.standaloneSetup(new LectureRestController(lectureServiceMock, null))
+		mockMvc = MockMvcBuilders.standaloneSetup(new LectureRestController(lectureServiceMock, teachingServiceMock))
 					.setViewResolvers(viewResolver())
 					.build();
 	}
@@ -424,9 +424,9 @@ public class LectureRestControllerTest {
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
 		when(teachingServiceMock.getTeachingsByIdStudent(1)).thenReturn(Arrays.asList(t1));
-		when(lectureServiceMock.getDailyLectureByIdTeachingAndDate(t1.getIdTeaching(), d)).thenReturn(Arrays.asList(l1, l2));
+		when(lectureServiceMock.getDailyLectureByIdTeachingAndDate(1, d)).thenReturn(Arrays.asList(l1, l2));
 		
-		mockMvc.perform(get("/getDailyLectureByIdStudent/{idUser}/{date}", 1, "2012-12-21"))
+		mockMvc.perform(get("/lecture/getDailyLectureByIdStudent/{idUser}/{date}", 1, "2012-12-21"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
@@ -434,14 +434,14 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].hour", is("13-15")))
 			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
 			.andExpect(jsonPath("$[0].duration", is("3")))
-			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
+			.andExpect(jsonPath("$[0].teaching.name", is("Software Engineering")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].hour", is("15-15")))
 			.andExpect(jsonPath("$[1].description", is("test lecture")))
 			.andExpect(jsonPath("$[1].duration", is("3")))
-			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
+			.andExpect(jsonPath("$[1].teaching.name", is("Software Engineering")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
 			
 		
