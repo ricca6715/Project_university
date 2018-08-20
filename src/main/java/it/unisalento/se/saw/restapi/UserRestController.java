@@ -104,6 +104,13 @@
 	 public User getById(@PathVariable("id") int id){
 		 return userService.getById(id);
 	 }
+	 
+	 @GetMapping(
+		value= "/getAllProfessors",
+		produces= MediaType.APPLICATION_JSON_VALUE )
+	public List<User> getAllProfessors(){
+		return userService.getAllProfessors();
+	}
 
 	 @PostMapping(
 	   value="/save",
@@ -112,6 +119,9 @@
 	 public User saveUser(@RequestBody UserModel userModel) {
 		   
 		   User user = new User();
+		   if (userModel.getIdUser() != null) {
+			user.setIdUser(userModel.getIdUser());
+		   }
 		   user.setName(userModel.getName());
 		   user.setSurname(userModel.getSurname());
 		   user.setEmail(userModel.getEmail());

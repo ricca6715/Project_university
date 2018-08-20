@@ -15,11 +15,5 @@ public interface StudyCourseRepository extends JpaRepository<Studycourse, Intege
 	@Query("select sc from Studycourse sc "
 			+ "where sc.name=:name ")
 	public Studycourse getStudycourseByName(@Param("name") String name );
-	
-	
 
-	
-	
-	
-	
 }
