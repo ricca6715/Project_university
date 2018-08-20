@@ -60,6 +60,11 @@ public class StudyCourseRestController {
 	}
 
 	
-	
+	@GetMapping(
+			value = "/getStudycoursesByIdTeaching/{idTeaching}",
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	public List<Studycourse> getStudycoursesByIdTeaching(@PathVariable("idTeaching") int idTeaching) {
+		return scService.getStudycourseByIdTeaching(idTeaching);
+	}
 
 }

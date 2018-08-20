@@ -38,4 +38,10 @@ public class StudyCourseService implements IStudyCourseService {
 	public Studycourse save(Studycourse sc) {
 		return scRepository.save(sc);
 	}
+
+
+	@Override
+	public List<Studycourse> getStudycourseByIdTeaching(int idTeaching) {
+		return scRepository.getStudycourseByIdTeaching(idTeaching);
+	}
 }
