@@ -63,6 +63,12 @@ public class UserService implements IUserService {
 		return userRepository.userByMail(mail);
 	}
 
+	@Override
+	public List<User> getAllProfessors() {
+		// TODO Auto-generated method stub
+		return userRepository.getAllProfessors();
+	}
+
 
 
 }

@@ -31,7 +31,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("select u from User u where u.email=:mail")
 	public User userByMail(@Param("mail") String mail);
 	
-	
+	@Query("select u from User u where u.usertype.idUserType=2")
+	public List<User> getAllProfessors();
 	
 	
 	

@@ -15,14 +15,13 @@ public interface StudyCourseRepository extends JpaRepository<Studycourse, Intege
 	@Query("select sc from Studycourse sc "
 			+ "where sc.name=:name ")
 	public Studycourse getStudycourseByName(@Param("name") String name );
+<<<<<<< HEAD
 	
 	@Query("select t.studycourses from Teaching t where t.idTeaching=:idTeaching")
 	public List<Studycourse> getStudycourseByIdTeaching(@Param("idTeaching") int idTeaching);
 	
 	
+=======
+>>>>>>> branch 'master' of https://github.com/ricca6715/Project_university.git
 
-	
-	
-	
-	
 }
