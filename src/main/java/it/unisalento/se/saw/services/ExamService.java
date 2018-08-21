@@ -1,7 +1,10 @@
 package it.unisalento.se.saw.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.IExamService;
 import it.unisalento.se.saw.domain.Exam;
@@ -13,10 +16,14 @@ public class ExamService implements IExamService {
 	@Autowired
 	ExamRepository examRepository;
 	
-	@Override
+	@Transactional
 	public Exam save(Exam e) {
-		// TODO Auto-generated method stub
 		return examRepository.save(e);
+	}
+	
+	@Transactional
+	public List<Exam> getAll(){
+		return examRepository.findAll();
 	}
 
 }
