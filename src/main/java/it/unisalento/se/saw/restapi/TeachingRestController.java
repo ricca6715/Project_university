@@ -1,5 +1,6 @@
 package it.unisalento.se.saw.restapi;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.Teaching;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.exceptions.TeachingNotFoundException;
+import it.unisalento.se.saw.models.StudyCourseModel;
 import it.unisalento.se.saw.models.TeachingModel;
 
 @CrossOrigin
@@ -76,14 +78,24 @@ public class TeachingRestController {
 	public Teaching save(@RequestBody TeachingModel tModel) {
 		Teaching t = new Teaching();
 		User prof = new User();
+		HashSet<Studycourse> scourses = new HashSet<>();
 		if(tModel.getIdTeaching() != null)
 			t.setIdTeaching(tModel.getIdTeaching());
 		t.setName(tModel.getName());
 		t.setCfu(tModel.getCfu());
 		prof.setIdUser(tModel.getUser().getIdUser());
 		t.setUser(prof);
-		
-		
+		List<StudyCourseModel> studycoursesModel = tModel.getStudycourses();
+		if(studycoursesModel != null) {
+			for (int i = 0; i < studycoursesModel.size(); i++) {
+				Studycourse sc = new Studycourse();
+				sc.setIdStudyCourse(studycoursesModel.get(i).getIdStudyCourse());
+				sc.setDescription(studycoursesModel.get(i).getDescription());
+				sc.setName(studycoursesModel.get(i).getName());
+				scourses.add(sc);
+			}
+			t.setStudycourses(scourses);
+		}
 		
 		return teachingService.save(t);
 	}

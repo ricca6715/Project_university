@@ -1,5 +1,7 @@
 package it.unisalento.se.saw.models;
 
+import java.util.List;
+
 import it.unisalento.se.saw.domain.User;
 
 public class TeachingModel {
@@ -8,9 +10,16 @@ public class TeachingModel {
     private UserModel user;
     private String name;
     private Integer cfu;
+    private List<StudyCourseModel> studycourses;
     
     
     
+	public List<StudyCourseModel> getStudycourses() {
+		return studycourses;
+	}
+	public void setStudycourses(List<StudyCourseModel> studycourses) {
+		this.studycourses = studycourses;
+	}
 	public Integer getIdTeaching() {
 		return idTeaching;
 	}
