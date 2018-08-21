@@ -37,6 +37,8 @@ public class ClassroomRestController {
 			cls.setIdClassroom(classroomModel.getIdClassroom());
 		cls.setName(classroomModel.getName());
 		cls.setDescription(classroomModel.getDescription());
+		cls.setLongitude(classroomModel.getLongitude());
+		cls.setLatitude(classroomModel.getLatitude());
 		return classroomService.save(cls);
 	}
 	
