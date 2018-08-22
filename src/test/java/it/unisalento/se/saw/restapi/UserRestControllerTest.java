@@ -370,9 +370,7 @@ public class UserRestControllerTest {
 		verifyNoMoreInteractions(userServiceMock);
 		
 	}
-	
-	
-	
+		
 	@Test
 	public void saveProf_SecrTest() throws  Exception {
 
@@ -430,8 +428,69 @@ public class UserRestControllerTest {
 		verifyNoMoreInteractions(userServiceMock);
 	}
 	
+	@Test
+	public void getAllProfessorsTest() throws Exception {
+		User user1 = new User();
+		User user2 = new User();
+		
+		user1.setName("riccardo");
+		user1.setSurname("contino");
+		user1.setEmail("riccardo@gmail.com");
+		user1.setPassword("riccardo");
+		user1.setUsertype(new Usertype("professor", null));
+		
+		user2.setName("andrea");
+		user2.setSurname("della monaca");
+		user2.setEmail("andrea@libero.it");
+		user2.setPassword("andrea");
+		user2.setUsertype(new Usertype("professor", null));
+				
+		when(userServiceMock.getAllProfessors()).thenReturn(Arrays.asList(user1, user2));
+		
+		mockMvc.perform(get("/user/getAllProfessors"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$[0].name", is("riccardo")))
+		.andExpect(jsonPath("$[0].surname", is("contino")))
+		.andExpect(jsonPath("$[0].email", is("riccardo@gmail.com")))
+		.andExpect(jsonPath("$[1].name", is("andrea")))
+		.andExpect(jsonPath("$[1].surname", is("della monaca")))
+		.andExpect(jsonPath("$[1].email", is("andrea@libero.it")));
 	
+		verify(userServiceMock, times(1)).getAllProfessors();
+		verifyNoMoreInteractions(userServiceMock);
+		
+	}
+	
+	
+	@Test
+	public void updateUserTest() throws  Exception {
 
+		User user = new User();
+		user.setName("luca");
+		user.setSurname("mainetti");
+		user.setEmail("luca@gmail.com");
+		user.setPassword("luca");
+		user.setUsertype(new Usertype("professor", null));
+		user.setIdUser(1);
+		
+		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
+        mockMvc.perform(
+                post("/user/save")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user))
+        )
+        .andExpect(status().isOk())
+		.andExpect(jsonPath("$.idUser", is(1)))
+		.andExpect(jsonPath("$.name", is("luca")))
+		.andExpect(jsonPath("$.surname", is("mainetti")))
+		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
+		.andExpect(jsonPath("$.password", is("luca")));
+		
+		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
+		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
+		verifyNoMoreInteractions(userServiceMock);
+	}
+	
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

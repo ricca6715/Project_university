@@ -138,6 +138,32 @@ public class ClassroomRestControllerTest {
 		
 	}
 	
+	@Test
+	public void updateTest() throws  Exception {
+		
+		Classroom c = new Classroom("y1","test",(double) 210, (double) 210, null, null, null);
+		c.setIdClassroom(1);
+		when(classroomServiceMock.save(Mockito.any(Classroom.class))).thenReturn(c);
+		
+        mockMvc.perform(
+                post("/classroom/save")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(c)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+        .andExpect(jsonPath("$.idClassroom", is(1)))
+		.andExpect(jsonPath("$.name", is("y1")))
+		.andExpect(jsonPath("$.description", is("test")))
+		.andExpect(jsonPath("$.latitude", is((double)210)))
+		.andExpect(jsonPath("$.latitude", is((double)210)));
+		
+		ArgumentCaptor<Classroom> uCaptor = ArgumentCaptor.forClass(Classroom.class);
+		verify(classroomServiceMock, times(1)).save(uCaptor.capture());
+		verifyNoMoreInteractions(classroomServiceMock);
+		
+		
+	}
+	
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
