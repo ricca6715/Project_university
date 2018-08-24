@@ -1,6 +1,7 @@
 package it.unisalento.se.saw.restapi;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,6 +33,13 @@ public class ReportStatusRestController {
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	public Reportstatus getReportStatusById(@PathVariable("idReportStatus") int idReportStatus) throws ReportstatusNotFoundException {
 		return rsService.getReportStatusById(idReportStatus);
+	}
+	
+	@GetMapping(
+			value = "/getReportStatusforMod",
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	public List<Reportstatus> getReportStatusforMod() {
+		return rsService.getReportStatusforMod();
 	}
 	
 }

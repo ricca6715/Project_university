@@ -13,8 +13,6 @@ import it.unisalento.se.saw.repositories.ReportRepository;
 
 @Service
 public class ReportService implements IReportService {
-	
-
 
 	@Autowired
 	ReportRepository reportRepository;
@@ -51,7 +49,16 @@ public class ReportService implements IReportService {
 		return reportRepository.getReportsByIdClassroom(idClassroom);
 	}
 
+	@Transactional
+	public List<Report> getReportsByIdSecretary(int idSecretary) {
+		// TODO Auto-generated method stub
+		return reportRepository.getReportsByIdSecretary(idSecretary);
+	}
 
+	@Transactional
+	public List<Report> getPendingReports() {
+		return reportRepository.getPendingReports();
+	}
 
 
 }

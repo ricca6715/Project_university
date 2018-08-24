@@ -24,10 +24,10 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 	@Query("select r from Report r "
 			+ "where r.classroom.idClassroom=:idClassroom ")
 	public List<Report> getReportsByIdClassroom(@Param("idClassroom") int idClassroom );
-	
-	
-	
 
-
-
+	@Query("select r from Report r where r.userBySecretaryIdSecretary.idUser=:idSecretary")
+	public List<Report> getReportsByIdSecretary(@Param("idSecretary") int idSecretary);
+	
+	@Query("select r from Report r where r.reportstatus.idreportStatus=1")
+	public List<Report> getPendingReports();
 }

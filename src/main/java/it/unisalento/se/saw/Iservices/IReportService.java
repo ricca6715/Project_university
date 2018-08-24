@@ -11,5 +11,6 @@ public interface IReportService {
 	public Report getById(int idReport) throws ReportNotFoundException;
 	public Report saveReport(Report report);
 	public List<Report> getReportsByIdClassroom(int idClassroom);
-
+	public List<Report> getReportsByIdSecretary(int idSecretary);
+	public List<Report> getPendingReports();
 }

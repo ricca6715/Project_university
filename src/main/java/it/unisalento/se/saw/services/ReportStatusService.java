@@ -1,5 +1,7 @@
 package it.unisalento.se.saw.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,12 @@ public class ReportStatusService implements IReportStatusService {
 			throw new ReportstatusNotFoundException();
 		}
 		return rs;
+	}
+
+	@Transactional
+	public List<Reportstatus> getReportStatusforMod() {
+		// TODO Auto-generated method stub
+		return rsRepository.getReportStatusforMod();
 	}
 	
 }

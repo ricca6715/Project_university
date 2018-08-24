@@ -45,6 +45,20 @@ public class ReportRestController {
 	}
 	
 	@GetMapping(
+			value = "/getReportsByIdSecretary/{idSecretary}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Report> getReportsByIdSecretary(@PathVariable("idSecretary") int idSecretary) {
+		return reportService.getReportsByIdSecretary(idSecretary);
+	}
+	
+	@GetMapping(
+			value = "/getPendingReports",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Report> getPendingReports() {
+		return reportService.getPendingReports();
+	}
+	
+	@GetMapping(
 			value = "/getAll",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Report> getAll() {
@@ -70,12 +84,17 @@ public class ReportRestController {
 		 cls.setIdClassroom(reportModel.getClassroom().getIdClassroom());
 		 report.setClassroom(cls);
 		 Reportstatus st = new Reportstatus();
-		 st.setIdreportStatus(1);
+		 st.setIdreportStatus(reportModel.getReportstatus().getIdreportStatus());
 		 report.setReportstatus(st);
 		 User prof = new User();
 		 prof.setIdUser(reportModel.getUserByProfessorIdProfessor().getIdUser());
 		 report.setUserByProfessorIdProfessor(prof);
 		 report.setProblemDescription(reportModel.getProblemDescription());
+		 if (reportModel.getUserBySecretaryIdSecretary() != null) {
+			User secr = new User();
+			secr.setIdUser(reportModel.getUserBySecretaryIdSecretary().getIdUser());
+			report.setUserBySecretaryIdSecretary(secr);
+		}
 		 return reportService.saveReport(report);
 	 }
 	 
