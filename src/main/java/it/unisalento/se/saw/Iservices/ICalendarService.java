@@ -7,6 +7,6 @@ import it.unisalento.se.saw.domain.Calendar;
 public interface ICalendarService {
 
 	public Calendar save(Calendar calendar);
-
 	public List<Calendar> getAll();
+	public List<Calendar> getCalendarsByIdStudycourse(int idStudycourse);
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,13 @@ public class CalendarRestController {
 			produces= MediaType.APPLICATION_JSON_VALUE)
 	public List<Calendar> getAll() {
 		return calService.getAll();
+	}
+	
+	@GetMapping(
+			value = "/getCalendarsByIdStudycourse/{idStudycourse}",
+			produces= MediaType.APPLICATION_JSON_VALUE)
+	public List<Calendar> getCalendarsByIdStudycourse(@PathVariable("idStudycourse") int idStudycourse) {
+		return calService.getCalendarsByIdStudycourse(idStudycourse);
 	}
 
 }

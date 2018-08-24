@@ -26,4 +26,9 @@ public class CalendarService implements ICalendarService {
 		return calRepository.findAll();
 	}
 
+	@Transactional
+	public List<Calendar> getCalendarsByIdStudycourse(int idStudycourse) {
+		return calRepository.getCalendarsByIdStudycourse(idStudycourse);
+	}
+
 }

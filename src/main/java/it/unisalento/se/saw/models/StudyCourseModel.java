@@ -1,14 +1,23 @@
 package it.unisalento.se.saw.models;
 
+import java.util.List;
+
 public class StudyCourseModel {
 	
     private Integer idStudyCourse;
     private String name;
     private String description;
+    private List<CalendarModel> calendars;
     
     
     
     
+	public List<CalendarModel> getCalendars() {
+		return calendars;
+	}
+	public void setCalendars(List<CalendarModel> calendars) {
+		this.calendars = calendars;
+	}
 	public Integer getIdStudyCourse() {
 		return idStudyCourse;
 	}
