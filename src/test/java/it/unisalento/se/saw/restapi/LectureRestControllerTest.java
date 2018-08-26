@@ -29,13 +29,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -52,6 +55,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.fabric.xmlrpc.base.Array;
 
 import it.unisalento.se.saw.Iservices.IClassroomService;
@@ -449,6 +453,44 @@ public class LectureRestControllerTest {
 		verify(teachingServiceMock, times(1)).getTeachingsByIdStudent(1);
 		verify(lectureServiceMock, times(1)).getDailyLectureByIdTeachingAndDate(t1.getIdTeaching(), d);
 		verifyNoMoreInteractions(teachingServiceMock);
+		verifyNoMoreInteractions(lectureServiceMock);
+	}
+	
+	@Test
+	public void saveLessonTest() throws Exception {
+
+		Lecture l1 = new Lecture();
+		l1.setIdLecture(1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = sdf.parse("2012-12-21");
+		l1.setDate(d);
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
+		l1.setDescription("it was a good lesson");
+		Teaching t = new Teaching(null, "Database", 9, null, null, null, null);
+		t.setIdTeaching(1);
+		l1.setTeaching(t);
+		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
+		
+		when(lectureServiceMock.getLecturesByIdTeaching(1)).thenReturn(Collections.emptyList());
+		when(lectureServiceMock.save(Mockito.any(Lecture.class))).thenReturn(l1);
+		
+		mockMvc.perform(post("/lecture/save")
+                .contentType(APPLICATION_JSON_UTF8)
+				.content(new ObjectMapper().writeValueAsString(l1)))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.date", is("2012-12-21")))
+			.andExpect(jsonPath("$.idLecture", is(1)))
+			.andExpect(jsonPath("$.starttime", is("15-15")))
+			.andExpect(jsonPath("$.description", is("it was a good lesson")))
+			.andExpect(jsonPath("$.endtime", is("18-15")))
+			.andExpect(jsonPath("$.teaching.name", is("Database")))
+			.andExpect(jsonPath("$.classroom.name", is("y1")));
+			
+		ArgumentCaptor<Lecture> uCaptor = ArgumentCaptor.forClass(Lecture.class);
+		verify(lectureServiceMock, times(1)).getLecturesByIdTeaching(1);
+		verify(lectureServiceMock, times(1)).save(uCaptor.capture());
 		verifyNoMoreInteractions(lectureServiceMock);
 	}
 	

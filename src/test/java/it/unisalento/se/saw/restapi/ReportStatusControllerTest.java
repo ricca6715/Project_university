@@ -116,6 +116,31 @@ public class ReportStatusControllerTest {
 		verifyNoMoreInteractions(reportStatusServiceMock);
 	}
 	
+	@Test
+	public void getReportStatusforModTest() throws Exception {
+		
+		Reportstatus rs1 = new Reportstatus();
+		rs1.setIdreportStatus(4);
+		rs1.setName("Resolved");
+		
+		Reportstatus rs2 = new Reportstatus();
+		rs2.setIdreportStatus(2);
+		rs2.setName("In Progress");
+		
+		when(reportStatusServiceMock.getReportStatusforMod()).thenReturn(Arrays.asList(rs1,rs2));
+		
+		mockMvc.perform(get("/reportstatus/getReportStatusforMod"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$[0].idreportStatus", is(4)))
+		.andExpect(jsonPath("$[0].name", is("Resolved")))
+		.andExpect(jsonPath("$[1].idreportStatus", is(2)))
+		.andExpect(jsonPath("$[1].name", is("In Progress")));
+	
+		verify(reportStatusServiceMock, times(1)).getReportStatusforMod();
+		verifyNoMoreInteractions(reportStatusServiceMock);
+	}
+	
 	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

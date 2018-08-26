@@ -95,6 +95,7 @@ public class ReportRestController {
 			secr.setIdUser(reportModel.getUserBySecretaryIdSecretary().getIdUser());
 			report.setUserBySecretaryIdSecretary(secr);
 		}
+		 report.setNote(reportModel.getNote());
 		 return reportService.saveReport(report);
 	 }
 	 

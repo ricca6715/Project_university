@@ -286,6 +286,124 @@ public class ReportRestControllerTest {
 
 	}
 	
+	@Test
+	public void updateReportTest() throws Exception {
+		
+		Report r1 = new Report();
+		r1.setProblemDescription("Aula piccola");
+		Classroom cl1 = new Classroom();
+		cl1.setIdClassroom(1);
+		cl1.setName("i1");
+		r1.setClassroom(cl1);
+		Reportstatus rs1 = new Reportstatus();
+		rs1.setIdreportStatus(2);
+		rs1.setName("Resolved");
+		r1.setReportstatus(rs1);
+		User professor = new User();
+		professor.setIdUser(1);
+		r1.setUserByProfessorIdProfessor(professor);
+		User secretary = new User();
+		secretary.setIdUser(2);
+		r1.setUserBySecretaryIdSecretary(secretary);
+		r1.setNote("provaprova");
+		
+		when(reportServiceMock.saveReport(Mockito.any(Report.class))).thenReturn(r1);
+		
+		mockMvc.perform(post("/report/save")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(new ObjectMapper().writeValueAsString(r1)))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.problemDescription", is("Aula piccola")))
+		.andExpect(jsonPath("$.classroom.name", is("i1")))
+		.andExpect(jsonPath("$.reportstatus.name", is("Resolved")))
+		.andExpect(jsonPath("$.userByProfessorIdProfessor.idUser", is(1)))
+		.andExpect(jsonPath("$.userBySecretaryIdSecretary.idUser", is(2)))
+		.andExpect(jsonPath("$.note", is("provaprova")));
+		
+		ArgumentCaptor<Report> uCaptor = ArgumentCaptor.forClass(Report.class);
+		verify(reportServiceMock, times(1)).saveReport(uCaptor.capture());
+		verifyNoMoreInteractions(reportServiceMock);
+	}
+	
+	@Test
+	public void getPendingReportsTest() throws Exception {
+		
+		Report r1 = new Report();
+		r1.setProblemDescription("Aula piccola");
+		Classroom cl1 = new Classroom();
+		cl1.setIdClassroom(1);
+		cl1.setName("i1");
+		r1.setClassroom(cl1);
+		Reportstatus rs1 = new Reportstatus();
+		rs1.setIdreportStatus(1);
+		rs1.setName("In pending");
+		r1.setReportstatus(rs1);
+		User secretary = new User();
+		secretary.setIdUser(2);
+		r1.setUserBySecretaryIdSecretary(secretary);
+		
+		Report r2 = new Report();
+		r2.setProblemDescription("Proiettore rotto");
+		r2.setClassroom(cl1);
+		r2.setReportstatus(rs1);
+		r2.setUserBySecretaryIdSecretary(secretary);
+		
+		when(reportServiceMock.getReportsByIdSecretary(2)).thenReturn(Arrays.asList(r1, r2));
+		
+		mockMvc.perform(get("/report/getReportsByIdSecretary/{idSecretary}", 2))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$[0].problemDescription", is("Aula piccola")))
+		.andExpect(jsonPath("$[0].classroom.name", is("i1")))
+		.andExpect(jsonPath("$[0].reportstatus.name", is("In pending")))
+		.andExpect(jsonPath("$[0].userBySecretaryIdSecretary.idUser", is(2)))
+		.andExpect(jsonPath("$[1].problemDescription", is("Proiettore rotto")))
+		.andExpect(jsonPath("$[1].classroom.name", is("i1")))
+		.andExpect(jsonPath("$[1].reportstatus.name", is("In pending")))
+		.andExpect(jsonPath("$[1].userBySecretaryIdSecretary.idUser", is(2)));
+		
+		verify(reportServiceMock, times(1)).getReportsByIdSecretary(2);
+		verifyNoMoreInteractions(reportServiceMock);
+	}
+	
+	@Test
+	public void getReportsByIdSecretaryTest() throws Exception {
+		
+		Report r1 = new Report();
+		r1.setProblemDescription("Aula piccola");
+		Classroom cl1 = new Classroom();
+		cl1.setIdClassroom(1);
+		cl1.setName("i1");
+		r1.setClassroom(cl1);
+		Reportstatus rs1 = new Reportstatus();
+		rs1.setIdreportStatus(1);
+		rs1.setName("In pending");
+		r1.setReportstatus(rs1);
+		
+		
+		Report r2 = new Report();
+		r2.setProblemDescription("Proiettore rotto");
+		r2.setClassroom(cl1);
+		r2.setReportstatus(rs1);
+		
+		when(reportServiceMock.getPendingReports()).thenReturn(Arrays.asList(r1, r2));
+		
+		mockMvc.perform(get("/report/getPendingReports"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$[0].problemDescription", is("Aula piccola")))
+		.andExpect(jsonPath("$[0].classroom.name", is("i1")))
+		.andExpect(jsonPath("$[0].reportstatus.name", is("In pending")))
+		.andExpect(jsonPath("$[1].problemDescription", is("Proiettore rotto")))
+		.andExpect(jsonPath("$[1].classroom.name", is("i1")))
+		.andExpect(jsonPath("$[1].reportstatus.name", is("In pending")));
+		
+		verify(reportServiceMock, times(1)).getPendingReports();
+		verifyNoMoreInteractions(reportServiceMock);
+	}
+
+	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
