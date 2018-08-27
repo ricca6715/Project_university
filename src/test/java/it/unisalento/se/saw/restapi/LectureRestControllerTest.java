@@ -494,6 +494,44 @@ public class LectureRestControllerTest {
 		verifyNoMoreInteractions(lectureServiceMock);
 	}
 	
+	@Test
+	public void saveLectureTest() throws Exception {
+
+		Lecture l1 = new Lecture();
+		l1.setIdLecture(1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = sdf.parse("2013-10-21");
+		l1.setDate(d);
+		l1.setStarttime("15-15");
+		l1.setEndtime("18-15");
+		l1.setDescription("it was a good lesson");
+		Teaching t = new Teaching(null, "Database", 9, null, null, null, null);
+		t.setIdTeaching(1);
+		l1.setTeaching(t);
+		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
+		
+		when(lectureServiceMock.getLecturesByIdTeaching(1)).thenReturn(Arrays.asList(l1));
+		when(lectureServiceMock.save(Mockito.any(Lecture.class))).thenReturn(l1);
+		
+		mockMvc.perform(post("/lecture/save")
+                .contentType(APPLICATION_JSON_UTF8)
+				.content(new ObjectMapper().writeValueAsString(l1)))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.date", is("2013-10-21")))
+			.andExpect(jsonPath("$.idLecture", is(1)))
+			.andExpect(jsonPath("$.starttime", is("15-15")))
+			.andExpect(jsonPath("$.description", is("it was a good lesson")))
+			.andExpect(jsonPath("$.endtime", is("18-15")))
+			.andExpect(jsonPath("$.teaching.name", is("Database")))
+			.andExpect(jsonPath("$.classroom.name", is("y1")));
+			
+		ArgumentCaptor<Lecture> uCaptor = ArgumentCaptor.forClass(Lecture.class);
+		verify(lectureServiceMock, times(1)).getLecturesByIdTeaching(1);
+		verify(lectureServiceMock, times(1)).save(uCaptor.capture());
+		verifyNoMoreInteractions(lectureServiceMock);
+	}
+	
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);

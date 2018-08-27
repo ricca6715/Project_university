@@ -117,18 +117,22 @@ public class LectureRestController {
 		List<Lecture> lecturesByTeaching = lectureService.getLecturesByIdTeaching(lModel.getTeaching().getIdTeaching());
 		for (int i = 0; i < lecturesByTeaching.size(); i++) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		    try {
-				Date date1 = sdf.parse(lecturesByTeaching.get(i).getDate().toString());
-				boolean startTimeCheck = lModel.getStarttime().equals(lecturesByTeaching.get(i).getStarttime());
-				boolean endTimeCheck = lModel.getEndtime().equals(lecturesByTeaching.get(i).getEndtime());
-				if ( (date1.getTime() == (lModel.getDate().getTime() - (2*1000*60*60)) ) && ( startTimeCheck) && ( endTimeCheck )) {
-					return lecturesByTeaching.get(i);
-				}
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				System.out.println(e.getStackTrace());
-			}
+			System.out.println(sdf.format(lecturesByTeaching.get(i).getDate()));
 
+			
+		   // try {
+				//Date date1 = sdf.parse(lecturesByTeaching.get(i).getDate().toString());
+	    	Date date1 = lecturesByTeaching.get(i).getDate();
+			boolean startTimeCheck = lModel.getStarttime().equals(lecturesByTeaching.get(i).getStarttime());
+			boolean endTimeCheck = lModel.getEndtime().equals(lecturesByTeaching.get(i).getEndtime());
+			if ( (date1.getTime() == (lModel.getDate().getTime() - (2*1000*60*60)) ) && ( startTimeCheck) && ( endTimeCheck )) {
+				return lecturesByTeaching.get(i);
+				}
+/*			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+*/
 		}
 		Lecture l = new Lecture();
 		Classroom cls = new Classroom();
