@@ -44,5 +44,4 @@ public class TeachingModel {
 	public void setCfu(Integer cfu) {
 		this.cfu = cfu;
 	}
-
 }

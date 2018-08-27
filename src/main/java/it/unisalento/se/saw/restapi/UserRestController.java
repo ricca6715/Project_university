@@ -1,6 +1,7 @@
 	package it.unisalento.se.saw.restapi;
 	
-	import java.util.List;
+	import java.util.HashSet;
+import java.util.List;
 	
 	
 	import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,15 @@
 	import org.springframework.web.bind.annotation.RestController;
 	
 	import it.unisalento.se.saw.Iservices.IUserService;
-	import it.unisalento.se.saw.domain.Studycourse;
-	import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.domain.Calendar;
+import it.unisalento.se.saw.domain.Studycourse;
+import it.unisalento.se.saw.domain.Teaching;
+import it.unisalento.se.saw.domain.User;
 	import it.unisalento.se.saw.domain.Usertype;
 	import it.unisalento.se.saw.exceptions.UserNotFoundException;
 	import it.unisalento.se.saw.models.StudyCourseModel;
-	import it.unisalento.se.saw.models.TokenFormModel;
+import it.unisalento.se.saw.models.TeachingModel;
+import it.unisalento.se.saw.models.TokenFormModel;
 	import it.unisalento.se.saw.models.UserModel;
 	import it.unisalento.se.saw.models.UserTypeModel;
 	
@@ -151,6 +155,45 @@
 		  return userService.saveUser(user);
 		
 	 }
+	 
+	 @PostMapping(
+			   value="/subscribetoteaching",
+			   produces= MediaType.APPLICATION_JSON_VALUE,
+			   consumes= MediaType.APPLICATION_JSON_VALUE)
+			 public User subscribetoTeaching(@RequestBody UserModel userModel) {
+				   
+				   User user = new User();
+				   if (userModel.getIdUser() != null) {
+					user.setIdUser(userModel.getIdUser());
+				   }
+				   user.setName(userModel.getName());
+				   user.setSurname(userModel.getSurname());
+				   user.setEmail(userModel.getEmail());
+				   user.setPassword(userModel.getPassword());
+				   Usertype ut = new Usertype();
+				   ut.setIdUserType(userModel.getUsertype().getIdUserType());
+				   ut.setTypeName(userModel.getUsertype().getTypeName());
+				   user.setUsertype(ut);
+				   if (ut.getTypeName().equals("student")) {
+					   Studycourse sc = new Studycourse();
+					   sc.setIdStudyCourse(userModel.getStudycourse().getIdStudyCourse());
+					   sc.setName(userModel.getStudycourse().getName());
+					   user.setStudycourse(sc);
+				   }
+				   List<TeachingModel> teachings = userModel.getTeachings();
+				   HashSet<Teaching> teachingsSet = new HashSet<>();
+				   if (teachings != null) {
+					   for (int i = 0; i < teachings.size(); i++) {
+						Teaching t = new Teaching();
+						t.setIdTeaching(teachings.get(i).getIdTeaching());
+						t.setName(teachings.get(i).getName());
+						t.setCfu(teachings.get(i).getCfu());
+					   }
+					   user.setTeachings(teachingsSet);
+					
+				}
+				   return userService.saveUser(user);
+				 }
 	 
 	 
 	 

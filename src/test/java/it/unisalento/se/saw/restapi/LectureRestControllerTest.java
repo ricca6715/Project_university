@@ -457,7 +457,7 @@ public class LectureRestControllerTest {
 	}
 	
 	@Test
-	public void saveLessonTest() throws Exception {
+	public void saveLectureTest() throws Exception {
 
 		Lecture l1 = new Lecture();
 		l1.setIdLecture(1);
@@ -495,7 +495,7 @@ public class LectureRestControllerTest {
 	}
 	
 	@Test
-	public void saveLectureTest() throws Exception {
+	public void ignorePre_existingLectureTest() throws Exception {
 
 		Lecture l1 = new Lecture();
 		l1.setIdLecture(1);

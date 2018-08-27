@@ -1,5 +1,6 @@
 package it.unisalento.se.saw.models;
 
+import java.util.List;
 
 public class UserModel {
 	
@@ -11,6 +12,7 @@ public class UserModel {
     private String email;
     private String password;
     private String fcmtoken;
+    private List<TeachingModel> teachings;
 
 	public String getFcmToken() {
 		return fcmtoken;
@@ -59,6 +61,12 @@ public class UserModel {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public List<TeachingModel> getTeachings() {
+		return teachings;
+	}
+	public void setTeachings(List<TeachingModel> teachings) {
+		this.teachings = teachings;
 	}
 
 

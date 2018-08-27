@@ -116,10 +116,7 @@ public class LectureRestController {
 	public Lecture save(@RequestBody LectureModel lModel) {
 		List<Lecture> lecturesByTeaching = lectureService.getLecturesByIdTeaching(lModel.getTeaching().getIdTeaching());
 		for (int i = 0; i < lecturesByTeaching.size(); i++) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			System.out.println(sdf.format(lecturesByTeaching.get(i).getDate()));
-
-			
+			//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		   // try {
 				//Date date1 = sdf.parse(lecturesByTeaching.get(i).getDate().toString());
 	    	Date date1 = lecturesByTeaching.get(i).getDate();
