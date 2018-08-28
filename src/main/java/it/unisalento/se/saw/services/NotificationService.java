@@ -19,13 +19,15 @@ public class NotificationService implements INotificationService {
 	
 
 	@Transactional
-	public void TopicNotification(String head, String body, String topic) throws IOException, FirebaseMessagingException {
+	public void TopicNotification(String head, String body, String topic, String type, String extra) throws IOException, FirebaseMessagingException {
 		// TODO Auto-generated method stub
 		FirebaseSDK.initializeSDK();
 		
 		Message message = Message.builder()
 			    .putData("title", head)
 			    .putData("body", body)
+			    .putData("type", type)
+			    .putData("extra", extra)
 			    .setTopic(topic)
 			    .build();
 
@@ -35,13 +37,15 @@ public class NotificationService implements INotificationService {
 	}
 
 	@Transactional
-	public void SingleNotification(String head, String body, String token) throws IOException, FirebaseMessagingException {
+	public void SingleNotification(String head, String body, String token, String type, String extra) throws IOException, FirebaseMessagingException {
 		// TODO Auto-generated method stub
 		FirebaseSDK.initializeSDK();
 		
 		Message message = Message.builder()
 			    .putData("title", head)
 			    .putData("body", body)
+			    .putData("type", type)
+			    .putData("extra", extra)
 			    .setToken(token)
 			    .build();
 

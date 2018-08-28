@@ -5,6 +5,8 @@ public class NotificationModel {
 	private String head;
 	private String body;
 	private String token_topic;
+	private String type;
+	private String extra;
 	
 	
 	public String getHead() {
@@ -24,6 +26,18 @@ public class NotificationModel {
 	}
 	public void setToken_topic(String token_topic) {
 		this.token_topic = token_topic;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getextra() {
+		return extra;
+	}
+	public void setextra(String extra) {
+		this.extra = extra;
 	}
 
 }

@@ -41,9 +41,11 @@ public class NotificationRestController {
 		System.out.println(model.getHead());
 		System.out.println(model.getBody());
 		System.out.println(model.getToken_topic());
+		System.out.println(model.getType());
+		System.out.println(model.getextra());
 		String token = userService.getUserByMail(model.getToken_topic()).getFcmtoken();
 		if (token != null) {
-			notificationService.SingleNotification(model.getHead(), model.getBody(), token);
+			notificationService.SingleNotification(model.getHead(), model.getBody(), token, model.getType(), model.getextra());
 		}
 	}
 	
@@ -57,7 +59,9 @@ public class NotificationRestController {
 		System.out.println(model.getBody());
 		model.setToken_topic(model.getToken_topic().replace(' ', '_'));
 		System.out.println(model.getToken_topic());
-		notificationService.TopicNotification(model.getHead(), model.getBody(), model.getToken_topic());
+		System.out.println(model.getType());
+		System.out.println(model.getextra());
+		notificationService.TopicNotification(model.getHead(), model.getBody(), model.getToken_topic(), model.getType(), model.getextra());
 		
 	}
 
