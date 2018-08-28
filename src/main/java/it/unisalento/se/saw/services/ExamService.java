@@ -26,4 +26,9 @@ public class ExamService implements IExamService {
 		return examRepository.findAll();
 	}
 
+	@Transactional
+	public List<Exam> getExamsByIdTeaching(int idTeaching) {
+		return examRepository.getExamsByIdTeaching(idTeaching);
+	}
+
 }

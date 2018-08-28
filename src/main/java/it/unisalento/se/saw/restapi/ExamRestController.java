@@ -1,11 +1,13 @@
 package it.unisalento.se.saw.restapi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,5 +56,41 @@ public class ExamRestController {
 		return examService.getAll();
 	}
 	
+	@GetMapping(
+			value = "/getExamsByIdTeaching/{idTeaching}",
+			produces= MediaType.APPLICATION_JSON_VALUE)
+	public List<Exam> getExamsByIdTeaching(@PathVariable("idTeaching") int idTeaching){
+		return examService.getExamsByIdTeaching(idTeaching);
+	}
+	
+	@GetMapping(value = "/getExamsByIdProfessor/{idProfessor}",
+			produces= MediaType.APPLICATION_JSON_VALUE)
+	public List<Exam> getExamsByIdProfessor(@PathVariable("idProfessor") int idProfessor){
+		List<Exam> allExams = examService.getAll();
+		List<Exam> profExams = new ArrayList<>();
+		for (int i = 0; i < allExams.size(); i++) {
+			if(allExams.get(i).getTeaching().getUser().getIdUser() == idProfessor) {
+				profExams.add(allExams.get(i));
+			}
+		}
+		
+		return profExams;
+			
+	}
+	
+	@GetMapping(value = "/getExamsByIdProfessor/{idProfessor}",
+			produces= MediaType.APPLICATION_JSON_VALUE)
+	public List<Exam> getExamsByStudycourse(@PathVariable("idProfessor") int idProfessor){
+		List<Exam> allExams = examService.getAll();
+		List<Exam> profExams = new ArrayList<>();
+		for (int i = 0; i < allExams.size(); i++) {
+			if(allExams.get(i).getTeaching().getUser().getIdUser() == idProfessor) {
+				profExams.add(allExams.get(i));
+			}
+		}
+		
+		return profExams;
+			
+	}
 
 }
