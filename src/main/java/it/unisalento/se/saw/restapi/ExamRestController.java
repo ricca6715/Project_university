@@ -78,13 +78,13 @@ public class ExamRestController {
 			
 	}
 	
-	@GetMapping(value = "/getExamsByIdProfessor/{idProfessor}",
+	@GetMapping(value = "/getExamsByidStudycourse/{idStudycourse}",
 			produces= MediaType.APPLICATION_JSON_VALUE)
-	public List<Exam> getExamsByStudycourse(@PathVariable("idProfessor") int idProfessor){
+	public List<Exam> getExamsByStudycourse(@PathVariable("idStudycourse") int idStudycourse){
 		List<Exam> allExams = examService.getAll();
 		List<Exam> profExams = new ArrayList<>();
 		for (int i = 0; i < allExams.size(); i++) {
-			if(allExams.get(i).getTeaching().getUser().getIdUser() == idProfessor) {
+			if(allExams.get(i).getTeaching().getUser().getIdUser() == idStudycourse) {
 				profExams.add(allExams.get(i));
 			}
 		}
