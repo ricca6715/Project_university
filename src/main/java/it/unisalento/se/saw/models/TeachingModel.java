@@ -10,10 +10,17 @@ public class TeachingModel {
     private UserModel user;
     private String name;
     private Integer cfu;
+    private Integer courseYear;
     private List<StudyCourseModel> studycourses;
     
     
     
+	public Integer getCourseYear() {
+		return courseYear;
+	}
+	public void setCourseYear(Integer courseYear) {
+		this.courseYear = courseYear;
+	}
 	public List<StudyCourseModel> getStudycourses() {
 		return studycourses;
 	}

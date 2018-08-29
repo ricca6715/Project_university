@@ -63,6 +63,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 			   scm.setName(user.getStudycourse().getName());
 			   scm.setDescription(user.getStudycourse().getDescription());
 			   userModel.setStudycourse(scm);
+			   userModel.setCourseYear(user.getCourseYear());
 		  }
 		  return userModel;
 	 }
@@ -139,6 +140,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 			   sc.setIdStudyCourse(userModel.getStudycourse().getIdStudyCourse());
 			   sc.setName(userModel.getStudycourse().getName());
 			   user.setStudycourse(sc);
+			   user.setCourseYear(userModel.getCourseYear());
 		   }
 		   return userService.saveUser(user);
 		 }
@@ -179,6 +181,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 					   sc.setIdStudyCourse(userModel.getStudycourse().getIdStudyCourse());
 					   sc.setName(userModel.getStudycourse().getName());
 					   user.setStudycourse(sc);
+					   user.setCourseYear(userModel.getCourseYear());
 				   }
 				   List<TeachingModel> teachings = userModel.getTeachings();
 				   HashSet<Teaching> teachingsSet = new HashSet<>();
@@ -188,14 +191,11 @@ import it.unisalento.se.saw.models.TokenFormModel;
 						Teaching t = new Teaching();
 						t.setIdTeaching(teachings.get(i).getIdTeaching());
 						t.setName(teachings.get(i).getName());
-						t.setCfu(teachings.get(i).getCfu());
-						
+						t.setCfu(teachings.get(i).getCfu());				
 						teachingsSet.add(t);
-					   }
-					   
-					   user.setTeachings(teachingsSet);
-					
-				}
+					   }   
+					   user.setTeachings(teachingsSet);		
+				   }
 				   return userService.saveUser(user);
 				 }
 	 

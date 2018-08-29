@@ -12,6 +12,7 @@ public class UserModel {
     private String email;
     private String password;
     private String fcmtoken;
+    private Integer courseYear;
     private List<TeachingModel> teachings;
 
 	public String getFcmToken() {
@@ -61,6 +62,12 @@ public class UserModel {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public Integer getCourseYear() {
+		return courseYear;
+	}
+	public void setCourseYear(Integer courseYear) {
+		this.courseYear = courseYear;
 	}
 	public List<TeachingModel> getTeachings() {
 		return teachings;

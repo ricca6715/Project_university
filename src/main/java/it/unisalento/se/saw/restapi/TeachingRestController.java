@@ -79,10 +79,12 @@ public class TeachingRestController {
 		Teaching t = new Teaching();
 		User prof = new User();
 		HashSet<Studycourse> scourses = new HashSet<>();
-		if(tModel.getIdTeaching() != null)
+		if(tModel.getIdTeaching() != null) {
 			t.setIdTeaching(tModel.getIdTeaching());
+		}
 		t.setName(tModel.getName());
 		t.setCfu(tModel.getCfu());
+		t.setCourseYear(tModel.getCourseYear());	
 		prof.setIdUser(tModel.getUser().getIdUser());
 		t.setUser(prof);
 		List<StudyCourseModel> studycoursesModel = tModel.getStudycourses();

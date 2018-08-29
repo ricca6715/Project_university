@@ -98,13 +98,15 @@ public class TeachingMaterialRestControllerTest {
 		tm1.setIdTeachingMaterial(1);
 		tm1.setLink("C:\\Users\\ricca\\Desktop\\ciao.txt");
 		tm1.setName("testMaterial");
-		tm1.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		Classroom c = new Classroom("y1", "y1classroom", null, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 1, null, null, null, null, null);
+		tm1.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm1.setType("link");
 		Teachingmaterial tm2 = new Teachingmaterial();
 		tm2.setIdTeachingMaterial(2);
 		tm2.setLink("C:\\Users\\ricca\\Desktop\\ciao2.txt");
 		tm2.setName("testMaterial2");
-		tm2.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		tm2.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm2.setType("link");
 		
 		when(teachingMaterialServiceMock.getTeachingMaterialByIdLecture(1))
@@ -130,7 +132,9 @@ public class TeachingMaterialRestControllerTest {
 		tm.setIdTeachingMaterial(1);
 		tm.setLink("C:\\Users\\ricca\\Desktop\\ciao.txt");
 		tm.setName("testMaterial");
-		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		Classroom c = new Classroom("y1", "y1classroom", null, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 1, null, null, null, null, null);
+		tm.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm.setType("link");
 		boolean deleted = true;
 		when(teachingMaterialServiceMock.getTeachingMaterialById(1)).thenReturn(tm);
@@ -155,7 +159,9 @@ public class TeachingMaterialRestControllerTest {
 		tm.setIdTeachingMaterial(1);
 		tm.setLink("testfile.txt");
 		tm.setName("testMaterial");
-		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		Classroom c = new Classroom("y1", "y1classroom", null, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 1, null, null, null, null, null);
+		tm.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm.setType("txt");
 		boolean deleted = true;
 		when(teachingMaterialServiceMock.getTeachingMaterialById(1)).thenReturn(tm);
@@ -177,7 +183,9 @@ public class TeachingMaterialRestControllerTest {
 		tm.setIdTeachingMaterial(1);
 		tm.setLink("testfile.txt");
 		tm.setName("testMaterial");
-		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		Classroom c = new Classroom("y1", "y1classroom", null, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 1, null, null, null, null, null);
+		tm.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm.setType("txt");
 		boolean deleted = false;
 		when(teachingMaterialServiceMock.getTeachingMaterialById(1)).thenReturn(tm);
@@ -197,7 +205,9 @@ public class TeachingMaterialRestControllerTest {
 		tm.setIdTeachingMaterial(1);
 		tm.setLink("testfile.txt");
 		tm.setName("testMaterial");
-		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		Classroom c = new Classroom("y1", "y1classroom", null, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 1, null, null, null, null, null);
+		tm.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm.setType("txt");
 		
 		when(teachingMaterialServiceMock.getTeachingMaterialById(1)).thenReturn(tm);
@@ -219,7 +229,9 @@ public class TeachingMaterialRestControllerTest {
 		tm.setIdTeachingMaterial(1);
 		tm.setLink("testfile.txt");
 		tm.setName("testMaterial");
-		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		Classroom c = new Classroom("y1", "y1classroom", null, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 1, null, null, null, null, null);
+		tm.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm.setType("txt");
 		
 		when(teachingMaterialServiceMock.getTeachingMaterialById(Mockito.anyInt()))
@@ -239,7 +251,9 @@ public class TeachingMaterialRestControllerTest {
 		tm.setIdTeachingMaterial(1);
 		tm.setLink("C:\\Users\\ricca\\Desktop\\ciao.txt");
 		tm.setName("testMaterial");
-		tm.setLecture(new Lecture(new Classroom("y1", "y1classroom", null, null, null, null, null), new Teaching(null, "Database", null, null, null, null, null), null, null, null, null, null, null));
+		Classroom c = new Classroom("y1", "y1classroom", null, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 1, null, null, null, null, null);
+		tm.setLecture(new Lecture(c, t, null, null, null, null, null));
 		tm.setType("link");
 		User u = new User();
 		u.setIdUser(1);

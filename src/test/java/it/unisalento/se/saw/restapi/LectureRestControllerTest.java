@@ -102,8 +102,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setTeaching(new Teaching(null, "Database", 9, 1, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
@@ -111,8 +110,7 @@ public class LectureRestControllerTest {
 		l2.setDate(d);
 		l2.setStarttime("15-15");
 		l2.setEndtime("18-15");
-		l2.setDescription("test lecture");
-		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
+		l2.setTeaching(new Teaching(null, "Computer Vision", 9, 1, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
 		
@@ -125,14 +123,12 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
 			.andExpect(jsonPath("$[0].starttime", is("15-15")))
-			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
 			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].starttime", is("15-15")))
-			.andExpect(jsonPath("$[1].description", is("test lecture")))
 			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
@@ -154,8 +150,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setTeaching(new Teaching(null, "Database", 9, 1, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
@@ -163,8 +158,7 @@ public class LectureRestControllerTest {
 		l2.setDate(d);
 		l2.setStarttime("15-15");
 		l2.setEndtime("18-15");
-		l2.setDescription("test lecture");
-		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
+		l2.setTeaching(new Teaching(null, "Computer Vision", 9, 1, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
 		
@@ -177,14 +171,12 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
 			.andExpect(jsonPath("$[0].starttime", is("15-15")))
-			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
 			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].starttime", is("15-15")))
-			.andExpect(jsonPath("$[1].description", is("test lecture")))
 			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
@@ -203,8 +195,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setTeaching(new Teaching(null, "Database", 9, 1, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		when(lectureServiceMock.getLectureById(1)).thenReturn(l1);
@@ -215,7 +206,6 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$.date", is("2012-12-21")))
 			.andExpect(jsonPath("$.idLecture", is(1)))
 			.andExpect(jsonPath("$.starttime", is("15-15")))
-			.andExpect(jsonPath("$.description", is("it was a good lesson")))
 			.andExpect(jsonPath("$.endtime", is("18-15")))
 			.andExpect(jsonPath("$.teaching.name", is("Database")))
 			.andExpect(jsonPath("$.classroom.name", is("y1")));
@@ -235,8 +225,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setTeaching(new Teaching(null, "Database", 9, 1, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		when(lectureServiceMock.getLectureById(1)).thenThrow(new LectureNotFoundException());
@@ -260,8 +249,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setTeaching(new Teaching(null, "Database", 9, 1, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
@@ -269,8 +257,7 @@ public class LectureRestControllerTest {
 		l2.setDate(d);
 		l2.setStarttime("15-15");
 		l2.setEndtime("18-15");
-		l2.setDescription("test lecture");
-		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
+		l2.setTeaching(new Teaching(null, "Computer Vision", 9, 1, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
 		
@@ -283,14 +270,12 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
 			.andExpect(jsonPath("$[0].starttime", is("15-15")))
-			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
 			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].starttime", is("15-15")))
-			.andExpect(jsonPath("$[1].description", is("test lecture")))
 			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
@@ -311,8 +296,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setTeaching(new Teaching(null, "Database", 9, 1, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
@@ -320,8 +304,7 @@ public class LectureRestControllerTest {
 		l2.setDate(d);
 		l2.setStarttime("15-15");
 		l2.setEndtime("18-15");
-		l2.setDescription("test lecture");
-		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
+		l2.setTeaching(new Teaching(null, "Computer Vision", 9, 1, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
 		
@@ -334,14 +317,12 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
 			.andExpect(jsonPath("$[0].starttime", is("15-15")))
-			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
 			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].starttime", is("15-15")))
-			.andExpect(jsonPath("$[1].description", is("test lecture")))
 			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
@@ -362,8 +343,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		l1.setTeaching(new Teaching(null, "Database", 9, null, null, null, null));
+		l1.setTeaching(new Teaching(null, "Database", 9, 1, null, null, null, null));
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		Lecture l2 = new Lecture();
@@ -371,8 +351,7 @@ public class LectureRestControllerTest {
 		l2.setDate(d);
 		l2.setStarttime("15-15");
 		l2.setEndtime("18-15");
-		l2.setDescription("test lecture");
-		l2.setTeaching(new Teaching(null, "Computer Vision", 9, null, null, null, null));
+		l2.setTeaching(new Teaching(null, "Computer Vision", 9, 1, null, null, null, null));
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));	
 		
 		when(lectureServiceMock.getDailyLectureByIdProfAndDate(1,d)).thenReturn(Arrays.asList(l1, l2));
@@ -383,14 +362,12 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
 			.andExpect(jsonPath("$[0].starttime", is("15-15")))
-			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
 			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
 			.andExpect(jsonPath("$[0].classroom.name", is("y1")))
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].starttime", is("15-15")))
-			.andExpect(jsonPath("$[1].description", is("test lecture")))
 			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Computer Vision")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
@@ -414,7 +391,6 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
 		l1.setTeaching(t1);
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
@@ -423,7 +399,6 @@ public class LectureRestControllerTest {
 		l2.setDate(d);
 		l2.setStarttime("15-15");
 		l2.setEndtime("18-15");
-		l2.setDescription("test lecture");
 		l2.setTeaching(t1);
 		l2.setClassroom(new Classroom("y2", "classroom y2", null, null, null, null, null));
 		
@@ -436,7 +411,6 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[0].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[0].idLecture", is(1)))
 			.andExpect(jsonPath("$[0].starttime", is("15-15")))
-			.andExpect(jsonPath("$[0].description", is("it was a good lesson")))
 			.andExpect(jsonPath("$[0].endtime", is("18-15")))
 
 			.andExpect(jsonPath("$[0].teaching.name", is("Software Engineering")))
@@ -444,7 +418,6 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$[1].date", is("2012-12-21")))
 			.andExpect(jsonPath("$[1].idLecture", is(2)))
 			.andExpect(jsonPath("$[1].starttime", is("15-15")))
-			.andExpect(jsonPath("$[1].description", is("test lecture")))
 			.andExpect(jsonPath("$[1].endtime", is("18-15")))
 			.andExpect(jsonPath("$[1].teaching.name", is("Software Engineering")))
 			.andExpect(jsonPath("$[1].classroom.name", is("y2")));
@@ -466,8 +439,7 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		Teaching t = new Teaching(null, "Database", 9, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 9, 1, null, null, null, null);
 		t.setIdTeaching(1);
 		l1.setTeaching(t);
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
@@ -483,7 +455,6 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$.date", is("2012-12-21")))
 			.andExpect(jsonPath("$.idLecture", is(1)))
 			.andExpect(jsonPath("$.starttime", is("15-15")))
-			.andExpect(jsonPath("$.description", is("it was a good lesson")))
 			.andExpect(jsonPath("$.endtime", is("18-15")))
 			.andExpect(jsonPath("$.teaching.name", is("Database")))
 			.andExpect(jsonPath("$.classroom.name", is("y1")));
@@ -504,14 +475,12 @@ public class LectureRestControllerTest {
 		l1.setDate(d);
 		l1.setStarttime("15-15");
 		l1.setEndtime("18-15");
-		l1.setDescription("it was a good lesson");
-		Teaching t = new Teaching(null, "Database", 9, null, null, null, null);
+		Teaching t = new Teaching(null, "Database", 9, 1, null, null, null, null);
 		t.setIdTeaching(1);
 		l1.setTeaching(t);
 		l1.setClassroom(new Classroom("y1", "classroom y1", null, null, null, null, null));
 		
 		when(lectureServiceMock.getLecturesByIdTeaching(1)).thenReturn(Arrays.asList(l1));
-		when(lectureServiceMock.save(Mockito.any(Lecture.class))).thenReturn(l1);
 		
 		mockMvc.perform(post("/lecture/save")
                 .contentType(APPLICATION_JSON_UTF8)
@@ -521,14 +490,12 @@ public class LectureRestControllerTest {
 			.andExpect(jsonPath("$.date", is("2013-10-21")))
 			.andExpect(jsonPath("$.idLecture", is(1)))
 			.andExpect(jsonPath("$.starttime", is("15-15")))
-			.andExpect(jsonPath("$.description", is("it was a good lesson")))
 			.andExpect(jsonPath("$.endtime", is("18-15")))
 			.andExpect(jsonPath("$.teaching.name", is("Database")))
 			.andExpect(jsonPath("$.classroom.name", is("y1")));
 			
 		ArgumentCaptor<Lecture> uCaptor = ArgumentCaptor.forClass(Lecture.class);
 		verify(lectureServiceMock, times(1)).getLecturesByIdTeaching(1);
-		verify(lectureServiceMock, times(1)).save(uCaptor.capture());
 		verifyNoMoreInteractions(lectureServiceMock);
 	}
 	
