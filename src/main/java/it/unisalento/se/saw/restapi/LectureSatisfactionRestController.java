@@ -1,6 +1,7 @@
 package it.unisalento.se.saw.restapi;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,15 @@ import it.unisalento.se.saw.domain.Lecture;
 import it.unisalento.se.saw.domain.Lecturesatisfaction;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.exceptions.LectureSatisfactionNotFound;
+import it.unisalento.se.saw.models.ClassroomModel;
+import it.unisalento.se.saw.models.FactoryProducer;
+import it.unisalento.se.saw.models.LectureModel;
 import it.unisalento.se.saw.models.LecturesatisfactionModel;
+import it.unisalento.se.saw.models.SatisfactionFactory;
+import it.unisalento.se.saw.models.StudyCourseModel;
+import it.unisalento.se.saw.models.TeachingModel;
+import it.unisalento.se.saw.models.UserModel;
+import it.unisalento.se.saw.models.UserTypeModel;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -43,15 +52,27 @@ public class LectureSatisfactionRestController {
 	@GetMapping(
 			value = "/getLectureSatisfactionsByIdLecture/{idLecture}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public List<Lecturesatisfaction> getLectureSatisfactionsByIdLecture(@PathVariable("idLecture") int idLecture) {
-		return lsService.getLectureSatisfactionsByIdLecture(idLecture);
+	public List<LecturesatisfactionModel> getLectureSatisfactionsByIdLecture(@PathVariable("idLecture") int idLecture) {
+		List<Lecturesatisfaction> list = lsService.getLectureSatisfactionsByIdLecture(idLecture);
+		List<LecturesatisfactionModel> lsmlist = new ArrayList<LecturesatisfactionModel>();
+		SatisfactionFactory a = FactoryProducer.getSatisfactionFactory("lecture");
+		for (int i = 0; i < list.size(); i++) {
+			LecturesatisfactionModel l = a.createLectureFactory(list.get(i).getIdlectureSatisfaction(),
+					list.get(i).getLecture(), list.get(i).getUser(), list.get(i).getLevel(), 
+					list.get(i).getNote());
+			lsmlist.add(l);
+		}
+		return lsmlist;
 	}
 	
 	@GetMapping(
 			value = "/getLectureSatisfactionByIdUserAndIdLecture/{idUser}/{idLecture}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public Lecturesatisfaction getLectureSatisfactionByIdUserAndIdLecture(@PathVariable("idUser") int idUser, @PathVariable("idLecture") int idLecture) throws LectureSatisfactionNotFound {
-		return lsService.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
+	public LecturesatisfactionModel getLectureSatisfactionByIdUserAndIdLecture(@PathVariable("idUser") int idUser, @PathVariable("idLecture") int idLecture) throws LectureSatisfactionNotFound {
+		Lecturesatisfaction ls = lsService.getLectureSatisfactionByIdUserAndIdLecture(idUser, idLecture);
+		SatisfactionFactory a = FactoryProducer.getSatisfactionFactory("lecture");
+		LecturesatisfactionModel l = a.createLectureFactory(ls.getIdlectureSatisfaction(),ls.getLecture(), ls.getUser(), ls.getLevel(), ls.getNote());
+		return l;
 	}
 	
 	
@@ -60,17 +81,8 @@ public class LectureSatisfactionRestController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	public Lecturesatisfaction saveSatisfaction(@RequestBody LecturesatisfactionModel lectureSatModel) {
-		Lecturesatisfaction ls = new Lecturesatisfaction();
-		if(lectureSatModel.getIdlectureSatisfaction() != null)
-			ls.setIdlectureSatisfaction(lectureSatModel.getIdlectureSatisfaction());
-		ls.setLevel(lectureSatModel.getLevel());
-		Lecture l = new Lecture();
-		l.setIdLecture(lectureSatModel.getLecture().getIdLecture());
-		ls.setLecture(l);
-		User user = new User();
-		user.setIdUser(lectureSatModel.getUser().getIdUser());
-		ls.setUser(user);
-		ls.setNote(lectureSatModel.getNote());
+		SatisfactionFactory a = FactoryProducer.getSatisfactionFactory("lecture");
+		Lecturesatisfaction ls = a.createLectureDomainFactory(lectureSatModel);
 		return lsService.saveSatisfaction(ls);
 	}
 	

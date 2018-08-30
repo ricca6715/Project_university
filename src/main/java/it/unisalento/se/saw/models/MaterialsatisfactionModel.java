@@ -1,7 +1,5 @@
 package it.unisalento.se.saw.models;
 
-
-
 public class MaterialsatisfactionModel {
 	
     private Integer idMaterialSatisfaction;
@@ -10,7 +8,19 @@ public class MaterialsatisfactionModel {
     private Integer level;
     private String note;
     
-    
+	public MaterialsatisfactionModel() {
+		super();
+	}
+	
+	public MaterialsatisfactionModel(Integer idMaterialSatisfaction, TeachingMaterialModel teachingmaterial,
+			UserModel user, Integer level, String note) {
+		super();
+		this.idMaterialSatisfaction = idMaterialSatisfaction;
+		this.teachingmaterial = teachingmaterial;
+		this.user = user;
+		this.level = level;
+		this.note = note;
+	}
 	public Integer getIdMaterialSatisfaction() {
 		return idMaterialSatisfaction;
 	}
