@@ -1,5 +1,6 @@
 package it.unisalento.se.saw.restapi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,10 @@ import it.unisalento.se.saw.domain.Materialsatisfaction;
 import it.unisalento.se.saw.domain.Teachingmaterial;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.exceptions.MaterialSatisfactionNotFound;
+import it.unisalento.se.saw.models.FactoryProducer;
 import it.unisalento.se.saw.models.LecturesatisfactionModel;
 import it.unisalento.se.saw.models.MaterialsatisfactionModel;
+import it.unisalento.se.saw.models.SatisfactionFactory;
 
 @CrossOrigin
 @RestController() //contiene due annotation, Controller e response body
@@ -45,15 +48,27 @@ public class MaterialSatisfactionRestController {
 	@GetMapping(
 			value = "/getMaterialSatisfactionByIdMaterial/{idMaterial}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public List<Materialsatisfaction> getMaterialSatisfactionByIdMaterial(@PathVariable("idMaterial") int idMaterial) {
-		return msService.getMaterialSatisfactionByIdMaterial(idMaterial);
+	public List<MaterialsatisfactionModel> getMaterialSatisfactionByIdMaterial(@PathVariable("idMaterial") int idMaterial) {
+		List<Materialsatisfaction> list = msService.getMaterialSatisfactionByIdMaterial(idMaterial);
+		List<MaterialsatisfactionModel> msmlist = new ArrayList<MaterialsatisfactionModel>();
+		SatisfactionFactory a = FactoryProducer.getSatisfactionFactory("material");
+		for (int i = 0; i < list.size(); i++) {
+			MaterialsatisfactionModel m = a.createMaterialFactory(list.get(i).getIdMaterialSatisfaction(),
+					list.get(i).getTeachingmaterial(), list.get(i).getUser(), list.get(i).getLevel(),
+					list.get(i).getNote());
+			msmlist.add(m);
+		}
+		return msmlist;
 	}
 	
 	@GetMapping(
 			value = "/getMaterialSatisfactionByIdUserAndIdMaterial/{idUser}/{idMaterial}",
 			produces = MediaType.APPLICATION_JSON_VALUE )
-	public Materialsatisfaction getMaterialSatisfactionByIdUserAndIdMaterial(@PathVariable("idUser") int idUser, @PathVariable("idMaterial") int idMaterial) throws MaterialSatisfactionNotFound {
-		return msService.getMaterialSatisfactionByIdUserAndIdMaterial(idUser, idMaterial);
+	public MaterialsatisfactionModel getMaterialSatisfactionByIdUserAndIdMaterial(@PathVariable("idUser") int idUser, @PathVariable("idMaterial") int idMaterial) throws MaterialSatisfactionNotFound {
+		Materialsatisfaction ms = msService.getMaterialSatisfactionByIdUserAndIdMaterial(idUser, idMaterial);
+		SatisfactionFactory a = FactoryProducer.getSatisfactionFactory("material");
+		MaterialsatisfactionModel m = a.createMaterialFactory(ms.getIdMaterialSatisfaction(), ms.getTeachingmaterial(), ms.getUser(), ms.getLevel(), ms.getNote());
+		return m;
 	}
 	
 	@PostMapping(
@@ -61,18 +76,8 @@ public class MaterialSatisfactionRestController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	public Materialsatisfaction saveSatisfaction(@RequestBody MaterialsatisfactionModel materialSatModel) {
-		Materialsatisfaction ms = new Materialsatisfaction();
-		if(materialSatModel.getIdMaterialSatisfaction() != null)
-			ms.setIdMaterialSatisfaction(materialSatModel.getIdMaterialSatisfaction());
-		ms.setLevel(materialSatModel.getLevel());
-		Teachingmaterial tm = new Teachingmaterial();
-		tm.setIdTeachingMaterial(materialSatModel.getTeachingmaterial().getIdTeachingMaterial());
-		ms.setTeachingmaterial(tm);
-		User user = new User();
-		user.setIdUser(materialSatModel.getUser().getIdUser());
-		ms.setUser(user);
-		ms.setNote(materialSatModel.getNote());
-		
+		SatisfactionFactory a = FactoryProducer.getSatisfactionFactory("material");
+		Materialsatisfaction ms = a.createMaterialDomainFactory(materialSatModel);
 		return msService.saveSatisfaction(ms);
 	}
 	

@@ -2,19 +2,17 @@ package it.unisalento.se.saw.models;
 
 import java.util.Date;
 
-import it.unisalento.se.saw.domain.Classroom;
-import it.unisalento.se.saw.domain.Teaching;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LectureModel {
 	
     private Integer idLecture;
     private ClassroomModel classroom;
     private TeachingModel teaching;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Europe/Rome")
     private Date date;
     private String starttime;
     private String endtime;
-    
-    
     
 	public Date getDate() {
 		return date;
