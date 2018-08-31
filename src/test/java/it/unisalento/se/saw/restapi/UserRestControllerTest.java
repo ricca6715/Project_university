@@ -60,6 +60,7 @@ import it.unisalento.se.saw.Iservices.IUserService;
 import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.domain.Usertype;
+import it.unisalento.se.saw.exceptions.ElementNotValidException;
 import it.unisalento.se.saw.exceptions.UserNotFoundException;
 import it.unisalento.se.saw.models.TokenFormModel;
 
@@ -422,6 +423,29 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
 		.andExpect(jsonPath("$.password", is("riccardo")))
 		.andExpect(jsonPath("$.studycourse.name", is("Software Engineering")));
+		
+		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
+		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
+		verifyNoMoreInteractions(userServiceMock);
+	}
+	
+	@Test
+	public void saveStudThrowExcTest() throws Exception {
+
+		User user = new User();
+		user.setSurname("contino");
+		user.setEmail("riccardo@gmail.com");
+		user.setPassword("riccardo");
+		user.setUsertype(new Usertype("student", null));
+		user.setStudycourse(new Studycourse("Software Engineering", "test", null, null, null));
+		
+		when(userServiceMock.saveUser(Mockito.any(User.class))).thenThrow(new ElementNotValidException(""));
+        mockMvc.perform(
+                post("/user/save")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user))
+        )
+        .andExpect(status().isBadRequest());
 		
 		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
 		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());

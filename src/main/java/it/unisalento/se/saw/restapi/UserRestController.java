@@ -2,9 +2,13 @@
 	
 	import java.util.HashSet;
 import java.util.List;
-	
-	
-	import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.http.MediaType;
 	import org.springframework.web.bind.annotation.CrossOrigin;
 	import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +17,18 @@ import java.util.List;
 	import org.springframework.web.bind.annotation.RequestBody;
 	import org.springframework.web.bind.annotation.RequestMapping;
 	import org.springframework.web.bind.annotation.RestController;
-	
-	import it.unisalento.se.saw.Iservices.IUserService;
+
+import io.grpc.netty.shaded.io.netty.handler.codec.http.HttpResponseStatus;
+import it.unisalento.se.saw.Iservices.IUserService;
 import it.unisalento.se.saw.domain.Calendar;
 import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.Teaching;
 import it.unisalento.se.saw.domain.User;
 	import it.unisalento.se.saw.domain.Usertype;
-	import it.unisalento.se.saw.exceptions.UserNotFoundException;
-	import it.unisalento.se.saw.models.StudyCourseModel;
+import it.unisalento.se.saw.exceptions.ElementNotValidException;
+import it.unisalento.se.saw.exceptions.UserNotFoundException;
+import it.unisalento.se.saw.models.RegistrationValidateStrategy;
+import it.unisalento.se.saw.models.StudyCourseModel;
 import it.unisalento.se.saw.models.TeachingModel;
 import it.unisalento.se.saw.models.TokenFormModel;
 	import it.unisalento.se.saw.models.UserModel;
@@ -121,11 +128,16 @@ import it.unisalento.se.saw.models.TokenFormModel;
 	   value="/save",
 	   produces= MediaType.APPLICATION_JSON_VALUE,
 	   consumes= MediaType.APPLICATION_JSON_VALUE)
-	 public User saveUser(@RequestBody UserModel userModel) {
+	 public User saveUser(@RequestBody UserModel userModel) throws ElementNotValidException {
 		   
 		   User user = new User();
 		   if (userModel.getIdUser() != null) {
 			user.setIdUser(userModel.getIdUser());
+		   } else {
+			   userModel.setValidator(new RegistrationValidateStrategy());
+			   if (!userModel.isValid()) {
+				throw new ElementNotValidException(userModel.getError());
+			}
 		   }
 		   user.setName(userModel.getName());
 		   user.setSurname(userModel.getSurname());
