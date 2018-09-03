@@ -39,14 +39,6 @@ public class LectureSatFactory implements SatisfactionFactory {
 		utm.setIdUserType(lecture.getTeaching().getUser().getUsertype().getIdUserType());
 		utm.setTypeName(lecture.getTeaching().getUser().getUsertype().getTypeName());
 		um.setUsertype(utm);
-		if (utm.getTypeName().equals("student")) {
-			StudyCourseModel scm = new StudyCourseModel();
-			scm.setIdStudyCourse(lecture.getTeaching().getUser().getStudycourse().getIdStudyCourse());
-			scm.setName(lecture.getTeaching().getUser().getStudycourse().getName());
-			scm.setDescription(lecture.getTeaching().getUser().getStudycourse().getDescription());
-			um.setStudycourse(scm);
-			um.setCourseYear(lecture.getTeaching().getUser().getCourseYear());
-		}
 		tm.setUser(um);
 		lm.setTeaching(tm);
 		UserModel um1 = new UserModel();

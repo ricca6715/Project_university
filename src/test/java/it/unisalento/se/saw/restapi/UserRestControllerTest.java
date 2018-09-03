@@ -438,7 +438,7 @@ public class UserRestControllerTest {
 	
 	@Test
 	public void saveStudThrowExcTest() throws Exception {
-
+		//NO NAME
 		User user = new User();
 		user.setName("");
 		user.setSurname("contino");
@@ -452,6 +452,48 @@ public class UserRestControllerTest {
                 post("/user/save")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(new ObjectMapper().writeValueAsString(user))
+        )
+        .andExpect(status().isBadRequest());
+        //NO SURNAME
+        User user1 = new User();
+		user1.setName("riccardo");
+		user1.setSurname("");
+		user1.setEmail("riccardo@gmail.com");
+		user1.setPassword("riccardo");
+		user1.setUsertype(new Usertype("student", null));
+		user1.setStudycourse(new Studycourse("Software Engineering", "test", null, null, null));
+        mockMvc.perform(
+                post("/user/save")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user1))
+        )
+        .andExpect(status().isBadRequest());
+        //NO EMAIL
+        User user2 = new User();
+		user2.setName("riccardo");
+		user2.setSurname("contino");
+		user2.setEmail("");
+		user2.setPassword("riccardo");
+		user2.setUsertype(new Usertype("student", null));
+		user2.setStudycourse(new Studycourse("Software Engineering", "test", null, null, null));
+        mockMvc.perform(
+                post("/user/save")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user2))
+        )
+        .andExpect(status().isBadRequest());
+        //NO PWD
+        User user3 = new User();
+		user3.setName("riccardo");
+		user3.setSurname("contino");
+		user3.setEmail("riccardo@gmail.com");
+		user3.setPassword("");
+		user3.setUsertype(new Usertype("student", null));
+		user3.setStudycourse(new Studycourse("Software Engineering", "test", null, null, null));
+        mockMvc.perform(
+                post("/user/save")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user3))
         )
         .andExpect(status().isBadRequest());
 
@@ -545,7 +587,6 @@ public class UserRestControllerTest {
 		t.setUser(professor);
 		Set<Teaching> tlist = new HashSet<>();
 		tlist.add(new Teaching(professor, "Software Engineering", 9, 3, null, null, null, null));
-		//System.out.println(tlist.size());
 		user.setTeachings(tlist);
 		
 		UserModel user1 = new UserModel();

@@ -70,14 +70,6 @@ public class MaterialSatFactory implements SatisfactionFactory {
 		utm.setIdUserType(teachingmaterial.getLecture().getTeaching().getUser().getUsertype().getIdUserType());
 		utm.setTypeName(teachingmaterial.getLecture().getTeaching().getUser().getUsertype().getTypeName());
 		um.setUsertype(utm);
-		if (utm.getTypeName().equals("student")) {
-			StudyCourseModel scm = new StudyCourseModel();
-			scm.setIdStudyCourse(teachingmaterial.getLecture().getTeaching().getUser().getStudycourse().getIdStudyCourse());
-			scm.setName(teachingmaterial.getLecture().getTeaching().getUser().getStudycourse().getName());
-			scm.setDescription(teachingmaterial.getLecture().getTeaching().getUser().getStudycourse().getDescription());
-			um.setStudycourse(scm);
-			um.setCourseYear(teachingmaterial.getLecture().getTeaching().getUser().getCourseYear());
-		}
 		tm.setUser(um);
 		lm.setTeaching(tm);
 		tmm.setLecture(lm);
