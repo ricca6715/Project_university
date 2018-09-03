@@ -64,6 +64,7 @@ import it.unisalento.se.saw.Iservices.IClassroomService;
 import it.unisalento.se.saw.domain.Calendar;
 import it.unisalento.se.saw.domain.Classroom;
 import it.unisalento.se.saw.domain.Studycourse;
+import it.unisalento.se.saw.models.CalendarModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalendarRestControllerTest {
@@ -109,6 +110,87 @@ private MockMvc mockMvc;
 		verifyNoMoreInteractions(calServiceMock);
 	}
 	
+	@Test
+	public void saveTest() throws Exception {
+		Calendar c = new Calendar();
+		Set<Studycourse> scSet = new HashSet<>();
+		scSet.add(new Studycourse("Software Engineering","test",null,null,null));
+		c.setAcademicYear("2018-2019");
+		c.setIdCalendar(1);
+		c.setStudycourses(scSet);
+		
+		when(calServiceMock.save(Mockito.any(Calendar.class))).thenReturn(c);
+		
+		 mockMvc.perform(
+	                post("/calendar/save")
+	                .contentType(APPLICATION_JSON_UTF8)
+	                .content(new ObjectMapper().writeValueAsString(c)))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.academicYear", is("2018-2019")))
+		.andExpect(jsonPath("$.idCalendar", is(1)));
+		
+		ArgumentCaptor<Calendar> uCaptor = ArgumentCaptor.forClass(Calendar.class);
+		
+		verify(calServiceMock, times(1)).save(uCaptor.capture());
+		verifyNoMoreInteractions(calServiceMock);
+		
+		
+	}
+	
+	@Test
+	public void updateTest() throws Exception {
+		Calendar c = new Calendar();
+		Set<Studycourse> scSet = new HashSet<>();
+		scSet.add(new Studycourse("Software Engineering","test",null,null,null));
+		c.setAcademicYear("2018-2019");
+		c.setIdCalendar(1);
+		c.setStudycourses(scSet);
+		c.setIdCalendar(1);
+		
+		when(calServiceMock.save(Mockito.any(Calendar.class))).thenReturn(c);
+		
+		 mockMvc.perform(
+	                post("/calendar/save")
+	                .contentType(APPLICATION_JSON_UTF8)
+	                .content(new ObjectMapper().writeValueAsString(c)))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.academicYear", is("2018-2019")))
+		.andExpect(jsonPath("$.idCalendar", is(1)));
+		
+		ArgumentCaptor<Calendar> uCaptor = ArgumentCaptor.forClass(Calendar.class);
+		
+		verify(calServiceMock, times(1)).save(uCaptor.capture());
+		verifyNoMoreInteractions(calServiceMock);
+		
+		
+	}
+	
+	
+	@Test
+	public void getCalendarsByIdStudycourseTest() throws Exception {
+		
+		Calendar c = new Calendar();
+		Set<Studycourse> scSet = new HashSet<>();
+		scSet.add(new Studycourse("Software Engineering","test",null,null,null));
+		c.setAcademicYear("2018-2019");
+		c.setStudycourses(scSet);
+		Calendar c2 = new Calendar();
+		c2.setAcademicYear("2017-2018");
+		c2.setStudycourses(scSet);
+		
+		when(calServiceMock.getCalendarsByIdStudycourse(Mockito.anyInt())).thenReturn(Arrays.asList(c,c2));
+		
+		mockMvc.perform(get("/calendar/getCalendarsByIdStudycourse/1"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$[0].academicYear", is("2018-2019")))
+		.andExpect(jsonPath("$[1].academicYear", is("2017-2018")));
+		
+		verify(calServiceMock, times(1)).getCalendarsByIdStudycourse(1);
+		verifyNoMoreInteractions(calServiceMock);
+	}
 	
 	
 	
