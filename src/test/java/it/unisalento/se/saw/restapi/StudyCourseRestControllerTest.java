@@ -28,12 +28,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -50,13 +54,19 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unisalento.se.saw.Iservices.IReportStatusService;
 import it.unisalento.se.saw.Iservices.IStudyCourseService;
+import it.unisalento.se.saw.domain.Calendar;
 import it.unisalento.se.saw.domain.Studycourse;
+import it.unisalento.se.saw.domain.Teaching;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.domain.Usertype;
 import it.unisalento.se.saw.exceptions.StudycourseNotFoundException;
 import it.unisalento.se.saw.exceptions.UserNotFoundException;
+import it.unisalento.se.saw.models.CalendarModel;
+import it.unisalento.se.saw.models.StudyCourseModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudyCourseRestControllerTest {
@@ -158,6 +168,80 @@ public class StudyCourseRestControllerTest {
 		verify(studyCourseServiceMock, times(1)).getStudycourseByName(sc.getName());
 		verifyNoMoreInteractions(studyCourseServiceMock);
 		
+	}
+	
+	@Test
+	public void getStudycoursesByIdTeachingTest() throws Exception {
+		
+		Studycourse sc1 = new Studycourse();
+		Studycourse sc2= new Studycourse();
+		
+		sc1.setName("Software Engineering");
+		sc1.setDescription("Software engineering teaching");
+		sc1.setIdStudyCourse(1);
+		
+		sc2.setName("Database");
+		sc2.setDescription("Database teaching");
+		sc2.setIdStudyCourse(2);
+		
+		
+		when(studyCourseServiceMock.getStudycourseByIdTeaching(1)).thenReturn(Arrays.asList(sc1, sc2));
+		
+		mockMvc.perform(get("/studycourse/getStudycoursesByIdTeaching/{idTeaching}", 1))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$[0].name", is("Software Engineering")))
+			.andExpect(jsonPath("$[0].description", is("Software engineering teaching")))
+			.andExpect(jsonPath("$[0].idStudyCourse", is(1)))
+			.andExpect(jsonPath("$[1].name", is("Database")))
+			.andExpect(jsonPath("$[1].description", is("Database teaching")))
+			.andExpect(jsonPath("$[1].idStudyCourse", is(2)));
+			
+		
+		verify(studyCourseServiceMock, times(1)).getStudycourseByIdTeaching(1);
+		verifyNoMoreInteractions(studyCourseServiceMock);
+	}
+	
+	@Test
+	public void saveTest() throws Exception {
+		
+		Studycourse sc1 = new Studycourse();
+		Studycourse sc2= new Studycourse();
+		Calendar c = new Calendar();
+		c.setAcademicYear("2038-2039");
+		Set<Calendar> cset = new HashSet<>();
+		cset.add(c);
+		
+		sc1.setName("Software Engineering");
+		sc1.setDescription("Software engineering teaching");
+		sc1.setIdStudyCourse(1);
+		sc1.setCalendars(cset);
+		
+		StudyCourseModel scm1 = new StudyCourseModel();
+		CalendarModel c1 = new CalendarModel();
+		c1.setAcademicYear("2038-2039");
+		List<CalendarModel> clist = new ArrayList<>();
+		clist.add(c1);
+		
+		scm1.setName("Software Engineering");
+		scm1.setDescription("Software engineering teaching");
+		scm1.setIdStudyCourse(1);
+		scm1.setCalendars(clist);
+		
+		when(studyCourseServiceMock.save(Mockito.any(Studycourse.class))).thenReturn(sc1);
+		
+		mockMvc.perform(post("/studycourse/save")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(new ObjectMapper().writeValueAsString(scm1)))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.name", is("Software Engineering")))
+			.andExpect(jsonPath("$.description", is("Software engineering teaching")))
+			.andExpect(jsonPath("$.idStudyCourse", is(1)));
+			
+		ArgumentCaptor<Studycourse> uCaptor = ArgumentCaptor.forClass(Studycourse.class);
+		verify(studyCourseServiceMock, times(1)).save(uCaptor.capture());
+		verifyNoMoreInteractions(studyCourseServiceMock);
 	}
 	
 	
