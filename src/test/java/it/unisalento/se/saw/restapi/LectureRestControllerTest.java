@@ -484,9 +484,8 @@ public class LectureRestControllerTest {
 		l1.setClassroom(cls);
 		
 		Lecture l2 = new Lecture();
-		l2.setIdLecture(1);
-		Date d2 = new Date(l1.getDate().getTime() + (2*1000*60*60));
-		l2.setDate(d2);
+		l2.setIdLecture(2);
+		l2.setDate(d);
 		l2.setStarttime("15-15");
 		l2.setEndtime("18-15");
 		l2.setTeaching(t);
@@ -499,12 +498,12 @@ public class LectureRestControllerTest {
 				.content(new ObjectMapper().writeValueAsString(l2)))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-			.andExpect(jsonPath("$[0].date", is("2013-10-21")))
-			.andExpect(jsonPath("$[0].idLecture", is(1)))
-			.andExpect(jsonPath("$[0].starttime", is("15-15")))
-			.andExpect(jsonPath("$[0].endtime", is("18-15")))
-			.andExpect(jsonPath("$[0].teaching.name", is("Database")))
-			.andExpect(jsonPath("$[0].classroom.name", is("y1")));
+			.andExpect(jsonPath("$.date", is("2013-10-21")))
+			.andExpect(jsonPath("$.idLecture", is(1)))
+			.andExpect(jsonPath("$.starttime", is("15-15")))
+			.andExpect(jsonPath("$.endtime", is("18-15")))
+			.andExpect(jsonPath("$.teaching.name", is("Database")))
+			.andExpect(jsonPath("$.classroom.name", is("y1")));
 			
 		verify(lectureServiceMock, times(1)).getLecturesByIdTeaching(1);
 		verifyNoMoreInteractions(lectureServiceMock);

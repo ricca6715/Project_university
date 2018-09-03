@@ -120,12 +120,7 @@ public class LectureRestController {
 			boolean startTimeCheck = lModel.getStarttime().equals(lecturesByTeaching.get(i).getStarttime());
 			boolean endTimeCheck = lModel.getEndtime().equals(lecturesByTeaching.get(i).getEndtime());
 			if (lecturesByTeaching.get(i).getClassroom().getIdClassroom() == lModel.getClassroom().getIdClassroom()) {
-				System.out.println("classroom id uguale");
-				System.out.println(date1.getTime());
-				System.out.println(lModel.getDate().getTime());
-				System.out.println(lModel.getDate().getTime() - (2*1000*60*60));
-				if ( (date1.getTime() == (lModel.getDate().getTime() - (2*1000*60*60)) ) && ( startTimeCheck) && ( endTimeCheck )) {
-					System.out.println("stessa data e ora");
+				if ( (date1.getTime() == lModel.getDate().getTime() ) && ( startTimeCheck) && ( endTimeCheck )) {
 					return lecturesByTeaching.get(i);
 					}
 			}

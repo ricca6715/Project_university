@@ -2,7 +2,9 @@ package it.unisalento.se.saw.models;
 
 import java.util.List;
 
-public class UserModel {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class UserModel implements IValidateModel{
 	
     private Integer idUser;
     private StudyCourseModel studycourse;
@@ -14,6 +16,8 @@ public class UserModel {
     private String fcmtoken;
     private Integer courseYear;
     private List<TeachingModel> teachings;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private IValidateStrategy validator;
 
 	public String getFcmToken() {
 		return fcmtoken;
@@ -74,6 +78,22 @@ public class UserModel {
 	}
 	public void setTeachings(List<TeachingModel> teachings) {
 		this.teachings = teachings;
+	}
+	 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	public void setValidator(IValidateStrategy validator) {
+		this.validator = validator;
+	}
+	@Override
+	 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return this.validator.isValid(this);
+	}
+	@Override
+	 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	public String getError() {
+		// TODO Auto-generated method stub
+		return this.validator.getError(this);
 	}
 
 
