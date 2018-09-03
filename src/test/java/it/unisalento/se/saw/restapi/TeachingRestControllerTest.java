@@ -29,12 +29,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -51,11 +55,18 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unisalento.se.saw.Iservices.ITeachingService;
+import it.unisalento.se.saw.domain.Studycourse;
 import it.unisalento.se.saw.domain.Teaching;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.domain.Usertype;
 import it.unisalento.se.saw.exceptions.TeachingNotFoundException;
+import it.unisalento.se.saw.models.StudyCourseModel;
+import it.unisalento.se.saw.models.TeachingModel;
+import it.unisalento.se.saw.models.UserModel;
+import it.unisalento.se.saw.models.UserTypeModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TeachingRestControllerTest {
@@ -234,7 +245,64 @@ public class TeachingRestControllerTest {
 		verifyNoMoreInteractions(teachingServiceMock);
 	}
 	
+	@Test
+	public void saveTest() throws Exception {
+		
+		Teaching t = new Teaching();
+		t.setIdTeaching(1);
+		t.setName("Software Engineering");
+		t.setCfu(9);
+		t.setCourseYear(1);
+		User professor = new User();
+		professor.setName("luca");
+		professor.setSurname("mainetti");
+		professor.setEmail("luca@gmail.com");
+		professor.setPassword("luca");
+		professor.setUsertype(new Usertype("professor", null));
+		t.setUser(professor);
+		Studycourse sc = new Studycourse();
+		sc.setIdStudyCourse(1);
+		sc.setName("prova");
+		sc.setDescription("test");
+		Set<Studycourse> sclist = new HashSet<>();
+		sclist.add(sc);
+		
+		TeachingModel t1 = new TeachingModel();
+		t1.setIdTeaching(1);
+		t1.setName("Software Engineering");
+		t1.setCfu(9);
+		t1.setCourseYear(1);
+		UserModel professor1 = new UserModel();
+		professor1.setName("luca");
+		professor1.setSurname("mainetti");
+		professor1.setEmail("luca@gmail.com");
+		professor1.setPassword("luca");
+		UserTypeModel utm2 = new UserTypeModel();
+		utm2.setTypeName("professor");
+		professor1.setUsertype(utm2);
+		t1.setUser(professor1);
+		StudyCourseModel scm = new StudyCourseModel();
+		scm.setIdStudyCourse(1);
+		scm.setName("prova");
+		scm.setDescription("test");
+		List<StudyCourseModel> sclist1 = new ArrayList<>();
+		sclist1.add(scm);
+		t1.setStudycourses(sclist1);
+		
+		when(teachingServiceMock.save(Mockito.any(Teaching.class))).thenReturn(t);
+		
+		mockMvc.perform(post("/teaching/save")
+				.contentType(APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(t1)))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.name", is("Software Engineering")))
+		.andExpect(jsonPath("$.cfu", is(9)));
 	
+		ArgumentCaptor<Teaching> uCaptor = ArgumentCaptor.forClass(Teaching.class);
+		verify(teachingServiceMock, times(1)).save(uCaptor.capture());
+		verifyNoMoreInteractions(teachingServiceMock);
+	}
 	
 	
 	public ViewResolver viewResolver() {

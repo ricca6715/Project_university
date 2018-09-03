@@ -65,7 +65,11 @@ import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.domain.Usertype;
 import it.unisalento.se.saw.exceptions.ElementNotValidException;
 import it.unisalento.se.saw.exceptions.UserNotFoundException;
+import it.unisalento.se.saw.models.StudyCourseModel;
+import it.unisalento.se.saw.models.TeachingModel;
 import it.unisalento.se.saw.models.TokenFormModel;
+import it.unisalento.se.saw.models.UserModel;
+import it.unisalento.se.saw.models.UserTypeModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserRestControllerTest {
@@ -544,19 +548,49 @@ public class UserRestControllerTest {
 		//System.out.println(tlist.size());
 		user.setTeachings(tlist);
 		
+		UserModel user1 = new UserModel();
+		user1.setIdUser(1);
+		user1.setName("riccardo");
+		user1.setSurname("contino");
+		user1.setEmail("riccardo@gmail.com");
+		user1.setPassword("riccardo");
+		user1.setCourseYear(1);
+		UserTypeModel utm = new UserTypeModel();
+		utm.setIdUserType(1);
+		utm.setTypeName("student");
+		user1.setUsertype(utm);
+		StudyCourseModel scm = new StudyCourseModel();
+		scm.setName("Software Engineering");
+		user1.setStudycourse(scm);
+		TeachingModel t1 = new TeachingModel();
+		t1.setName("Software Engineering");
+		t1.setCfu(9);
+		UserModel professor1 = new UserModel();
+		professor1.setName("luca");
+		professor1.setSurname("mainetti");
+		professor1.setEmail("luca@gmail.com");
+		professor1.setPassword("luca");
+		UserTypeModel utm2 = new UserTypeModel();
+		utm2.setTypeName("professor");
+		professor1.setUsertype(utm2);
+		t1.setCourseYear(1);
+		t1.setUser(professor1);
+		List<TeachingModel> tlist1 = new ArrayList<>();
+		tlist1.add(t1);
+		user1.setTeachings(tlist1);
+		
 		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
         mockMvc.perform(
                 post("/user/subscribetoteaching")
                         .contentType(APPLICATION_JSON_UTF8)
-                        .content(new ObjectMapper().writeValueAsString(user))
+                        .content(new ObjectMapper().writeValueAsString(user1))
         )
         .andExpect(status().isOk())
 		.andExpect(jsonPath("$.name", is("riccardo")))
 		.andExpect(jsonPath("$.surname", is("contino")))
 		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
 		.andExpect(jsonPath("$.password", is("riccardo")))
-		.andExpect(jsonPath("$.studycourse.name", is("Software Engineering")))
-		/*.andExpect(jsonPath("$.teachings[0].name", is("Software Engineering")))*/;
+		.andExpect(jsonPath("$.studycourse.name", is("Software Engineering")));
 		
 		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
 		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
