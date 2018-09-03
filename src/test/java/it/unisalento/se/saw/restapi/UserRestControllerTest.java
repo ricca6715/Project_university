@@ -540,7 +540,7 @@ public class UserRestControllerTest {
 		t.setCourseYear(1);
 		t.setUser(professor);
 		Set<Teaching> tlist = new HashSet<>();
-		tlist.add(t);
+		tlist.add(new Teaching(professor, "Software Engineering", 9, 3, null, null, null, null));
 		//System.out.println(tlist.size());
 		user.setTeachings(tlist);
 		

@@ -196,7 +196,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 				   }
 				   List<TeachingModel> teachings = userModel.getTeachings();
 				   HashSet<Teaching> teachingsSet = new HashSet<>();
-				   //System.out.println(teachings.size());
+				   System.out.println(teachings.size());
 				   if (teachings != null) {
 					   for (int i = 0; i < teachings.size(); i++) {
 						Teaching t = new Teaching();
