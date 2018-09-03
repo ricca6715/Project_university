@@ -47,7 +47,10 @@ public class CalendarRestController {
 			value = "/getAll",
 			produces= MediaType.APPLICATION_JSON_VALUE)
 	public List<Calendar> getAll() {
-		return calService.getAll();
+		List<Calendar> calendars =  calService.getAll();
+		System.out.println(calendars.get(0).getStudycourses().size());
+		
+		return calendars;
 	}
 	
 	@GetMapping(
