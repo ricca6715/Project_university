@@ -30,7 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +60,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unisalento.se.saw.Iservices.IUserService;
 import it.unisalento.se.saw.domain.Studycourse;
+import it.unisalento.se.saw.domain.Teaching;
 import it.unisalento.se.saw.domain.User;
 import it.unisalento.se.saw.domain.Usertype;
 import it.unisalento.se.saw.exceptions.ElementNotValidException;
@@ -433,6 +436,7 @@ public class UserRestControllerTest {
 	public void saveStudThrowExcTest() throws Exception {
 
 		User user = new User();
+		user.setName("");
 		user.setSurname("contino");
 		user.setEmail("riccardo@gmail.com");
 		user.setPassword("riccardo");
@@ -446,9 +450,7 @@ public class UserRestControllerTest {
                         .content(new ObjectMapper().writeValueAsString(user))
         )
         .andExpect(status().isBadRequest());
-		
-		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
-		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
+
 		verifyNoMoreInteractions(userServiceMock);
 	}
 	
@@ -509,6 +511,52 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$.surname", is("mainetti")))
 		.andExpect(jsonPath("$.email", is("luca@gmail.com")))
 		.andExpect(jsonPath("$.password", is("luca")));
+		
+		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
+		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());
+		verifyNoMoreInteractions(userServiceMock);
+	}
+	
+	@Test
+	public void subtoTeachingTest() throws  Exception {
+
+		User user = new User();
+		user.setName("riccardo");
+		user.setSurname("contino");
+		user.setEmail("riccardo@gmail.com");
+		user.setPassword("riccardo");
+		user.setCourseYear(1);
+		user.setUsertype(new Usertype("student", null));
+		user.setStudycourse(new Studycourse("Software Engineering", "test", null, null, null));
+		Teaching t = new Teaching();
+		t.setName("Software Engineering");
+		t.setCfu(9);
+		User professor = new User();
+		professor.setName("luca");
+		professor.setSurname("mainetti");
+		professor.setEmail("luca@gmail.com");
+		professor.setPassword("luca");
+		professor.setUsertype(new Usertype("professor", null));
+		t.setCourseYear(1);
+		t.setUser(professor);
+		Set<Teaching> tlist = new HashSet<>();
+		tlist.add(t);
+		//System.out.println(tlist.size());
+		user.setTeachings(tlist);
+		
+		when(userServiceMock.saveUser(Mockito.any(User.class))).thenReturn(user);
+        mockMvc.perform(
+                post("/user/subscribetoteaching")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(user))
+        )
+        .andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is("riccardo")))
+		.andExpect(jsonPath("$.surname", is("contino")))
+		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
+		.andExpect(jsonPath("$.password", is("riccardo")))
+		.andExpect(jsonPath("$.studycourse.name", is("Software Engineering")))
+		/*.andExpect(jsonPath("$.teachings[0].name", is("Software Engineering")))*/;
 		
 		ArgumentCaptor<User> uCaptor = ArgumentCaptor.forClass(User.class);
 		verify(userServiceMock, times(1)).saveUser(uCaptor.capture());

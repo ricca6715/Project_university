@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.unisalento.se.saw.Iservices.IUserService;
 import it.unisalento.se.saw.domain.User;
+import it.unisalento.se.saw.exceptions.ElementNotValidException;
 import it.unisalento.se.saw.exceptions.UserNotFoundException;
 import it.unisalento.se.saw.repositories.UserRepository;
 
@@ -40,7 +41,7 @@ public class UserService implements IUserService {
 
 
 	@Transactional
-	public User saveUser(User user) {
+	public User saveUser(User user) throws ElementNotValidException {
 		// TODO Auto-generated method stub
 		return userRepository.save(user);
 	}

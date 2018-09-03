@@ -161,20 +161,19 @@ import it.unisalento.se.saw.models.TokenFormModel;
 	   value="/setToken",
 	   produces= MediaType.APPLICATION_JSON_VALUE,
 	   consumes= MediaType.APPLICATION_JSON_VALUE)
-	 public User update(@RequestBody TokenFormModel tfm) {
+	 public User update(@RequestBody TokenFormModel tfm) throws ElementNotValidException {
 		  System.out.println(tfm.getIdUser());
 		  System.out.println(tfm.getToken());
 		  User user = userService.getById(tfm.getIdUser());
 		  user.setFcmtoken(tfm.getToken());
 		  return userService.saveUser(user);
-		
 	 }
 	 
 	 @PostMapping(
 			   value="/subscribetoteaching",
 			   produces= MediaType.APPLICATION_JSON_VALUE,
 			   consumes= MediaType.APPLICATION_JSON_VALUE)
-			 public User subscribetoTeaching(@RequestBody UserModel userModel) {
+			 public User subscribetoTeaching(@RequestBody UserModel userModel) throws ElementNotValidException {
 				   
 				   User user = new User();
 				   if (userModel.getIdUser() != null) {
@@ -197,7 +196,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 				   }
 				   List<TeachingModel> teachings = userModel.getTeachings();
 				   HashSet<Teaching> teachingsSet = new HashSet<>();
-				   System.out.println(teachings.size());
+				   //System.out.println(teachings.size());
 				   if (teachings != null) {
 					   for (int i = 0; i < teachings.size(); i++) {
 						Teaching t = new Teaching();
