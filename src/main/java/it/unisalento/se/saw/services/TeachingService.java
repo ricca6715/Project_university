@@ -52,4 +52,14 @@ public class TeachingService implements ITeachingService {
 		return teachingRepository.save(t);
 	}
 
+	@Transactional
+	public Teaching getTeachingById(int id) throws TeachingNotFoundException {
+		// TODO Auto-generated method stub
+		Teaching t = teachingRepository.getOne(id);
+		if (t == null) {
+			throw new TeachingNotFoundException();
+		}
+		return t;
+	}
+
 }

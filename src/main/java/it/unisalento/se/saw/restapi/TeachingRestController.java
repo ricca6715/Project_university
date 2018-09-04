@@ -34,6 +34,12 @@ public class TeachingRestController {
 		this.teachingService = teachingService;
 	}
 	
+	@GetMapping(
+			value = "/getTeachingById/{id}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public Teaching getTeachingById(@PathVariable("id") int id) throws TeachingNotFoundException{
+		return teachingService.getTeachingById(id);
+	}
 	
 	@GetMapping(
 			value = "/getTeachingByName/{name}",

@@ -7,6 +7,7 @@ import it.unisalento.se.saw.exceptions.TeachingNotFoundException;
 
 public interface ITeachingService {
 
+	public Teaching getTeachingById(int id) throws TeachingNotFoundException;
 	public Teaching getTeachingByName(String name) throws TeachingNotFoundException;
 	public List<Teaching> getAll();
 	public List<Teaching> getTeachingByStudyCourse(int id);

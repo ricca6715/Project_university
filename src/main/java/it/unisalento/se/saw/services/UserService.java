@@ -20,7 +20,7 @@ public class UserService implements IUserService {
 	
 	@Transactional
 	public User getUserByMail_Pwd(String mail, String password) throws UserNotFoundException {
-		
+		System.out.println("user service: " + password);
 		User user = userRepository.getUserByMail_Pwd(mail, password);
 		
 		

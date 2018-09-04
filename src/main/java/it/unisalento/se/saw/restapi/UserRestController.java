@@ -52,16 +52,15 @@ import it.unisalento.se.saw.models.TokenFormModel;
 	   value = "/getUserByMail_Pwd/{mail}/{password}",
 	   produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
 	 public UserModel getUserByMail_Pwd(@PathVariable("mail") String mail, @PathVariable("password") String password) throws UserNotFoundException {
-	
-		  User user =  userService.getUserByMail_Pwd(mail, password);
+		 
+		  User user =  userService.getUserByMail_Pwd(mail, MD5Hash(password));
 		  UserModel userModel = new UserModel();
 		  userModel.setIdUser(user.getIdUser());
 		  userModel.setEmail(user.getEmail());
 		  userModel.setName(user.getName());
-		  userModel.setPassword(MD5Hash(user.getPassword()));
+		  userModel.setPassword(user.getPassword());
 		  userModel.setSurname(user.getSurname());
 		  userModel.setFcmToken(user.getFcmtoken());
-		
 		  UserTypeModel utm = new UserTypeModel();
 		  utm.setIdUserType(user.getUsertype().getIdUserType());
 		  utm.setTypeName(user.getUsertype().getTypeName());
@@ -184,7 +183,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 				   user.setName(userModel.getName());
 				   user.setSurname(userModel.getSurname());
 				   user.setEmail(userModel.getEmail());
-				   user.setPassword(MD5Hash(userModel.getPassword()));
+				   user.setPassword(userModel.getPassword());
 				   Usertype ut = new Usertype();
 				   ut.setIdUserType(userModel.getUsertype().getIdUserType());
 				   ut.setTypeName(userModel.getUsertype().getTypeName());
