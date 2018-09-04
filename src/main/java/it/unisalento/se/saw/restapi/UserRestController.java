@@ -1,6 +1,8 @@
 	package it.unisalento.se.saw.restapi;
 	
-	import java.util.HashSet;
+	import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.ServletResponse;
@@ -56,7 +58,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 		  userModel.setIdUser(user.getIdUser());
 		  userModel.setEmail(user.getEmail());
 		  userModel.setName(user.getName());
-		  userModel.setPassword(user.getPassword());
+		  userModel.setPassword(MD5Hash(user.getPassword()));
 		  userModel.setSurname(user.getSurname());
 		  userModel.setFcmToken(user.getFcmtoken());
 		
@@ -142,7 +144,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 		   user.setName(userModel.getName());
 		   user.setSurname(userModel.getSurname());
 		   user.setEmail(userModel.getEmail());
-		   user.setPassword(userModel.getPassword());
+		   user.setPassword(MD5Hash(userModel.getPassword()));
 		   Usertype ut = new Usertype();
 		   ut.setIdUserType(userModel.getUsertype().getIdUserType());
 		   ut.setTypeName(userModel.getUsertype().getTypeName());
@@ -182,7 +184,7 @@ import it.unisalento.se.saw.models.TokenFormModel;
 				   user.setName(userModel.getName());
 				   user.setSurname(userModel.getSurname());
 				   user.setEmail(userModel.getEmail());
-				   user.setPassword(userModel.getPassword());
+				   user.setPassword(MD5Hash(userModel.getPassword()));
 				   Usertype ut = new Usertype();
 				   ut.setIdUserType(userModel.getUsertype().getIdUserType());
 				   ut.setTypeName(userModel.getUsertype().getTypeName());
@@ -211,6 +213,24 @@ import it.unisalento.se.saw.models.TokenFormModel;
 				 }
 	 
 	 
+	//MD5
+	public String MD5Hash(String stringadaconvertire){
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] array = md.digest(stringadaconvertire.getBytes());
+			StringBuffer sb = new StringBuffer();
+			for(int i=0; i<array.length;i++){
+				
+				sb.append(Integer.toHexString(array[i] & 0xFF | 0x100).substring(1, 3));
+				
+			}
+			return new String(sb);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "ErrorMD5";
+		}
+		}
 	 
 	
 	}
