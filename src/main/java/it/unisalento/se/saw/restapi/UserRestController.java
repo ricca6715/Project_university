@@ -77,28 +77,28 @@ import it.unisalento.se.saw.models.TokenFormModel;
 	 }
 	 
 	 @GetMapping(
-	   value= "/getUserEnrolledTeaching/{nameTeaching}",
+	   value= "/getUserEnrolledTeaching/{idTeaching}",
 	   produces= MediaType.APPLICATION_JSON_VALUE )
-	 public List<User> getUserEnrolledTeaching(@PathVariable("nameTeaching") String nameTeaching){
-		 return userService.getUserEnrolledTeaching(nameTeaching);
+	 public List<User> getUserEnrolledTeaching(@PathVariable("idTeaching") int idTeaching){
+		 return userService.getUserEnrolledTeaching(idTeaching);
 	 }
 	 
 	
 	 
 	 @GetMapping(
-	   value= "/getProfessorByNameTeaching/{nameTeaching}",
+	   value= "/getProfessorByidTeaching/{idTeaching}",
 	   produces= MediaType.APPLICATION_JSON_VALUE )
-	 public User getProfessorByNameTeaching(@PathVariable("nameTeaching") String nameTeaching){
-		 return userService.getProfessorByNameTeaching(nameTeaching);
+	 public User getProfessorByNameTeaching(@PathVariable("idTeaching") int idTeaching){
+		 return userService.getProfessorByidTeaching(idTeaching);
 	 }
 	
 	 
 	 @GetMapping(
-	   value= "/getUsersByTeachingName/{nameTeaching}",
+	   value= "/getUsersByidTeaching/{idTeaching}",
 	   produces= MediaType.APPLICATION_JSON_VALUE )
-	 public List<User> getUsersByTeachingName(@PathVariable("nameTeaching") String nameTeaching){
-		  User prof =  userService.getProfessorByNameTeaching(nameTeaching);
-		  List<User> users = userService.getUserEnrolledTeaching(nameTeaching);
+	 public List<User> getUsersByTeachingName(@PathVariable("idTeaching") int idTeaching){
+		  User prof =  userService.getProfessorByidTeaching(idTeaching);
+		  List<User> users = userService.getUserEnrolledTeaching(idTeaching);
 		  users.add(prof);
 		  return users;
 	 }

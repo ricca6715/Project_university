@@ -122,15 +122,16 @@ public class UserRestControllerTest {
 	public void StudentloginTest() throws Exception {
 		User user = new User();
 		
+		user.setIdUser(1);
 		user.setName("riccardo");
 		user.setSurname("contino");
 		user.setEmail("riccardo@gmail.com");
-		user.setPassword("riccardo");
+		user.setPassword("9667aacee4c11ab5cb1aee39cb183599");
 		
 		user.setUsertype(new Usertype("student", null));
 		user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
 		
-		when(userServiceMock.getUserByMail_Pwd("riccardo@gmail.com", "riccardo")).thenReturn(user);
+		when(userServiceMock.getUserByMail_Pwd("riccardo@gmail.com", "9667aacee4c11ab5cb1aee39cb183599")).thenReturn(user);
 		
 		mockMvc.perform(get("/user/getUserByMail_Pwd/{mail}/{password}", "riccardo@gmail.com", "riccardo"))
 		.andExpect(status().isOk())
@@ -138,10 +139,10 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$.name", is("riccardo")))
 		.andExpect(jsonPath("$.surname", is("contino")))
 		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
-		.andExpect(jsonPath("$.password", is("riccardo")))
+		.andExpect(jsonPath("$.password", is("9667aacee4c11ab5cb1aee39cb183599")))
 		.andExpect(jsonPath("$.studycourse.name", is("Ingegneria dell'informazione")));
 	
-		verify(userServiceMock, times(1)).getUserByMail_Pwd("riccardo@gmail.com", "riccardo");
+		verify(userServiceMock, times(1)).getUserByMail_Pwd("riccardo@gmail.com", "9667aacee4c11ab5cb1aee39cb183599");
 		verifyNoMoreInteractions(userServiceMock);
 		
 	}
@@ -150,13 +151,14 @@ public class UserRestControllerTest {
 	public void Prof_SecrloginTest() throws Exception {
 		User user = new User();
 		
+		user.setIdUser(1);
 		user.setName("riccardo");
 		user.setSurname("contino");
 		user.setEmail("riccardo@gmail.com");
-		user.setPassword("riccardo");
+		user.setPassword("9667aacee4c11ab5cb1aee39cb183599");
 		user.setUsertype(new Usertype("professor", null));
 		
-		when(userServiceMock.getUserByMail_Pwd("riccardo@gmail.com", "riccardo")).thenReturn(user);
+		when(userServiceMock.getUserByMail_Pwd("riccardo@gmail.com", "9667aacee4c11ab5cb1aee39cb183599")).thenReturn(user);
 		
 		mockMvc.perform(get("/user/getUserByMail_Pwd/{mail}/{password}", "riccardo@gmail.com", "riccardo"))
 		.andExpect(status().isOk())
@@ -164,9 +166,9 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$.name", is("riccardo")))
 		.andExpect(jsonPath("$.surname", is("contino")))
 		.andExpect(jsonPath("$.email", is("riccardo@gmail.com")))
-		.andExpect(jsonPath("$.password", is("riccardo")));
+		.andExpect(jsonPath("$.password", is("9667aacee4c11ab5cb1aee39cb183599")));
 	
-		verify(userServiceMock, times(1)).getUserByMail_Pwd("riccardo@gmail.com", "riccardo");
+		verify(userServiceMock, times(1)).getUserByMail_Pwd("riccardo@gmail.com", "9667aacee4c11ab5cb1aee39cb183599");
 		verifyNoMoreInteractions(userServiceMock);
 		
 	}
@@ -179,14 +181,14 @@ public class UserRestControllerTest {
 		user.setName("test");
 		user.setSurname("contino");
 		user.setEmail("test@gmail.com");
-		user.setPassword("test");
+		user.setPassword("9667aacee4c11ab5cb1aee39cb183599");
 		
 		user.setUsertype(new Usertype("student", null));
 		user.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
 		
-		when(userServiceMock.getUserByMail_Pwd(Mockito.anyString(), Mockito.anyString())).thenThrow(new UserNotFoundException());
+		when(userServiceMock.getUserByMail_Pwd("test@gmail.com", "9667aacee4c11ab5cb1aee39cb183599")).thenThrow(new UserNotFoundException());
 		
-		mockMvc.perform(get("/user/getUserByMail_Pwd/{mail}/{password}", "test@gmail.com", "test"))
+		mockMvc.perform(get("/user/getUserByMail_Pwd/{mail}/{password}", "test@gmail.com", "riccardo"))
 		.andExpect(status().isNotFound());
 	
 		verify(userServiceMock, times(1)).getUserByMail_Pwd(user.getEmail(), user.getPassword());
@@ -198,29 +200,23 @@ public class UserRestControllerTest {
 		User user1 = new User();
 		User user2 = new User();
 		
-		
 		user1.setName("riccardo");
 		user1.setSurname("contino");
 		user1.setEmail("riccardo@gmail.com");
 		user1.setPassword("riccardo");
-		
 		user1.setUsertype(new Usertype("student", null));
 		user1.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
-		
 		
 		user2.setName("andrea");
 		user2.setSurname("della monaca");
 		user2.setEmail("andrea@libero.it");
 		user2.setPassword("andrea");
-		
 		user2.setUsertype(new Usertype("student", null));
 		user2.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
-		
 
+		when(userServiceMock.getUserEnrolledTeaching(1)).thenReturn(Arrays.asList(user1, user2));
 		
-		when(userServiceMock.getUserEnrolledTeaching("Software Engineering")).thenReturn(Arrays.asList(user1, user2));
-		
-		mockMvc.perform(get("/user/getUserEnrolledTeaching/{nameTeaching}", "Software Engineering"))
+		mockMvc.perform(get("/user/getUserEnrolledTeaching/{idTeaching}", 1))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].name", is("riccardo")))
 		.andExpect(jsonPath("$[0].surname", is("contino")))
@@ -231,9 +227,8 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$[1].email", is("andrea@libero.it")))
 		.andExpect(jsonPath("$[1].studycourse.name", is("Ingegneria dell'informazione")));
 	
-		verify(userServiceMock, times(1)).getUserEnrolledTeaching("Software Engineering");
-		verifyNoMoreInteractions(userServiceMock);
-		
+		verify(userServiceMock, times(1)).getUserEnrolledTeaching(1);
+		verifyNoMoreInteractions(userServiceMock);		
 	}
 
 	@Test
@@ -246,17 +241,16 @@ public class UserRestControllerTest {
 		user3.setPassword("luca");
 		user3.setUsertype(new Usertype("professor", null));
 		
-		when(userServiceMock.getProfessorByNameTeaching("Software Engineering")).thenReturn(user3);
+		when(userServiceMock.getProfessorByidTeaching(1)).thenReturn(user3);
 		
-		mockMvc.perform(get("/user/getProfessorByNameTeaching/{nameTeaching}", "Software Engineering"))
+		mockMvc.perform(get("/user/getProfessorByidTeaching/{idTeaching}", 1))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.name", is("luca")))
 		.andExpect(jsonPath("$.surname", is("mainetti")))
 		.andExpect(jsonPath("$.email", is("luca@gmail.com")));
 	
-		verify(userServiceMock, times(1)).getProfessorByNameTeaching("Software Engineering");
+		verify(userServiceMock, times(1)).getProfessorByidTeaching(1);
 		verifyNoMoreInteractions(userServiceMock);
-		
 	}
 	
 	
@@ -305,7 +299,7 @@ public class UserRestControllerTest {
 		List<User> users = new ArrayList<User>();
 		users.add(user1);
 		users.add(user2);
-		when(userServiceMock.getUserEnrolledTeaching("Software Engineering")).thenReturn(users);
+		when(userServiceMock.getUserEnrolledTeaching(1)).thenReturn(users);
 		
 		User user3 = new User();
 		user3.setName("luca");
@@ -314,9 +308,9 @@ public class UserRestControllerTest {
 		user3.setPassword("luca");
 		user3.setUsertype(new Usertype("professor", null));
 		
-		when(userServiceMock.getProfessorByNameTeaching("Software Engineering")).thenReturn(user3);
+		when(userServiceMock.getProfessorByidTeaching(1)).thenReturn(user3);
 		
-		mockMvc.perform(get("/user/getUsersByTeachingName/{nameTeaching}", "Software Engineering"))
+		mockMvc.perform(get("/user/getUsersByidTeaching/{idTeaching}", 1))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].name", is("riccardo")))
 		.andExpect(jsonPath("$[0].surname", is("contino")))
@@ -330,8 +324,8 @@ public class UserRestControllerTest {
 		.andExpect(jsonPath("$[2].surname", is("mainetti")))
 		.andExpect(jsonPath("$[2].email", is("luca@gmail.com")));
 	
-		verify(userServiceMock, times(1)).getUserEnrolledTeaching("Software Engineering");
-		verify(userServiceMock, times(1)).getProfessorByNameTeaching("Software Engineering");
+		verify(userServiceMock, times(1)).getUserEnrolledTeaching(1);
+		verify(userServiceMock, times(1)).getProfessorByidTeaching(1);
 		verifyNoMoreInteractions(userServiceMock);
 	}
 	

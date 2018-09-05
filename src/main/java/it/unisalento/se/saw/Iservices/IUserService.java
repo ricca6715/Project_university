@@ -9,9 +9,9 @@ import it.unisalento.se.saw.exceptions.UserNotFoundException;
 public interface IUserService {
 	
 	public User getUserByMail_Pwd(String mail, String password) throws UserNotFoundException;
-	public List<User> getUserEnrolledTeaching(String nameTeaching); 	//Get student enrolled in teaching
+	public List<User> getUserEnrolledTeaching(int idTeaching); 	//Get student enrolled in teaching
 	public User saveUser(User user) throws ElementNotValidException;
-	public User getProfessorByNameTeaching(String nameTeaching);
+	public User getProfessorByidTeaching(int idTeaching);
 	public User getById(int id);
 	public User getUserByMail(String mail);
 	public List<User> getAllProfessors();

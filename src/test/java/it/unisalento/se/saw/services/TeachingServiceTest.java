@@ -234,15 +234,38 @@ public class TeachingServiceTest {
 		Set<Studycourse> sclist = new HashSet<>();
 		sclist.add(sc);
 		
-		
-		
 		when(teachingRepositoryMock.save(Mockito.any(Teaching.class))).thenReturn(t);
 		Teaching tBack = teachingService.save(t);
 		assertEquals(tBack.getName(), t.getName());
 		assertEquals(tBack.getCfu(), t.getCfu());
 		assertEquals(tBack.getUser().getName(), t.getUser().getName());
 		assertEquals(tBack.getUser().getSurname(), t.getUser().getSurname());
-		
 	}
+	
+	@Test
+	public void getTeachingByIdTest() throws Exception {
+		
+		Teaching t = new Teaching();
+		t.setIdTeaching(1);
+		t.setName("Software Engineering");
+		t.setCfu(9);
+		User professor = new User();
+		professor.setName("luca");
+		professor.setSurname("mainetti");
+		professor.setEmail("luca@gmail.com");
+		professor.setPassword("luca");
+		professor.setUsertype(new Usertype("professor", null));
+		t.setUser(professor);
+		
+		when(teachingRepositoryMock.getOne(1)).thenReturn(t);
+		
+		Teaching tBack = teachingService.getTeachingById(t.getIdTeaching());
+		assertEquals(tBack.getName(), t.getName());
+		assertEquals(tBack.getCfu(), t.getCfu());
+		assertEquals(tBack.getUser().getName(), t.getUser().getName());
+		assertEquals(tBack.getUser().getSurname(), t.getUser().getSurname());
+
+	}
+
 
 }

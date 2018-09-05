@@ -33,8 +33,8 @@ public class UserService implements IUserService {
 	}
 
 	@Transactional
-	public List<User> getUserEnrolledTeaching(String nameTeaching)  {
-		return userRepository.getUserEnrolledTeaching(nameTeaching); 	//Get student enrolled in teaching
+	public List<User> getUserEnrolledTeaching(int idTeaching)  {
+		return userRepository.getUserEnrolledTeaching(idTeaching); 	//Get student enrolled in teaching
 	}
 
 
@@ -47,8 +47,8 @@ public class UserService implements IUserService {
 	}
 
 	@Transactional
-	public User getProfessorByNameTeaching(String nameTeaching) {
-		return userRepository.getProfessorByNameTeaching(nameTeaching);
+	public User getProfessorByidTeaching(int idTeaching) {
+		return userRepository.getProfessorByidTeaching(idTeaching);
 		
 	}
 	

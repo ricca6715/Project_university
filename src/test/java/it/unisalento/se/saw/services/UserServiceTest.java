@@ -72,11 +72,12 @@ public class UserServiceTest {
 		user2.setPassword("andrea");	
 		user2.setUsertype(new Usertype("student", null));
 		user2.setStudycourse(new Studycourse("Ingegneria dell'informazione", "test", null, null, null));
+		t.setIdTeaching(1);
 		t.setName("Software Engineering");
 		
-		when(userRep.getUserEnrolledTeaching("Software Engineering")).thenReturn(Arrays.asList(user1, user2));
+		when(userRep.getUserEnrolledTeaching(1)).thenReturn(Arrays.asList(user1, user2));
 		
-		List<User> ulback = userService.getUserEnrolledTeaching(t.getName());
+		List<User> ulback = userService.getUserEnrolledTeaching(t.getIdTeaching());
 		
 		assertEquals(user1.getName(), ulback.get(0).getName());
 		assertEquals(user1.getSurname(), ulback.get(0).getSurname());
@@ -118,12 +119,13 @@ public class UserServiceTest {
 		user3.setUsertype(new Usertype("professor", null));
 		
 		Teaching t = new Teaching();
+		t.setIdTeaching(1);
 		t.setName("Software Engineering");
 		
 		
-		when(userRep.getProfessorByNameTeaching("Software Engineering")).thenReturn(user3);
+		when(userRep.getProfessorByidTeaching(1)).thenReturn(user3);
 		
-		User uback = userService.getProfessorByNameTeaching(t.getName());
+		User uback = userService.getProfessorByidTeaching(t.getIdTeaching());
 		
 		assertEquals(user3.getName(), uback.getName());
         assertEquals(user3.getSurname(), uback.getSurname());

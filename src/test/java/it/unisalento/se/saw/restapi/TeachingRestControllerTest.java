@@ -90,6 +90,35 @@ public class TeachingRestControllerTest {
 	}
 	
 	@Test
+	public void getTeachingByIdTest() throws Exception {
+		
+		Teaching t = new Teaching();
+		t.setIdTeaching(1);
+		t.setName("Software Engineering");
+		t.setCfu(9);
+		User professor = new User();
+		professor.setName("luca");
+		professor.setSurname("mainetti");
+		professor.setEmail("luca@gmail.com");
+		professor.setPassword("luca");
+		professor.setUsertype(new Usertype("professor", null));
+		t.setUser(professor);
+		
+		when(teachingServiceMock.getTeachingById(1)).thenReturn(t);
+		
+		mockMvc.perform(get("/teaching/getTeachingById/{idTeaching}", 1))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+		.andExpect(jsonPath("$.name", is("Software Engineering")))
+		.andExpect(jsonPath("$.cfu", is(9)))
+		.andExpect(jsonPath("$.user.name", is("luca")))
+		.andExpect(jsonPath("$.user.surname", is("mainetti")));
+	
+		verify(teachingServiceMock, times(1)).getTeachingById(1);
+		verifyNoMoreInteractions(teachingServiceMock);
+	}
+	
+	@Test
 	public void getTeachingByNameTest() throws Exception {
 		
 		Teaching t = new Teaching();

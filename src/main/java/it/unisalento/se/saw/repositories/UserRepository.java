@@ -21,12 +21,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	//Get student enrolled in teaching
 	@Query("select u from User u JOIN  u.teachings t "
-			+ "where t.name=:nameTeaching ")
-	public List<User> getUserEnrolledTeaching(@Param("nameTeaching") String teaching);
+			+ "where t.idTeaching=:idTeaching ")
+	public List<User> getUserEnrolledTeaching(@Param("idTeaching") int teaching);
 	
 	@Query("select t.user from Teaching t  "
-			+ "where t.name=:nameTeaching ")
-	public User getProfessorByNameTeaching(@Param("nameTeaching") String nameTeaching);
+			+ "where t.idTeaching=:idTeaching ")
+	public User getProfessorByidTeaching(@Param("idTeaching") int idTeaching);
 
 	@Query("select u from User u where u.email=:mail")
 	public User userByMail(@Param("mail") String mail);
